@@ -1,0 +1,73 @@
+﻿@model IEnumerable<eTrak.Dal.Models.EmailSend>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Email Status</h2>
+<p>
+    <a href="/EmailStatus/"></a>
+</p>
+<div class="modal-body table-responsive">
+    <div ng-controller="R_EmailStatusController" class="table-responsive" id="table-scroll">
+        <table id="actions-table" show-filter="true" class="table table-bordered table-fixed" dt-options="dtoptions" datatable="ng">
+            <thead>
+                <tr>
+                    <th>Email ID</th>
+                    <th>Action</th>
+                    <th>Email Came From</th>
+                    <th>Display From</th>
+                    <th>Sent To</th>
+                    <th>Display To</th>
+                    <th>Email CC</th>
+                    <th>Email BCC</th>
+                    <th>Subject</th>
+                    <th>Date Time Received </th>
+                    <th>eTrak Enquiry ID</th>
+                    <th>Attachments</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="seRec in EmailsList">
+                    <td>{{seRec.EmailID}}</td>
+                    <td>{{seRec.Action}}</td>
+                    <td>{{seRec.CameFrom}}</td>
+                    <td>{{seRec.DisplayFrom}}</td>
+                    <td>{{seRec.SentTo}}</td>
+                    <td>{{seRec.DisplayTo}}</td>
+                    <td>{{seRec.CC}}</td>
+                    <td>{{seRec.BCC}}</td>
+                    <td>{{seRec.Subject}}</td>
+                    <td>{{seRec.DateTimeReceived | date:'yyyy-MM-dd  HH:mm:ss'}}</td>
+                    <td>{{seRec.eTrakEnquiryID}}</td>
+                    <td><a ng-click="FindAttachmentsPath(seRec.ID)">Attachments</a></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--Modal for displaying Attachment Paths-->
+<div class="modal fade" id="myAttachmentPaths" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Attachments</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-repeat="attachmentPath in AttachmentsPathList">
+                    <b><a ng-click="ShowAttachment(attachmentPath.PhysicalFilePath)">{{$index+1}}. {{attachmentPath.PhysicalFilePath}}</a></b><br/>
+                </div>               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Ended Modal for displaying Attachment Paths-->
+

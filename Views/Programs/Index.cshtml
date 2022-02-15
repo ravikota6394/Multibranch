@@ -1,0 +1,66 @@
+﻿
+@model IEnumerable<eTrak.Dal.Models.Program>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/css/Custom.css" rel="stylesheet" />
+
+<h2>Scripts</h2>
+
+<p>
+    <a href="/Programs/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+
+<div ng-controller="Programs" class="container">
+    <table id="idASPPrograms" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="programs" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+        <tr>
+            <td>No.</td>
+            <th data-class="expand">Script Name</th>
+            <th>Visible to</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="program in programs ">
+            <td>{{$index+1}}</td>
+            <td><a href="Programs/ProgramQuery/{{program.pgId}}">{{program.pgProgramName}}</a> <span style="color: green;"> {{program.pgRun == true ? ' - running' : ''}}</span></td>
+            <td>{{program.pgSelectedRoles}}</td>
+            <td><a ng-click="DeleteScript(program.pgId)">Delete</a></td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<!--Modal for confirming ScriptDelete-->
+<div class="modal fade" id="id_DeleteScript" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="text-align:center"></h4>
+            </div>
+            <div class="modal-body">
+                <h5 style="text-align:center">Are you sure to delete this Script?</h5>
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button type="button" class="btn btn-success" ng-click="DeleteScriptCofirm()" id="id_ConfirmScriptDelete">Yes</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal for confirming ScriptDelete-->
+
+
+<style>
+    #id_Scripts:hover {
+        color: red;
+    }
+</style>

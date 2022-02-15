@@ -1,0 +1,50 @@
+﻿@model IEnumerable<eTrak.Dal.Models.EmailTemplate>
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Templates</h2> 
+
+<p>
+    <a href="/EmailTemplates/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+
+<div ng-controller="R_EmailTemplates" class="container">
+    <table id="idASPEmailTemplates" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="EmailTemplates" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Template Name</th>
+                <th data-class="expand">Subject Line</th>               
+                <th data-class="expand">Language</th>
+                <th data-class="expand">Source</th>
+                <th data-class="expand">Template Description</th>
+                <th data-class="expand">Template Type</th>
+                <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in EmailTemplates ">
+                <td>{{edRec.etCode}}</td>
+                <td>{{edRec.etSubject}}</td>                
+                <td>{{edRec.lcName}}</td>
+                <td>{{edRec.soDescription}}</td>
+                <td>{{edRec.etDescription}}</td>
+                <td>{{edRec.etTemplateType}}</td>
+                <td>{{edRec.etStatus}}</td>
+                <td>
+                    <a href="/EmailTemplates/Edit/{{edRec.ID}}" ng-show="(edRec.etTemplateType == 'Info') ? false : true">Edit</a>
+                    <label ng-show="(edRec.etTemplateType == 'Info') ? false : true">|</label>
+                    <a href="/EmailTemplates/Details/{{edRec.ID}}">Details</a>
+                    <label ng-show="(edRec.etTemplateType == 'Info') ? false : true">|</label>                   
+                    <a href="/EmailTemplates/Preview/?id={{edRec.ID}}&UserCode=@User.Identity.GetUserName()" ng-show="(edRec.etTemplateType == 'Info') ? false : true">Preview</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

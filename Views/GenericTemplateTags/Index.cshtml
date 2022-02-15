@@ -1,0 +1,45 @@
+﻿@model IEnumerable<eTrak.Dal.Models.GenericTemplatetag>
+@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Generic Template Tag</h2> 
+
+<p>
+    <a href="/GenericTemplateTags/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+
+<div ng-controller="GenericTemplateTags" class="container">
+    <table id="idGenericTags" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="genericTags" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+        <tr>
+            <th data-class="expand">Tag Name</th>
+            <th data-class="expand">Description</th>
+            <th data-class="expand">HTML</th>
+            <th data-class="expand">Language</th>
+            <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="genTag in genericTags ">
+            <td>{{genTag.gtTagName}}</td>
+            <td>{{genTag.gtDescription}}</td>
+            <td>{{genTag.gtHtml}}</td>
+            <td>{{genTag.gtLanguage}}</td>
+            <td>{{genTag.gtStatus}}</td>
+            <td>
+                <a href="/GenericTemplateTags/Edit/{{genTag.gtId}}">Edit</a>&nbsp;|
+                <a href="/GenericTemplateTags/Details/{{genTag.gtId}}">Details</a>&nbsp;|
+                <a href="/GenericTemplateTags/Delete/{{genTag.gtId}}">Delete</a>&nbsp;|
+                <a href="/GenericTemplateTags/Preview/?id={{genTag.gtId}}&UserCode=@User.Identity.GetUserName()">Preview</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>

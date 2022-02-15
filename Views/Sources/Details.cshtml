@@ -1,0 +1,75 @@
+﻿@model eTrak.Dal.Models.Source
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Enquiry Sources</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.soDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soAffiliate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soAffiliate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soIsPrioritySource)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PrioritySource)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soIsReadOnly)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReadOnly)
+        </dd> 
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soIsApproved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soLanguageCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LanguageCode.lcCode)
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.soCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

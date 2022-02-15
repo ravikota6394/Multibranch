@@ -1,0 +1,42 @@
+﻿@model IEnumerable<eTrak.Dal.Models.UserTimeZone>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Time Zones</h2>
+
+<p>
+    <a href="/UserTimeZones/Create/" class="btn btn-success btn-sm">Create New</a>
+    </p>
+
+    <div ng-controller="R_UserTimeZones" class="container">
+        <table id="idASPUserTimeZones" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="UserTimeZones" class="responsive   table table-striped table-bordered">
+            <!--added extra datatable in class to see what happens-->
+            <thead class="thin-border-bottom">
+                <tr>
+                    <th data-class="expand">Description</th>
+                    <th data-hide="screen_xs,screen_sm">Adjustment</th>
+                    <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="edRec in UserTimeZones ">
+                    <td>{{edRec.tzDescription}}</td>
+                    <td>{{edRec.tzAdjustmentTime}}</td>
+                    <td>{{edRec.tzStatus}}</td>
+                    <td>
+                        <a href="UserTimeZones/Edit/{{edRec.tzCode}}">Edit</a> |
+                        <a href="UserTimeZones/Details/{{edRec.tzCode}}">Details</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+  

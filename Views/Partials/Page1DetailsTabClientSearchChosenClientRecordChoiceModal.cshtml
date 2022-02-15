@@ -1,0 +1,129 @@
+﻿<script>
+    $(function () {
+        setUpClientSearchModal();
+    });
+</script>
+
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+
+    <div class="modal fade" id="idDTClientChosenOption">
+    <div class="container">
+        <div @*ng-controller="R_Clients" *@>
+            <div class="modal-dialog " style="width: 1000px;">
+                <div class="modal-content">
+                    <form action="#" method="post">
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title">Find Client</h4>
+                        </div>
+                        <!-- start of modal body -->
+                        <div class="modal-body  no-padding">
+                            <!--no-padding-->
+                            <div class="well no-margin">
+                                <!--no-margin-->
+                                <div class="row">
+
+                                    <!-- Property ID -->
+                                    <div class="col-xs-12">
+                                        <p class="text-right">
+                                            <span class="label label-lg label-inverse arrowed-in">Enq ref. {{glbCurrentEnquiryRef}}</span>
+                                            <span class="label label-lg label-inverse arrowed-in">Clients ref. {{displayClient.csClientCode}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <!-- Field: Enq code -->
+                                    <div class="col-sm-3 form-group">
+                                        <label>Import Code</label>
+                                        <input ng-model="displayClient.csImportCode" id="idFltCsImportCode" class="form-control" type="text" />
+                                    </div>
+                                    <!-- Field: Name -->
+                                    <div class="col-sm-3 form-group">
+                                        <label>Name</label>
+                                        <input ng-model="displayClient.csName" id="idFltCsName" class="form-control" type="text" />
+                                    </div>
+                                    <!-- Field: Company -->
+                                    <div class="col-sm-3 form-group">
+                                        <label>Company</label>
+                                        <input ng-model="displayClient.csCompany" id="idFltCsCompany" class="form-control" type="text" />
+                                    </div>
+                                    <!-- Field: email -->
+                                    <div class="col-sm-3 form-group">
+                                        <label>Email</label>
+                                        <input ng-model="displayClient.csEmail" id="idFltCsEmail" class="form-control" type="text" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+
+                                    <!-- Field: 5 Star Code -->
+                                    <div class="col-sm-3 form-group">
+                                        <label>5 Star Code</label>
+                                        <input ng-model="displayClient.cs5StarCode" id="idFltCs5StarCode" class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label>Post Code</label>
+                                        <input ng-model="displayClient.csPostCode" id="idFltCsPostCode" class="form-control" type="text" />
+                                    </div>
+                                    <div class="col-sm-3 form-group">
+                                        <label>Address</label>
+                                        <input ng-model="displayClient.csAddress" id="idFltCsAddress" class="form-control" type="text" />
+                                    </div>
+                                    <!-- Field: Cancellation -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4 col-xl-3 form-group  input-lg">
+
+                                        <label>Group</label>
+                                        <ui-select id="idFltCsClientGroup" on-select="csClientGroupOnSelect($select.selected.cgCode)" ng-model="displayClient.csClientGroup" class="form-control input-lg" style="width: 450px;">
+                                            <ui-select-match placeholder="Please select a Client Group">{{$select.selected.cgOrganisationName }}</ui-select-match>
+                                            <ui-select-choices repeat="RCRec.cgCode as RCRec in ClientGroups |  orderBy:['cgOrganisationName'] | filter: $select.search" ui-disable-choice="RCRec.cgStatus != 'L'">
+                                                {{ RCRec.cgOrganisationName }}
+                                                <div ng-bind-html="RCRec.cgCode | highlight: {{DTEnquiry.enCDClientGroup}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <p class="text-center">
+                                    <a class="btn btn-success btn-sm" ng-click="DTtsSearch();">Search</a>
+                                    <a class="btn btn-success btn-sm" ng-click="DTtsClear();">Clear</a>
+                                    <a class="btn btn-success btn-sm" ng-click="Addclient();">Add New Client</a>
+                                </p>
+                            </div>
+                        </div><!-- End of modal body-->
+                        @Html.Partial("../Partials/Page1DetailsTabClientSearchModalDataTable")
+                        <div class="modal-footer">
+
+                            <a class="btn btn-default btn-sm" data-dismiss="modal">close</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Enquiry Details -->

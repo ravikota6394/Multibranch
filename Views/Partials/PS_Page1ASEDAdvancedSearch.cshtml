@@ -1,0 +1,1154 @@
+﻿<style>
+    .noTopBottomPad {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+    }
+
+    .overlap {
+        position: absolute !important;
+        z-index: 900 !important;
+        width: inherit !important;
+    }
+</style>
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+<div ng-controller="R_CountriesFrontSearch">
+    <div ng-controller="AvailabilityReasons">
+        <div ng-controller="R_BudgetCategories">
+            <div ng-controller="R_ClientGroups">
+                <div ng-controller="Currencies">
+                    <div ng-controller="R_DeadReasons">
+
+                        <div ng-controller="R_EnqSources">
+                            @if (Request.IsAuthenticated)
+                            {
+                                <div class="modal fade" id="advanced-search-options" role="dialog">
+                                    @if (Request.IsAuthenticated && (User.IsInRole("Supervisor")))
+                                    {
+                                        <input type="hidden" id="IsSupervisorCheck" value="true" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" id="IsResteamCheck" value="false" />
+                                    }
+                                    @if (Request.IsAuthenticated && (User.IsInRole("Client Manager")))
+                                    {
+                                        <input type="hidden" id="IsClientmanagerCheck" value="true" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" id="IsClientmanagerCheck" value="false" />
+                                    }
+                                    <form>
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" ng-click="refreshData()">&times;</button>
+                                                    <h4 class="modal-title"><b>{{CurrentQueryName}}</b></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group advanced-search">
+                                                        <div>
+                                                            <h6 class="header">Column Selection</h6>
+                                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                                <div class="col-sm-2 col-md-2 col-lg-2 specifyColumn">Columns</div>
+                                                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                                                    <select size="10" id="leftColumnSelectionList" multiple ng-multiple="true" ng-model='leftColumnNamesModel'>
+                                                                        <option ng-repeat="c in leftColumnNames" value="{{c.name}}">{{c.displayName}}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-1 col-md-1 col-lg-1 arrowButtons">
+                                                                    <input class="buttonArrow" type="button" value="→" ng-click="MoveLeftColumnsToRight()" /><br />
+                                                                    <input class="buttonArrow" type="button" value="←" ng-click="MoveRightColumnsToLeft()" />
+                                                                </div>
+                                                                <div class="col-sm-4 col-md-4 col-lg-4">
+                                                                    <select size="10" id="rightColumnSelectionList" multiple ng-multiple="true" ng-model='rightColumnNamesModel'>
+                                                                        <option ng-repeat="s in rightColumnNames" value="{{s.name}}">{{s.displayName}}</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-1 col-md-1 col-lg-1 arrowButtons1">
+                                                                    <input class="buttonArrow" type="button" value="⇈" ng-click="MoveRightColumnsTop()" /><br />
+                                                                    <input class="buttonArrow" type="button" value="↑" ng-click="MoveRightColumnsUp()" /><br />
+                                                                    <input class="buttonArrow" type="button" value="↓" ng-click="MoveRightColumnsDown()" /><br />
+                                                                    <input class="buttonArrow" type="button" value="⇊" ng-click="MoveRightColumnsBottom()" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <h1 hidden>
+                                                            QueryId:<input type="text" id="id_QueryId" ng-model="UserQueryId" />
+                                                        </h1>
+                                                        <input id="idUserCode" type="hidden" value="@User.Identity.Name" />
+                                                        <!-- Column #1 -->
+                                                        <div class="col-md-6 col-lg-6">
+                                                            <h6 class="header">Enquiry Details</h6>
+                                                            <!-- Field: Enquiry # -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Enquiry #</label>@*<div class="col-lg-1"></div>*@
+                                                                <div class="col-lg-8">
+                                                                    <input id="idFltEnCode" ng-not="onReset();" ng-model="CurrentQueryObject.enCode" class="form-control" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <!-- Field: User -->
+                                                            <div class="row form-group">
+                                                                @*<label class="col-lg-4 no-padding-right control-label">User</label>
+                                                <div class="col-lg-8">
+                                                    <select class="form-control" ng-model="CurrentQueryObject.usFullName" id="idFltUser">
+                                                        <option value="">Please Select</option>
+                                                        <option value="*Me*">*Me*</option>
+                                                        <option value="All Users">All Users</option>
+                                                        <option value="No User">No User</option>
+                                                        <option ng-repeat="user in Users | orderBy : 'usCode'" value="{{user.usCode}}">{{user.usCode}}</option>
+                                                    </select>
+                                                    </div>*@
+                                                                <label class="col-lg-4 control-label">User <i class="fa fa-question-circle" aria-hidden="true" title="You may select more than one."></i></label>
+                                                                <div class="col-lg-8">
+                                                                    <div isteven-multi-select
+                                                                         input-model="Users"
+                                                                         max-labels="2"
+                                                                         output-model="multipleUsersselected"
+                                                                         button-label="icon usCode"
+                                                                         item-label="icon Source usCode maker"
+                                                                         tick-property="ticked"
+                                                                         output-properties="usCode"
+                                                                         on-close="OnClose_Users(multipleUsersselected)">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Field: Special Interest -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Sp. interest</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltSpInt" ng-not="onReset();" ng-model="CurrentQueryObject.enEDSpecialInterest" class="form-control select2">
+                                                                        <option value="">Please select</option>
+                                                                        <option value="">*All Users*</option>
+                                                                        <option value="@User.Identity.Name">*Me*</option>
+                                                                        <option ng-repeat="RURec in SpecialInterest | orderBy : 'usCode'" value="{{ RURec.usCode}}">{{ RURec.usCode}}</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!--Manual Status-->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Manual Status</label>
+                                                                <div class="col-lg-8">
+                                                                    <select class="form-control" ng-model="CurrentQueryObject.enManualStatus" id="idFltenManualStatus">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="Book Now">Book Now</option>
+                                                                        <option value="Booking Form Received">Booking Form Received</option>
+                                                                        <option value="Call the Client">Call the Client</option>
+                                                                        <option value="Closed">Closed</option>
+                                                                        <option value="Confirmed Booking">Confirmed Booking</option>
+                                                                        <option value="Email In">Email In</option>
+                                                                        <option value="Link Sent">Link Sent</option>
+                                                                        <option value="Payment Done">Payment Done</option>
+                                                                        <option value="Urgent Action Required">Urgent Action Required</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- DateAdded Dates Dropdown-->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Received</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltDateAddedvalue" ng-model="CurrentQueryObject.enDateAddedvalue" class="form-control" ng-change="changeDateAddedDates(CurrentQueryObject.enDateAddedvalue)">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="is">is</option>
+                                                                        <option value=">=">>=</option>
+                                                                        <option value="<="><=</option>
+                                                                        <option value="between">between</option>
+                                                                        <option value="less than days ago">less than days ago</option>
+                                                                        <option value="more than days ago">more than days ago</option>
+                                                                        <option value="in the past">in the past</option>
+                                                                        <option value="days ago">days ago</option>
+                                                                        <option value="today">today</option>
+                                                                        <option value="yesterday">yesterday</option>
+                                                                        <option value="this week">this week</option>
+                                                                        <option value="last week">last week</option>
+                                                                        <option value="last 2 weeks">last 2 weeks</option>
+                                                                        <option value="this month">this month</option>
+                                                                        <option value="last month">last month</option>
+                                                                        <option value="this year">this year</option>
+                                                                        <option value="any">any</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End DateAdded Dates Dropdown-->
+                                                            <!-- DateAdded single date-picker -->
+                                                            <div class="row" ng-show="DateAddedSingleDatepicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-8 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDateAddedDate" ng-not="onReset();" ng-model="CurrentQueryObject.enDateAddedDate" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End DateAdded single date-picker -->
+                                                            <!--DateAdded double date-picker -->
+                                                            <div class="row" ng-show="DateAddedDoubleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <!-- Field: From -->
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltAddedDateFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateAddedFrom" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltAddedDateTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateAddedTo" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--DateAdded double date-picker -->
+                                                            <!-- Editable DateAdded days Textbox-->
+                                                            <div class="row" ng-show="EditableDateAddedTextbox">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <input class="col-xl-8 form-group form-control" type="text" id="idFltDateAddedDays" ng-not="onReset();" ng-model="CurrentQueryObject.enDateAddedDays" />
+                                                                            <span class="col-xl-4" style="font-size: 15px">Days</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Editable DateAdded days Textbox-->
+                                                            <!-- Field: Budget Value -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Budget Amount</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltBudgetValue" ng-model="CurrentQueryObject.enEDBudgetValue" class="form-control" ng-change="changeBudgetValue(CurrentQueryObject.enEDBudgetValue)">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="is">is</option>
+                                                                        <option value=">=">>=</option>
+                                                                        <option value="<="><=</option>
+                                                                        <option value="between">between</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Field: Single Budget Amount -->
+                                                            <div class="row" ng-show="SingleCurrency">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-4">
+                                                                    <div class="form-group">
+                                                                        <input class="form-group form-control" type="number" min="0" id="idFltBudgetAmount" ng-not="onReset();" ng-model="CurrentQueryObject.enEDBudgetAmount" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-4">GBP</div>
+                                                            </div>
+
+                                                            <!-- Field: Double Budget Amount -->
+                                                            <div class="row" ng-show="DoubleCurrency">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="form-group">
+                                                                        <input class="form-group form-control" type="number" min="0" id="idFltBudgetAmountFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDBudgetAmountFrom" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="form-group">
+                                                                        <input class="form-group form-control" type="number" min="0" id="idFltBudgetAmountTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDBudgetAmountTo" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2">GBP</div>
+                                                            </div>
+
+                                                            <!-- Field: Status -->
+                                                            <div class="row form-group mb-0">
+                                                                <label class="col-lg-4 no-padding-right control-label">Status</label>
+                                                                <div>
+                                                                    <div class="col-lg-8 row">
+                                                                        <div class="col-xl-6">
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressNew" class="ace" value="true" ng-model="CurrentQueryObject.enNewStatus" name="newStatus">
+                                                                                <span class="lbl"> new</span>
+                                                                            </label>
+                                                                        </div>
+
+                                                                        <div class="col-xl-6">
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressAssigned" class="ace" value="true" ng-model="CurrentQueryObject.enAssignedStatus" name="assignedStatus">
+                                                                                <span class="lbl"> assigned</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-offset-4 col-lg-8 row">
+                                                                        <div>
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressActioned" class="ace" value="true" ng-model="CurrentQueryObject.enActionedStatus" name="actionedStatus">
+                                                                                <span class="lbl"> actioned</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressClosed" class="ace" value="true" ng-model="CurrentQueryObject.enClosedStatus" name="closedStatus">
+                                                                                <span class="lbl"> closed</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-offset-4 col-lg-8 row">
+                                                                        <div>
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressActionRequired" class="ace" value="true" ng-model="CurrentQueryObject.enActionRequiredStatus" name="actionRequiredStatus">
+                                                                                <span class="lbl"> action required</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div>
+                                                                            <label class="inline">
+                                                                                <input type="checkbox" id="idFltProgressPossibleDuplicates" class="ace" value="true" ng-model="CurrentQueryObject.enPossibleDuplicatesStatus" name="possibleDuplicatesStatus">
+                                                                                <span class="lbl"> possible duplicates</span>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Field: Slow Response -->
+                                                            <div class="row form-group mb-0" hidden>
+                                                                <label class="col-lg-4 no-padding-right control-label">Slow Response</label>
+                                                                <div class="input-group">
+                                                                    <div class="col-lg-8">
+                                                                        <label class="inline">
+                                                                            <input id="idFltSlowResponse" ng-not="onReset();" class="ace" name="form-field-checkbox" type="checkbox" />
+                                                                            <span class="lbl"> </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Column #2 -->
+                                                        <div class="col-md-6 col-lg-6">
+                                                            <h6 class="header">Travel Data</h6>
+                                                            <!-- Field: Country -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Country</label>
+                                                                <div class="col-lg-8">
+                                                                    @*<input ng-model="country.coName" id="idFltCountry" ng-keyup="GetCountriesForAutoDropdown(country.coName)" class="form-control select2" />
+                                                    <div>
+                                                    <select class="form-group" ng-hide="hideCountryDropdown" size="10" id="countryAutoCompleteDiv" ng-change="selectedCountry(country)" ng-model="country" value="{{c.coCode}}" ng-options="c.coName for c in allCountries"></select>
+                                                    </div>*@
+                                                                    <select id="idFltCountry" class="form-control" ng-model="CurrentQueryObject.coName" placeholder="Enter Country Name">
+                                                                        <option value="">Please Select</option>
+                                                                        <option ng-repeat="country in Countries | orderBy : 'coName'" value="{{country.coName}}">{{country.coName}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Field: City -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">City</label>
+                                                                <div class="col-lg-8">
+                                                                    <input id="idFltCity" ng-not="onReset();" ng-model="CurrentQueryObject.ciDescription" class="form-control" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <!-- Field: CorrectedCity -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Corrected City</label>
+                                                                <div class="col-lg-8">
+                                                                    <input id="idFltCorrectedCity" ng-not="onReset();" ng-model="CurrentQueryObject.correctedCiDescription" class="form-control" type="text" />
+                                                                </div>
+                                                            </div>
+                                                            <!-- Field: Budget -->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Budget</label>
+                                                                <div class="col-lg-8">
+                                                                    @*<select id="idFltBudgetCategory" ng-not="onReset();" ng-model="CurrentQueryObject.enEDBudgetCategoryCode" class="form-control select2">
+                                                    <option value="">Please select</option>
+                                                    <option value="">*All Budgets*</option>
+                                                    <option ng-repeat="RBRec in BudgetCategories | orderBy:['bcDescription']" value="{{ RBRec.bcCode}}">{{ RBRec.bcDescription }}</option>
+                                                    </select>*@
+                                                                    <select id="idFltBudgetCategory" ng-model="CurrentQueryObject.enEDBudgetCategoryCode"
+                                                                            ng-options="y.bcCode as y.bcDescription for y in BudgetCategories | orderBy : 'bcDescription'"
+                                                                            class="form-control">
+                                                                        <option value="">Please Select</option>
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <!-- Arrival Dates Dropdown-->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Arrival</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltArrivalDates" ng-model="CurrentQueryObject.enArrivalValue" class="form-control" ng-change="changeArrivalDates(CurrentQueryObject.enArrivalValue)">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="is">is</option>
+                                                                        <option value=">=">>=</option>
+                                                                        <option value="<="><=</option>
+                                                                        <option value="between">between</option>
+                                                                        <option value="less than days ago">less than days ago</option>
+                                                                        <option value="more than days ago">more than days ago</option>
+                                                                        <option value="in the past">in the past</option>
+                                                                        <option value="days ago">days ago</option>
+                                                                        <option value="today">today</option>
+                                                                        <option value="yesterday">yesterday</option>
+                                                                        <option value="this week">this week</option>
+                                                                        <option value="last week">last week</option>
+                                                                        <option value="last 2 weeks">last 2 weeks</option>
+                                                                        <option value="this month">this month</option>
+                                                                        <option value="last month">last month</option>
+                                                                        <option value="this year">this year</option>
+                                                                        <option value="any">any</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End Arrival Dates Dropdown-->
+                                                            <!-- Arrival single date-picker-->
+                                                            <div class="row" ng-show="ArrivalSingleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-8 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltArrivalDate" ng-not="onReset();" ng-model="CurrentQueryObject.enArrivalDate" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Arrival single date-picker-->
+                                                            <!-- Arrival double date-picker-->
+                                                            <div class="row" ng-show="ArrivalDoubleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltArrivalDateFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateOfArrivalFrom" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltArrivalDateTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateOfArrivalTo" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Arrival double date-picker-->
+                                                            <!-- Editable Arrival days Textbox-->
+                                                            <div class="row" ng-show="EditableArrivalTextbox">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <input class="col-xl-8 form-group form-control" type="text" id="idFltArrivaldays" ng-not="onReset();" ng-model="CurrentQueryObject.enArrivalDays" />
+                                                                            <span class="col-xl-4" style="font-size: 15px">Days</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Editable Arrival days Textbox-->
+                                                            <!-- Departure Dates Dropdown-->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Departure</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltDeparturevalue" ng-model="CurrentQueryObject.enDepartureValue" class="form-control" ng-change="changeDepartureDates(CurrentQueryObject.enDepartureValue)">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="is">is</option>
+                                                                        <option value=">=">>=</option>
+                                                                        <option value="<="><=</option>
+                                                                        <option value="between">between</option>
+                                                                        <option value="less than days ago">less than days ago</option>
+                                                                        <option value="more than days ago">more than days ago</option>
+                                                                        <option value="in the past">in the past</option>
+                                                                        <option value="days ago">days ago</option>
+                                                                        <option value="today">today</option>
+                                                                        <option value="yesterday">yesterday</option>
+                                                                        <option value="this week">this week</option>
+                                                                        <option value="last week">last week</option>
+                                                                        <option value="last 2 weeks">last 2 weeks</option>
+                                                                        <option value="this month">this month</option>
+                                                                        <option value="last month">last month</option>
+                                                                        <option value="this year">this year</option>
+                                                                        <option value="any">any</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End Departure Dates Dropdown-->
+                                                            <!-- Departure single date-picker-->
+                                                            <div class="row" ng-show="DepartureSingleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-8 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDepartureDate" ng-not="onReset();" ng-model="CurrentQueryObject.enDepartureDate" class="form-control date-picker" type="text" style="z-index: 100000 !important;" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End Departure single date-picker-->
+                                                            <!-- Departure double date-picker-->
+                                                            <div class="row" ng-show="DepartureDoubleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDepartureDateFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDepartureDateFrom" class="form-control date-picker" type="text" style="z-index: 100000 !important;" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDepartureDateTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDepartureDateTo" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Departure double date-picker-->
+                                                            <!-- Editable Departure days Textbox-->
+                                                            <div class="row" ng-show="EditableDepartureTextbox">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <input class="col-xl-8 form-group form-control" type="text" id="idFltDeparturedays" ng-not="onReset();" ng-model="CurrentQueryObject.enDepartureDays" />
+                                                                            <span class="col-xl-4" style="font-size: 15px">Days</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Editable Departure days Textbox-->
+                                                            <!-- Closed Dates Dropdown-->
+                                                            <div class="row form-group">
+                                                                <label class="col-lg-4 no-padding-right control-label">Date Closed</label>
+                                                                <div class="col-lg-8">
+                                                                    <select id="idFltClosedDates" ng-model="CurrentQueryObject.enClosedDateValue" class="form-control" ng-change="ChangeClosedDates(CurrentQueryObject.enClosedDateValue)">
+                                                                        <option value="">Please Select</option>
+                                                                        <option value="is">is</option>
+                                                                        <option value=">=">>=</option>
+                                                                        <option value="<="><=</option>
+                                                                        <option value="between">between</option>
+                                                                        <option value="less than days ago">less than days ago</option>
+                                                                        <option value="more than days ago">more than days ago</option>
+                                                                        <option value="in the past">in the past</option>
+                                                                        <option value="days ago">days ago</option>
+                                                                        <option value="today">today</option>
+                                                                        <option value="yesterday">yesterday</option>
+                                                                        <option value="this week">this week</option>
+                                                                        <option value="last week">last week</option>
+                                                                        <option value="last 2 weeks">last 2 weeks</option>
+                                                                        <option value="this month">this month</option>
+                                                                        <option value="last month">last month</option>
+                                                                        <option value="this year">this year</option>
+                                                                        <option value="any">any</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <!-- End Closed Dates Dropdown-->
+                                                            <!-- Closed single date-picker-->
+                                                            <div class="row" ng-show="DateClosedSingleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-8 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltClosedDate" ng-not="onReset();" ng-model="CurrentQueryObject.enClosedDate" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Closed single date-picker-->
+                                                            <!-- Closed double date-picker-->
+                                                            <div class="row" ng-show="DateClosedDoubleDatePicker">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDateClosedFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateClosedFrom" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <div class="input-group">
+                                                                                <input id="idFltDateClosedTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDDateClosedTo" class="form-control date-picker" type="text" />
+                                                                                <span class="input-group-addon">
+                                                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--End Closed double date-picker-->
+                                                            <!-- Editable Closed days Textbox-->
+                                                            <div class="row" ng-show="EditableDateClosedTextbox">
+                                                                <div class="col-lg-4 no-padding-right control-label"></div>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <input class="col-xl-8 form-group form-control" type="text" id="idFltClosedDays" ng-not="onReset();" ng-model="CurrentQueryObject.enClosedDays" />
+                                                                            <span class="col-xl-4" style="font-size: 15px">Days</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Nights -->
+                                                            <div class="form-group row">
+                                                                <label class="col-lg-4 no-padding-right control-label">Nights</label>
+                                                                <div class="col-lg-8">
+                                                                    <div class="row">
+                                                                        <!-- Field: From -->
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <label>From</label>
+                                                                            <input id="idFltNightsFrom" ng-not="onReset();" ng-model="CurrentQueryObject.enEDNightsFrom" class="form-control" type="text" />
+                                                                        </div>
+                                                                        <!-- Field: To -->
+                                                                        <div class="col-xl-6 form-group">
+                                                                            <label>To</label>
+                                                                            <input id="idFltNightsTo" ng-not="onReset();" ng-model="CurrentQueryObject.enEDNightsTo" class="form-control" type="text" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Column #3 -->
+                                                        <div>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <h6 class="header">Other</h6>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <!-- Field: Client -->
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Client</label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="idFltClient" ng-not="onReset();" ng-model="CurrentQueryObject.enClientName" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <!-- Field: Company -->
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Company <i class="fa fa-question-circle" aria-hidden="true" title="You may select more than one."></i></label>
+                                                                                <div class="col-lg-8">
+                                                                                    @*<div isteven-multi-select
+                                                                         input-model="clientcomapniesdata"
+                                                                         max-labels="2"
+                                                                         output-model="multipleCompanies"
+                                                                         button-label="icon ClCompanyName"
+                                                                         item-label="icon Source ClCompanyName maker"
+                                                                         tick-property="ticked"
+                                                                         output-properties="ClCompanyName"
+                                                                         on-close="OnClose_Companies(multipleCompanies)">
+
+                                                                    </div>*@
+
+
+                                                                                    <input id="idFltCompany" ng-not="onReset();" ng-model="CurrentQueryObject.enCDCompanyName" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p></p>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Lead name -->
+                                                                    <div class="col-lg-6 col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Lead Name</label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="idFltLeadName" ng-not="onReset();" ng-model="CurrentQueryObject.enEDLeadPassengerName" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Field: Source -->
+                                                                    <div class="col-lg-6 col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Source <i class="fa fa-question-circle" aria-hidden="true" title="You may select more than one."></i></label>
+                                                                                <div class="col-lg-8">
+                                                                                    @*<select ng-model="CurrentQueryObject.enEDSourceCode" multiple="multiple">
+                                                                        <option value="">Please Select</option>
+                                                                        <option ng-repeat="x in EnqSources | orderBy : 'x.soDescription'" value="{{x.soDescription}}">{{x.soDescription}}</option>
+                                                                    </select>*@
+                                                                                    <div isteven-multi-select
+                                                                                         input-model="EnqSourcesdata"
+                                                                                         max-labels="2"
+                                                                                         output-model="multipleSources"
+                                                                                         button-label="icon soDescription"
+                                                                                         item-label="icon Source soDescription maker"
+                                                                                         tick-property="ticked"
+                                                                                         output-properties="soDescription"
+                                                                                         on-close="OnClose_Sources(multipleSources)">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p></p>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Group -->
+                                                                    <div class="col-lg-6 col-md-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Group<i class="fa fa-question-circle" aria-hidden="true" title="You may select more than one."></i></label>
+                                                                                <div class="col-lg-8">
+                                                                                    @*<select ng-model="CurrentQueryObject.enCDClientGroup" multiple="multiple">
+                                                                        <option value="">Please Select</option>
+                                                                        <option ng-repeat="x in clientGroups | orderBy : 'x.cgOrganisationName'" value="{{x.cgCode}}">{{x.cgOrganisationName}}</option>
+                                                                    </select>*@
+                                                                                    <div isteven-multi-select
+                                                                                         input-model="clientGroupsdata"
+                                                                                         max-labels="2"
+                                                                                         output-model="multipleGroups"
+                                                                                         button-label="icon cgOrganisationName"
+                                                                                         item-label="icon Source cgOrganisationName maker"
+                                                                                         tick-property="ticked"
+                                                                                         output-properties="cgCode"
+                                                                                         on-close="OnClose_Groups(multipleGroups)">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Field: Source locked/unlocked -->
+                                                                    <div class="col-lg-6 col-md-6">
+                                                                        <div class="row form-group">
+                                                                            <label class="col-lg-4 no-padding-right control-label">Source Status</label>
+                                                                            <div class="col-lg-8">
+                                                                                <select id="idFltSourceStatus" ng-model="CurrentQueryObject.enEDSourceStatus" class="form-control">
+                                                                                    <option value="">Please Select</option>
+                                                                                    <option value="true">Locked</option>
+                                                                                    <option value="false">Unlocked</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Closed reason -->
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row form-group">
+                                                                            <label class="col-lg-4 no-padding-right control-label">Closed reason</label>
+                                                                            <div class="col-lg-8">
+                                                                                @*<select id="idFltDeadReason" ng-not="onReset();" ng-model="CurrentQueryObject.enECDeadReasonCode" class="form-control select2">
+                                                                <option value="">Please select</option>
+                                                                <option value="">*All Reasons*</option>
+                                                                <option ng-repeat="RZRec in DeadReasons | orderBy:['drReason']" value="{{ RZRec.drCode}}">{{ RZRec.drReason }}</option>
+                                                                </select>*@
+                                                                                <select id="idFltDeadReason" ng-model="CurrentQueryObject.enECDeadReasonCode"
+                                                                                        ng-options="y.drCode as y.drReason for y in DeadReasons | orderBy : 'drReason'"
+                                                                                        class="form-control"
+                                                                                        ng-required="true">
+                                                                                    <option value="">Please Select</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- Field: Availability Reasons -->
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row form-group">
+                                                                            <label class="col-lg-4 control-label">Availability Reasons</label>
+                                                                            <div class="col-lg-8">
+                                                                                <select id="idFltAvailabilityReason" ng-model="CurrentQueryObject.enECAvailabilityReason"
+                                                                                        ng-options="y.av_Reason as y.av_Reason for y in availabilityReasons | orderBy : 'av_Reason'"
+                                                                                        class="form-control"
+                                                                                        ng-required="true">
+                                                                                    <option value="">Please Select</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Closed reason -->
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">TMC Type<i class="fa fa-question-circle" aria-hidden="true" title="Use any one of TMC Types for search(TMC,RMC,HRG,JTB)"></i></label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="idTmcType" ng-not="onReset();" ng-model="CurrentQueryObject.enEDRMC" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Employee Id <i class="fa fa-question-circle" aria-hidden="true" title="You may provide multiple comma separated Employee Id values."></i></label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="id_EmployeeId" ng-not="onReset();" ng-model="CurrentQueryObject.enEmployeeID" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <p></p>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Offered Rates -->
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Lowest Offered Rate</label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="idECLowestOfferedRate" ng-not="onReset();" ng-model="CurrentQueryObject.enECLowestOfferedRate" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Highest Offered Rate</label>
+                                                                                <div class="col-lg-8">
+                                                                                    <input id="idECHighestOfferedRate" ng-not="onReset();" ng-model="CurrentQueryObject.enECHighestOfferedRate" class="form-control" type="text" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <!-- Field: Offered Rates -->
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Offered Currency</label>
+                                                                                <div class="col-lg-8">                                                                                   
+                                                                                    <ui-select id="idECOfferedCurrency" ng-model="CurrentQueryObject.enECOfferedCurrency" class="form-control">
+                                                                                        <ui-select-match placeholder="Offered Currency">{{$select.selected.cu_Currencies}}</ui-select-match>
+                                                                                        <ui-select-choices repeat="y.cu_Id as y in currencies |  orderBy:['cu_Currencies']| filter: $select.search">
+                                                                                            {{ y.cu_Currencies}}
+                                                                                            <div ng-bind-html="y.cu_Id | highlight: {{CurrentQueryObject.enECOfferedCurrency}}"></div>
+                                                                                        </ui-select-choices>
+                                                                                    </ui-select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- Column #4 -->
+                                                        <div>
+                                                            <h6 class="header">Property</h6>
+                                                            <div class="row form-group mb-0">
+                                                                <div class="col-lg-12 col-md-12">
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <!-- Field: Property Name -->
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Property Name</label>
+                                                                                <div class="col-lg-8">
+                                                                                    @*<input id="idFltPropertyName" ng-not="onReset();" ng-model="CurrentQueryObject.propertyName" class="form-control" type="text" />*@
+                                                                                    <input ng-model="selectedProperty.Name" id="idFltPropertyName" ng-keyup="SelectedPropertyName(selectedProperty.Name)" class="form-control" />
+                                                                                    <div>
+                                                                                        <select class="form-group" ng-hide="autoPropertySelect" size="10" id="autoSelectDiv" ng-change="SelectedProperty(selectedProperty)" ng-model="selectedProperty" value="{{p.PropertyID}}" ng-options="p.Name for p in propertyDetails"></select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <!-- Field: Private Notes -->
+                                                                            <div class="form-group">
+                                                                                <label class="col-lg-4 control-label">Private Notes</label>
+                                                                                <div class="col-lg-8">
+                                                                                    <textarea id="idFltPrivateNotes" ng-not="onReset();" ng-model="CurrentQueryObject.privateNotes" class="form-control"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!--Advanced search footer-->
+                                                <div class="modal-footer" id="id_AdvancedSearch">
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <button id="refreshPV_EnquiriesDashboard" ng-click="btnSearchForRecords();" class="btn btn-default btn-block mt-30" type="submit">
+                                                            <i class="fa fa-search bigger-110"></i>
+                                                            Search for Records
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <button id="clearPV_EnquiriesDashboard" class="btn btn-default btn-block mt-30" type="reset" ng-click="resetAllFields()">
+                                                            <i class="fa fa-search bigger-110"></i>
+                                                            Clear Choices
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <button id="saveQueryAsPV_EnquiriesDashboard" class="btn btn-default btn-block mt-30" ng-click="SaveQueryAs()" type="button">
+                                                            <i class="fa fa-save bigger-110"></i>
+                                                            Save Query As
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-3 col-md-3 col-lg-3">
+                                                        <button id="saveQueryOfPV_EnquiriesDashboard" class="btn btn-default btn-block mt-30" ng-click="SaveQueryName(CurrentQueryName,UserQueryId)" type="button">
+                                                            <i class="fa fa-save bigger-110"></i>
+                                                            Save Query
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!--Create Query footer-->
+                                                <div class="modal-footer" id="id_CreateQuery">
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <button id="refreshPV_EnquiriesDashboard" ng-click="btnSearchForRecords();" class="btn btn-default btn-block mt-30" type="submit">
+                                                            <i class="fa fa-search bigger-110"></i>
+                                                            Search for Records
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <button id="clearPV_EnquiriesDashboard" class="btn btn-default btn-block mt-30" type="reset" ng-click="resetAllFields()">
+                                                            <i class="fa fa-search bigger-110"></i>
+                                                            Clear Choices
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-4 col-md-4 col-lg-4">
+                                                        <button id="savePV_EnquiriesDashboard" class="btn btn-default btn-block mt-30" ng-click="SaveQueryName(CurrentQueryName,UserQueryId)" type="button">
+                                                            <i class="fa fa-save bigger-110"></i>
+                                                            Save Query
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                @*</form>*@
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+
+                                <!--Modal for save query-->
+                                <div class="modal fade" id="saveQuery" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" ng-click="CancelQuery()">&times;</button>
+                                                <h4 class="modal-title" style="text-align: center">Name the Query</h4>
+                                            </div>
+                                            <div class="modal-body" style="height: 20em;">
+                                                <div class="container row col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                                                    <div class="form-inline">
+                                                        <label class="col-sm-4">Query Name:</label>
+                                                        <div class="col-sm-8">
+                                                            <input ng-model="queryName" id="queryName" class="form-control" type="text" />
+                                                            <label id="nameOfQuery" hidden style="color: red; display: none"></label><br /><br />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-inline">
+                                                        @if (Request.IsAuthenticated && ((User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager"))))
+                                                        {
+                                                            <div class="col-sm-4">
+                                                                <input type="radio" id="isReportQuery" value="true" ng-model="reportQuery" class="queryType" name="privateQuery" ng-click="ShowReportQueries()"> <label>Report Query </label>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <input type="radio" id="isPrivateQuery" value="true" ng-model="privateQuery" class="queryType" name="privateQuery" ng-click="ShowReportQueries()"> <label>Private Query </label>
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                <input type="radio" id="isGlobalQuery" value="true" ng-model="globalQuery" class="queryType" name="privateQuery" ng-click="ShowReportQueries()"> <label>Global Query </label>
+                                                            </div>
+                                                            <input type="hidden" id="IsAdminCheck" value="true" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="hidden" id="IsAdminCheck" value="false" />
+                                                        }
+                                                    </div>
+                                                    <div ng-show="hideReportQueries">
+                                                        <div class="form-inline row no-margin-left">
+                                                            <div class="col-sm-6">
+                                                                <input type="radio" id="isInternalReport" value="true" ng-model="internalReport" class="reportQueryType" name="reportQueryType" ng-click="ShowSubReportQueries()"> <label>Internal Report </label>
+                                                            </div>
+                                                        </div>
+                                                        <div ng-show="hideSubReportQueries">
+                                                            <div class="form-inline row no-margin-left">
+                                                                <div class="col-sm-1"></div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="isReservationsReport" value="true" ng-model="reservations" class="subReportQueryType" name="subReportQueryType"> <label>Reservations </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline row no-margin-left">
+                                                                <div class="col-sm-1"></div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="isSalesReport" value="true" ng-model="sales" class="subReportQueryType" name="subReportQueryType"> <label>Sales </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline row no-margin-left">
+                                                                <div class="col-sm-1"></div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="isSupportReport" value="true" ng-model="support" class="subReportQueryType" name="subReportQueryType"> <label>Supply </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-inline row no-margin-left">
+                                                                <div class="col-sm-1"></div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="radio" id="isReportingReport" value="true" ng-model="reporting" class="subReportQueryType" name="subReportQueryType"> <label>Reporting </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-inline row no-margin-left">
+                                                            <div class="col-sm-6">
+                                                                <input type="radio" id="isExternalReport" value="true" ng-model="externalReport" class="reportQueryType" name="reportQueryType" ng-click="ShowSubReportQueries()"> <label>External Report </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <label id="id_ValidateQueryType" hidden style="color: red; display: none"></label><br /><br />
+                                                </div>
+                                            </div>
+                                            <br /><br />
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-xs-12" style="text-align: center">
+                                                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="SaveQuery()">
+                                                            <i class="ace-icon fa fa-check bigger-110"></i>
+                                                            Save
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm mb-10" type="button" ng-click="CancelQuery()">
+                                                            <i class="ace-icon fa fa-times bigger-110"></i>
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Ended Modal for save query-->
+
+                                <!--Modal for update query-->
+                                <div class="modal fade" id="update-Query" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Update your Query</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h6>Do you want to update your query?</h6>
+                                                <div></div>
+                                                <div class="form-inline">
+                                                    <label>Rename Query:</label>
+                                                    <input type="text" ng-model="renameQuery" id="renameQuery" class="form-control" />
+                                                    <label id="newNameOfQuery" hidden style="color: red; display: none"></label><br /><br />
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-xs-12" style="text-align: center">
+                                                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="UpdateQuery(UserQueryId,renameQuery)">
+                                                            <i class="ace-icon fa fa-check bigger-110"></i>
+                                                            Yes
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm mb-10" type="button" data-dismiss="modal">
+                                                            <i class="ace-icon fa fa-times bigger-110"></i>
+                                                            No
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!--Ended Modal for update query-->
+
+                            }
+                            <style>
+                                .datepicker {
+                                    z-index: 1151 !important;
+                                }
+
+                                .control-label {
+                                    text-align: right;
+                                }
+                            </style>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*</div>*@

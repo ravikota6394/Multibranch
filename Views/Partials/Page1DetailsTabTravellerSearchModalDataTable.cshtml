@@ -1,0 +1,51 @@
+﻿
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+
+<div class="section-container light-bg">
+    <div class="well table-responsive">
+        <table id="idDTClientChoiceDataTable" show-filter="true" datatable="ng" dt-options="dtTSOptions" class="table table-fixed table-bordered">
+         
+            <thead class="thin-border-bottom">
+                <tr>
+                    <th data-class="expand">Select</th>
+                    <th data-class="expand">Name</th>
+                    <th data-hide="screen_xs,screen_sm">Company</th>
+                    <th data-hide="screen_xs,screen_sm">PostCode</th>
+                    <th data-hide="screen_xs,screen_sm">Address</th>
+                    <th data-hide="screen_xs,screen_sm">Email</th>
+                    <th data-hide="screen_xs,screen_sm">Code</th>
+                    <th data-hide="screen_xs,screen_sm">5-Star Code</th>
+                    <th data-hide="screen_xs,screen_sm">Group</th>
+                    <th data-hide="screen_xs,screen_sm">Previous Enquiries</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="edRec in Travellers">
+                    <!--enquiriesDashboardFilter:this-->
+                    <td class="{{edRec.HighlightCss}}"><button class="btn btn-sm no-border form-control" type="button" ng-click="dtTsSelect($index,edRec.HighlightCss);">Select</button></td>
+                    <td class="{{edRec.HighlightCss}}" id="idCsName-{{$index}}"><a ng-click="dtTsSelect($index,edRec.HighlightCss);">{{edRec.trTitle}} {{edRec.trFirstName}}, {{edRec.trLastName}}</a></td>
+                    <td class="{{edRec.HighlightCss}}" id="idCsCompany-{{$index}}">{{edRec.trCompanyName}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trPostCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trAddress1}}, {{edRec.trAddress2}}, {{edRec.trAddress3}}, {{edRec.trAddress4}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trEmailAddress}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trFileImportCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trFileImportCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.cgOrganisationName}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.trPreviousEnqs}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

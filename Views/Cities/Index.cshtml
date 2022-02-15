@@ -1,0 +1,44 @@
+﻿
+@*@model PagedList.IPagedList<eTrak.Models.City>
+@using PagedList.Mvc;*@
+<link href="~/Content/PagedList.css" rel="stylesheet"
+      type="text/css" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Cities / Towns</h2>
+
+<p>
+    <a href="/Cities/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+
+<div ng-controller="R_Cities" class="container">
+    <table id="idASPUserTimeZones" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="Cities" class="responsive   table table-striped table-bordered">
+        <!--added extra datatable in class to see what happens-->
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Description</th>
+                <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                <th data-class="expand">Country</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in Cities ">
+                <td>{{edRec.ciDescription}}</td>
+                <td>{{edRec.ciStatus}}</td>
+                <td>{{edRec.coName}}</td>
+                <td>
+                    <a href="Cities/Edit/{{edRec.ciCode}}">Edit</a> |
+                    <a href="Cities/Details/{{edRec.ciCode}}">Details</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+

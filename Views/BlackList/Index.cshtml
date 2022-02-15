@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Black List</h2>
+
+<p>
+    <a href="/BlackList/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="BlackList" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="emails" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Email</th>
+                <th data-class="expand">Status </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="email in emails ">
+                <td>{{email.blEmail}}</td>
+                <td>{{email.blStatus}}</td>
+                <td>
+                    <a href="BlackList/Edit/{{email.blId}}">Edit</a> |
+                    <a href="BlackList/Details/{{email.blId}}">Details</a> |
+                    <a href="BlackList/Delete/{{email.blId}}">Delete</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,233 @@
+/* ==========================================================================
+   Stylesheet For Extending Bootstrap Functionalities
+   ========================================================================== */
+
+
+/* Extends: buttons.less
+   ========================================================================== */
+.btn-xl {
+  // line-height: ensure even-numbered height of button next to large input
+  .button-size(@padding-xl-vertical; @padding-xl-horizontal; @font-size-xl; @line-height-large; @border-radius-large);
+}
+
+
+/* Extends: mixins/grid-framework.less
+   ========================================================================== */
+.make-grid-columns() {
+  .col(@index) when (@index = 1) { // initial
+    @item: ~".col-xl-@{index}, .col-xxl-@{index}";
+    .col((@index + 1), @item);
+  }
+  .col(@index, @list) when (@index =< @grid-columns) { // general; "=<" isn't a typo
+    @item: ~".col-xl-@{index}, .col-xxl-@{index}";
+    .col((@index + 1), ~"@{list}, @{item}");
+  }
+  .col(@index, @list) when (@index > @grid-columns) { // terminal
+    @{list} {
+      position: relative;
+      min-height: 1px;
+      padding-left:  (@grid-gutter-width / 2);
+      padding-right: (@grid-gutter-width / 2);
+    }
+  }
+  .col(1);
+}
+
+
+/* Extends: mixins/grid.less
+   ========================================================================== */
+.make-xl-column(@columns; @gutter: @grid-gutter-width) {
+  position: relative;
+  min-height: 1px;
+  padding-left: (@gutter / 2);
+  padding-right: (@gutter / 2);
+
+  @media (min-width: @screen-xl-min) {
+    float: left;
+    width: percentage((@columns / @grid-columns));
+  }
+}
+.make-xl-column-offset(@columns) {
+  @media (min-width: @screen-xl-min) {
+    margin-left: percentage((@columns / @grid-columns));
+  }
+}
+.make-xl-column-push(@columns) {
+  @media (min-width: @screen-xl-min) {
+    left: percentage((@columns / @grid-columns));
+  }
+}
+.make-xl-column-pull(@columns) {
+  @media (min-width: @screen-xl-min) {
+    right: percentage((@columns / @grid-columns));
+  }
+}
+
+.make-xxl-column(@columns; @gutter: @grid-gutter-width) {
+  position: relative;
+  min-height: 1px;
+  padding-left: (@gutter / 2);
+  padding-right: (@gutter / 2);
+
+  @media (min-width: @screen-xxl-min) {
+    float: left;
+    width: percentage((@columns / @grid-columns));
+  }
+}
+.make-xxl-column-offset(@columns) {
+  @media (min-width: @screen-xxl-min) {
+    margin-left: percentage((@columns / @grid-columns));
+  }
+}
+.make-xxl-column-push(@columns) {
+  @media (min-width: @screen-xxl-min) {
+    left: percentage((@columns / @grid-columns));
+  }
+}
+.make-xxl-column-pull(@columns) {
+  @media (min-width: @screen-xxl-min) {
+    right: percentage((@columns / @grid-columns));
+  }
+}
+
+
+/* Extends: grid.less
+   ========================================================================== */
+@media (min-width: @screen-xl-min) {
+	width: @container-xl;
+}
+@media (min-width: @screen-xxl-min) {
+	width: @container-xxl;
+}
+@media (min-width: @screen-xl-min) {
+  .make-grid(xl);
+}
+@media (min-width: @screen-xxl-min) {
+  .make-grid(xxl);
+}
+
+
+/* Extends: responsive-utilities.less
+   ========================================================================== */
+.visible-xl,
+.visible-xxl {
+  .responsive-invisibility();
+}
+
+.visible-xl-block,
+.visible-xl-inline,
+.visible-xl-inline-block,
+.visible-xxl-block,
+.visible-xxl-inline,
+.visible-xxl-inline-block {
+  display: none !important;
+}
+
+.visible-xl {
+  @media (min-width: @screen-xl-min) {
+    .responsive-visibility();
+  }
+}
+.visible-xl-block {
+  @media (min-width: @screen-xl-min) {
+    display: block !important;
+  }
+}
+.visible-xl-inline {
+  @media (min-width: @screen-xl-min) {
+    display: inline !important;
+  }
+}
+.visible-xl-inline-block {
+  @media (min-width: @screen-xl-min) {
+    display: inline-block !important;
+  }
+}
+
+.visible-xxl {
+  @media (min-width: @screen-xxl-min) {
+    .responsive-visibility();
+  }
+}
+.visible-xxl-block {
+  @media (min-width: @screen-xxl-min) {
+    display: block !important;
+  }
+}
+.visible-xxl-inline {
+  @media (min-width: @screen-xxl-min) {
+    display: inline !important;
+  }
+}
+.visible-xxl-inline-block {
+  @media (min-width: @screen-xxl-min) {
+    display: inline-block !important;
+  }
+}
+
+.hidden-xl {
+  @media (min-width: @screen-xl-min) {
+    .responsive-invisibility();
+  }
+}
+.hidden-xxl {
+  @media (min-width: @screen-xxl-min) {
+    .responsive-invisibility();
+  }
+}
+
+
+/* Custom Styles
+   ========================================================================== */
+.text-left-not-xs, .text-left-not-sm, .text-left-not-md, .text-left-not-lg {
+    text-align: left;
+}
+.text-center-not-xs, .text-center-not-sm, .text-center-not-md, .text-center-not-lg {
+    text-align: center;
+}
+.text-right-not-xs, .text-right-not-sm, .text-right-not-md, .text-right-not-lg {
+    text-align: right;
+}
+.text-justify-not-xs, .text-justify-not-sm, .text-justify-not-md, .text-justify-not-lg {
+    text-align: justify;
+}
+
+.text-xs-left { text-align: left; }
+.text-xs-right { text-align: right; }
+.text-xs-center { text-align: center; }
+.text-xs-justify { text-align: justify; }
+ 
+@media (min-width: @screen-sm-min) {
+.text-sm-left { text-align: left; }
+.text-sm-right { text-align: right; }
+.text-sm-center { text-align: center; }
+.text-sm-justify { text-align: justify; }
+}
+ 
+@media (min-width: @screen-md-min) {
+.text-md-left { text-align: left; }
+.text-md-right { text-align: right; }
+.text-md-center { text-align: center; }
+.text-md-justify { text-align: justify; }
+}
+ 
+@media (min-width: @screen-lg-min) {
+.text-lg-left { text-align: left; }
+.text-lg-right { text-align: right; }
+.text-lg-center { text-align: center; }
+.text-lg-justify { text-align: justify; }
+}
+
+@media (min-width: @screen-xl-min) {
+.text-xl-left { text-align: left; }
+.text-xl-right { text-align: right; }
+.text-xl-center { text-align: center; }
+.text-xl-justify { text-align: justify; }
+}
+
+@media (min-width: @screen-xxl-min) {
+.text-xxl-left { text-align: left; }
+.text-xxl-right { text-align: right; }
+.text-xxl-center { text-align: center; }
+.text-xxl-justify { text-align: justify; }
+}

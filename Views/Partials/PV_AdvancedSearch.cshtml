@@ -1,0 +1,298 @@
+﻿@using eTrak.Dal.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+
+@if (Request.IsAuthenticated)
+{
+    <form id="advanced-search-options" class="collapse" action="#" method="post">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="advanced-search">
+                    <div class="row">
+                        <!-- Column #1 -->
+                        <div class="col-md-6 col-lg-4">
+                            <h6 class="header">Enquiry Details</h6>
+                            <!-- Field: Enquiry # -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Enquiry #</label>
+                                <div class="col-lg-8">
+                                    <input id="fltEnCode" ng-model="fltEnCode" class="form-control" type="text" />
+                                </div>
+                            </div>
+                            <!-- Field: User -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">User</label>
+                                <div class="col-lg-8">
+                                    <select id="fltUser" ng-model="fltUser" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All users*</option>
+                                        <option value="@User.Identity.GetUserName()">*Me*</option>
+                                        <option ng-repeat="RURec in Users | filter: {usStatus: 'L'}" value="{{ RURec.usCode}}">{{ RURec.usCode}} - {{ RURec.usDescription}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Field: Special Interest -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Sp. interest</label>
+                                <div class="col-lg-8">
+                                    <select id="ftpSpInt" ng-model="ftpSpInt" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Users*</option>
+                                        <option value="@User.Identity.GetUserName()">*Me*</option>
+                                        <option ng-repeat="RURec in SpecialInterest | filter: {usStatus: 'L'}" value="{{ RURec.usCode}}">{{ RURec.usCode}}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Received -->
+                            <div class="row">
+                                <label class="col-lg-4 no-padding-right">Received</label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <!-- Field: From -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>From</label>
+                                            <div class="input-group">
+                                                <input id="fltFrom" ng-model="fltFrom" class="form-control date-picker" type="text" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- Field: To -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>To</label>
+                                            <div class="input-group">
+                                                <input id="fltTo" ng-model="fltto" class="form-control date-picker" type="text" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Field: Status -->
+                            <div class="row form-group mb-0">
+                                <label class="col-lg-4 no-padding-right">Status</label>
+                                <div class="input-group">
+                                    <div class="col-lg-8">
+                                        <label class="inline">
+                                            <input id="fltProgressNew" ng-model="fltProgressNew" class="ace" value="10" name="form-field-checkbox" type="checkbox" />
+                                            <span class="lbl"> new</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <label class="inline">
+                                            <input id="fltProgressAssigned" ng-model="fltProgressAssigned" class="ace" value="20" name="form-field-checkbox" type="checkbox" />
+                                            <span class="lbl"> assigned</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <label class="inline">
+                                            <input id="fltProgressActioned" ng-model="fltProgressActioned" class="ace" value="30" name="form-field-checkbox" type="checkbox" />
+                                            <span class="lbl"> actioned</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <label class="inline">
+                                            <input id="fltProgressClosed" ng-model="fltProgressClosed" class="ace" value="40" name="form-field-checkbox" type="checkbox" />
+                                            <span class="lbl"> closed</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column #2 -->
+                        <div class="col-md-6 col-lg-4">
+                            <h6 class="header">Travel Data</h6>
+                            <!-- Field: Country -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Country</label>
+                                <div class="col-lg-8">
+                                    <select id="fltCountry" ng-model="fltCountry" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Countries*</option>
+                                        <option value="00000001">*UK*</option>
+                                        <option ng-repeat="RCRec in Countries | filter: {coStatus: 'L'} | orderBy:['coName']" value="{{ RCRec.coCode}}">{{ RCRec.coName }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Field: City -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">City</label>
+                                <div class="col-lg-8">
+                                    <select id="fltCity" ng-model="fltCity" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Cities*</option>
+                                        <option ng-repeat="RCRec in Cities | filter: {ciStatus: 'L'} | orderBy:['ciDescription']" value="{{ RCRec.ciCode}}">{{ RCRec.ciDescription }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Field: Budget -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Budget</label>
+                                <div class="col-lg-8">
+                                    <select id="fltBudgetCategory" ng-model="fltBudgetCategory" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Budgets*</option>
+                                        <option ng-repeat="RBRec in BudgetCategories | filter: {bcStatus: 'L'} | orderBy:['bcDescription']" value="{{ RBRec.bcCode}}">{{ RBRec.bcDescription }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Arrival -->
+                            <div class="row">
+                                <label class="col-lg-4 no-padding-right">Arrival</label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <!-- Field: From -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>From</label>
+                                            <div class="input-group">
+                                                <input id="fltArrivalDateFrom" ng-model="fltArrivalDateFrom" class="form-control date-picker" type="text" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <!-- Field: To -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>To</label>
+                                            <div class="input-group">
+                                                <input id="fltArrivalDateTo" ng-model="fltArrivalDateTo" class="form-control date-picker" type="text" />
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar bigger-110"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Nights -->
+                            <div class="row">
+                                <label class="col-lg-4 no-padding-right">Nights</label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <!-- Field: From -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>From</label>
+                                            <input id="fltNightsFrom" ng-model="fltNightsFrom" class="form-control" type="text" />
+                                        </div>
+                                        <!-- Field: To -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>To</label>
+                                            <input id="fltNightsTo" ng-model="fltNightsTo" class="form-control" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column #3 -->
+                        <div class="col-lg-4">
+                            <h6 class="header">Other</h6>
+                            <div class="row form-group mb-0">
+                                <label class="col-lg-4 no-padding-right"> </label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <!-- Field: Client -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>Client</label>
+                                            <input id="fltClient" ng-model="fltClient" class="form-control" type="text" />
+                                        </div>
+                                        <!-- Field: Company -->
+                                        <div class="col-xl-6 form-group">
+                                            <label>Company</label>
+                                            <input id="fltCompany" ng-model="fltCompany" class="form-control" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Field: Lead name -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Lead Name</label>
+                                <div class="col-lg-8">
+                                    <input id="fltLeadName" ng-model="fltLeadName" class="form-control" type="text" />
+                                </div>
+                            </div>
+                            <!-- Field: Source -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Source</label>
+                                <div class="col-lg-8">
+                                    <select id="fltSource" ng-model="fltSource" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Sources*</option>
+                                        <option ng-repeat="RSRec in EnqSources | filter: {soStatus: 'L'} | orderBy:['soDescription']" value="{{ RSRec.soCode}}">{{ RSRec.soDescription }}</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Field: Group -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Group</label>
+                                <div class="col-lg-8">
+                                    <select id="fltClientGroup" ng-model="fltClientGroup" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Groups*</option>
+                                        <option ng-repeat="RCRec in ClientGroups | filter: {cgStatus: 'L'} | orderBy:['cgOrganisationName']" value="{{ RCRec.cgCode}}">{{ RCRec.cgOrganisationName }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Field: Closed reason -->
+                            <div class="row form-group">
+                                <label class="col-lg-4 no-padding-right">Closed reason</label>
+                                <div class="col-lg-8">
+                                    <select id="fltDeadReason" ng-model="fltDeadReason" class="form-control">
+                                        <option value="">Please select</option>
+                                        <option value="">*All Reasons*</option>
+                                        <option ng-repeat="RZRec in DeadReasons | filter: {drStatus: 'L'} | orderBy:['drReason']" value="{{ RZRec.drCode}}">{{ RZRec.drReason }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Submit Button -->
+                    <script>
+
+                        var button = document.getElementById("refreshPV_EnquiriesDashboard");
+
+                        function timerComplete() {
+                            alert('timer complete');
+                        }
+
+                        button.addEventListener("click", buttonClicked());
+
+                        function buttonClicked() {
+                            alert("the button was clicked");
+
+
+                        };
+
+
+                        setTimeout(timerComplete(), 10000);
+
+
+                    </script>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!--Google Analytics Script-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!--Ended Google Analytics Script-->
+
+}
+
+                  

@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html ng-app="eTrakAppModuleLandlord" >
+<head>
+    <meta charset="utf-8" />
+    <title>User Dashboard - eTrak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="~/Content/styles.min.css" /> <!-- Etrak Styles -->
+    <link rel="stylesheet" href="~/Content/plugins.min.css" /> <!-- Plugins -->
+
+    <link rel="stylesheet" href="~/Content/frameworks.min.css" /> <!-- Frameworks -->
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.1/css/jquery.dataTables.css" /><!--DataTables-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.min.css" /><!--ui-select-->
+
+    <base href="/">
+
+    <!--Google Analytics Script-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!--Ended Google Analytics Script-->
+
+</head>
+<body class="tas-skin">
+
+    <div class="page-content">
+        <div class="page-content-area">
+            <div class="row">
+                <div class="col-xs-12">
+                    @RenderBody()
+                </div> 
+            </div> 
+        </div>
+    </div>
+</body>
+
+</html>

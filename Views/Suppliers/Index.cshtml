@@ -1,0 +1,44 @@
+﻿@*@model PagedList.IPagedList<eTrak.Models.Supplier>
+@using PagedList.Mvc;*@
+
+@model IEnumerable<eTrak.Dal.Models.Supplier>
+
+<link href="~/Content/PagedList.css" rel="stylesheet"
+      type="text/css" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Suppliers</h2>
+
+<p>
+    <a href="/Suppliers/Create/" class="btn btn-success btn-sm">Create New</a>    
+</p>
+<div ng-controller="R_Suppliers" class="container">
+    <table id="idASPSuppliers" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="Suppliers" class="responsive   table table-striped table-bordered">
+        <!--added extra datatable in class to see what happens-->
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Description</th>
+                <th data-class="expand">Country</th>
+                <th data-class="expand">City</th>
+                <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in Suppliers ">
+                <td>{{edRec.suDescripton}}</td>
+                <td>{{edRec.suCountry}}</td>
+                <td>{{edRec.suCity}}</td>
+                <td>{{edRec.suStatus}}</td>
+                <td>
+                    <a href="Suppliers/Edit/{{edRec.suCode}}">Edit</a> |
+                    <a href="Suppliers/Details/{{edRec.suCode}}">Details</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,56 @@
+﻿@model eTrak.Dal.Models.LanguageCode
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>LanguageCode</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.lcCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcCultureCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcCultureCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcISO639)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcISO639)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

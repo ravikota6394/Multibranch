@@ -1,0 +1,815 @@
+﻿@model IEnumerable<eTrak.Dal.Models.Enquiry>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.enProgress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enChecked)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enUserAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enLastTemplateChosen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enLastEmailSentTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enLastEmailCCTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enLastEmailSubject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enPrimaryContactName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enDuplicateCheckKey)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enDuplicateWarning)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDPrimaryContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDClientCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDClientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDClientGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDCompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDJobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTelephone1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTelephone2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTelephone3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDSkype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTimeZone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDCountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDFaxNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDEmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDClientDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDSalutation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDTASAccountOwner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDGroupContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enCDNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRPrimaryContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRClientCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRClientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRClientGroup)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRCompanyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRJobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTelephone1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTelephone2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTelephone3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRSkype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTimeZone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRCountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRFaxNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTREmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRClientDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRSalutation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRTASAccountOwner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enTRNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDSourceCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDLanguageCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDWhiteLabelCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDUserAssigned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDUserAssignedCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDateAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTimeAdded)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTimeNextAction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDateLastActioned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTimeLastActioned)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDateNextAction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDSpecificApartment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDCountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDCityCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDMaxDistance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDesiredLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDesiredLocationInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDOrderRef)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDSpecialInterest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTripType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDApartmentTypeCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDBudgetCategoryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDateOfArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTimeOfArrival)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDepartureDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDNights)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1PrimaryContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED1Relationship)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enED2Relationship)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTotalPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDLeadPassengerName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDComments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDNoAdultPassengers)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDNoChildren)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDChildrensAges)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDDoubleBedroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDTwinBedroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDSingleBedroom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDExtraBeds)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDCityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECHomeAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECCountryCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECFiveStarRef)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECCloseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECDeadReasonCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECDeadReasonOther)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECReOpen)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECCityCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECPoCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enLastTrackingCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECTelephone1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECTelephone2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECIDNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECIDType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECIDImage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECEmergencyContact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECBookingForm)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECBookingNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECFlightNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECFlightDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECArrivingFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECTransferRequired)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enECTransferBookingInfo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enPrimarySalutation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.enEDPreferredContact)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.enProgress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enChecked)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enUserAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enLastTemplateChosen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enLastEmailSentTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enLastEmailCCTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enLastEmailSubject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enPrimaryContactName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enDuplicateCheckKey)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enDuplicateWarning)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDPrimaryContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDClientCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDClientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDClientGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDCompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDJobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTelephone1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTelephone2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTelephone3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDSkype)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTimeZone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDCountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDFaxNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDEmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDClientDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDSalutation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDTASAccountOwner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDGroupContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enCDNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRPrimaryContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRClientCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRClientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRClientGroup)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRCompanyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRJobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTelephone1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTelephone2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTelephone3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRSkype)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTimeZone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRCountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRFaxNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTREmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRClientDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRSalutation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRTASAccountOwner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enTRNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDSourceCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDLanguageCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDWhiteLabelCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDUserAssigned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDUserAssignedCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDateAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTimeAdded)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTimeNextAction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDateLastActioned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTimeLastActioned)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDateNextAction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDSpecificApartment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDCountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDCityCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDMaxDistance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDesiredLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDesiredLocationInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDOrderRef)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDSpecialInterest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTripType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDApartmentTypeCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDBudgetCategoryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDateOfArrival)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTimeOfArrival)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDepartureDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDNights)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1PrimaryContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1EmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED1Relationship)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2EmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enED2Relationship)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTotalPassengers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDLeadPassengerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDComments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDNoAdultPassengers)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDNoChildren)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDChildrensAges)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDDoubleBedroom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDTwinBedroom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDSingleBedroom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDExtraBeds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDCityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECHomeAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECCountryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECFiveStarRef)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECCloseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECDeadReasonCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECDeadReasonOther)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECReOpen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECCityCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECPoCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enLastTrackingCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECTelephone1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECTelephone2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECIDNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECIDType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECIDImage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECEmergencyContact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECBookingForm)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECBookingNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECFlightNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECFlightDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECArrivingFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECTransferRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enECTransferBookingInfo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enPrimarySalutation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.enEDPreferredContact)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.enCode }) |
+                @Html.ActionLink("Details", "Details", new { id=item.enCode }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.enCode })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

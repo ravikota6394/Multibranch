@@ -1,0 +1,34 @@
+﻿@model eTrak.Dal.Models.BudgetCategory
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BudgetCategory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.bcDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bcDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.bcStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.bcStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.bcCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

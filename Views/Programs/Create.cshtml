@@ -1,0 +1,62 @@
+﻿﻿@model eTrak.Controllers.ProgramWithRoles
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Query</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.pgProgramName, "Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.pgProgramName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.pgProgramName, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.pgSyntax, "Query", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.TextAreaFor(model => model.pgSyntax, new { htmlAttributes = new { @class = "form-control", @cols = 100, @rows = 20 } })*@
+                @Html.TextAreaFor(model => model.pgSyntax, new { @class = "form-control", @cols = 20, @rows = 2 })
+                @Html.ValidationMessageFor(model => model.pgSyntax, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.pgSyntax, "Visible to", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @foreach (var userRole in Model.UserRoles)
+                {
+                    <input type="checkbox" id="userrole" name="selectedrole" value="@userRole.id" />@userRole.name
+                }
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                @Html.ValidationMessage("ValidationMessage", "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+<style type="text/css">.rows { }
+
+ .cols { }
+</style>
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

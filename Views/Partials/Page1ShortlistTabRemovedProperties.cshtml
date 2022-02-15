@@ -1,0 +1,400 @@
+﻿<style type="text/css">
+    table, tr, td {
+    }
+
+        tr.noBorder td {
+            border: 0;
+        }
+</style>
+
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<div id="idRPSDataTable" class="scrollable display" width="100%" data-height="325">
+<div class="content ">
+<table id="idRPS" class="responsive table table-bordered table-striped">
+<thead @*class="thin-border-bottom"*@>
+@*<tr>
+    <th data-class="expand">@*Property Shortlist</th>
+
+</tr>*@
+</thead>
+<tbody>
+<tr ng-repeat="property in RPSProperties">
+<td>
+<!-- Property Item #1 -->
+<!-- This table keeps it intact do not remove -->
+<table class="table">
+<tr class="noBorder">
+    <td>
+        {{property.prEnqCode}}
+        <!-- Property Name -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="property-actions">
+                    <button class="btn btn-purple btn-xs ace-icon fa fa-plus-square" type="button" ng-click="addToProposal(property.ID);" title="Add property back into proposal">
+                        proposal
+                    </button>
+                        @*<a href="#" title="Add property back into proposal" class="btn btn-purple btn-xs" ng-click="addToProposal(property.ID)">
+                            <i class="ace-icon fa fa-plus-square"></i> proposal
+                        </a>*@
+                    </div>
+                    <h5 class="property-name">
+                        <a href="#" data-toggle="modal" data-target="#apartment1-details-modal">
+                            {{$index + 1}} {{property.prName}}
+                        </a>
+                    </h5>
+                </div>
+
+                <div class="row">
+                    <!-- Property Description -->
+                    <div class="property-description col-lg-8">
+                        <a href="#"><img src="{{property.prPropertyImageUrl}}" alt="{{property.prName}}" style="width: 20em;" class="property-image" /></a>
+                        <p>{{property.prLongDescription}}
+                        <p>
+                            <a href="" class="btn btn-xs btn-info" ng-click="displayPropertyInfo(property.prPropertyPopUpHTML,property.prName,property.prPropertyCode)" >view property</a>
+                            <a href="" class="btn btn-xs btn-default">check availability</a>
+                        </p>
+                    </div>
+
+                    <!-- Contact Table -->
+                    <div class="property-details col-lg-4">
+                        <div id="my-emails" class="scrollable display" width="100%" data-height="325">
+                            <div class="content ">
+                                <table id="idContactShortlist" class="responsive datatable-basic table table-bordered table-striped bg-grey mb-10">
+                                    <thead class="thin-border-bottom">
+                                        <tr>
+                                            <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Contact Type</th>
+                                            <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Contact Name</th>
+                                            <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Phone</th>
+                                            <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Email</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+
+
+                                        <tr ng-repeat="contacts in property.Contacts">
+                                            <td>{{ contacts.Type }}</td>
+                                            <td>{{ contacts.Name }}</td>
+                                            <td>{{ contacts.Phone }}</td>
+                                            <td>
+                                                <a ui-sref="detailsTab.emails({ emailAddress: contact.Email })" class="btn btn-white btn-primary btn-xs">
+                                                    <i class="ace-icon fa fa-envelope"></i> {{ contacts.Email }}
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- Additional Property Info -->
+                <hr class="hr-dashed hr-2 mb-15">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- Trigger collapse button -->
+                        <p class="mb-0 text-right">
+                            <a class="btn btn-white btn-primary" data-target="#apartment1-details" data-toggle="collapse">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                                Details
+                            </a>
+                        </p>
+
+                        <!-- Collapsed container -->
+                        <div id="apartment1-details" class="row collapse">
+                            <div class="col-xs-12">
+                                <h5>Offer Details</h5>
+                            </div>
+
+                            <!-- Notes Table -->
+                            <div class="col-lg-4">
+                                <h5>Notes</h5>
+                                <table class="responsive datatable-basic table table-bordered table-striped bg-grey mb-15">
+                                    <thead class="thin-border-bottom">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>User</th>
+                                            <th>Note</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Michelle</td>
+                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Michelle</td>
+                                            <td>
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, tenetur
+                                                accusamus assumenda aut cupiditate tempora.
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Michelle</td>
+                                            <td>
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, tenetur
+                                                accusamus assumenda aut cupiditate tempora, quo, illo, sed veritatis cum magni
+                                                iure numquam nemo. Repellat laborum in vero ut tempora?
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Michelle</td>
+                                            <td>
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro, tenetur
+                                                accusamus assumenda aut cupiditate
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Correspondence Table -->
+                            <div class="col-lg-4">
+                                <h5>Correspondence</h5>
+                                <table class="responsive datatable-basic table table-bordered table-striped bg-grey mb-15">
+                                    <thead class="thin-border-bottom">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>User</th>
+                                            <th>Message</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>30 Sept 10:35</td>
+                                            <td>Chantelle</td>
+                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, sunt.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30 Sept 10:35</td>
+                                            <td>Chantelle</td>
+                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, sunt.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30 Sept 10:35</td>
+                                            <td>Chantelle</td>
+                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, sunt.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>30 Sept 10:35</td>
+                                            <td>Chantelle</td>
+                                            <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque, sunt.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- History Table -->
+                            <div class="col-lg-4">
+                                <h5>History</h5>
+                                <table class="responsive datatable-basic table table-bordered table-striped bg-grey mb-15">
+                                    <thead class="thin-border-bottom">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Re-send email</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>Contact made</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>User assigned</td>
+                                        </tr>
+                                        <tr>
+                                            <td>20 Oct, 10:35</td>
+                                            <td>New Enquiry record created</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Details Modal -->
+                <div class="modal fade" id="apartment1-details-modal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <form action="#" method="post">
+                                <div class="modal-header">
+                                    <a class="close" data-dismiss="modal">&times;</a>
+                                    <h4 class="modal-title">Fab Apartments City Center</h4>
+                                </div>
+                                <div class="modal-body no-padding">
+                                    <div class="well no-margin">
+                                        <div class="row">
+                                            <!-- Property ID -->
+                                            <div class="col-xs-12">
+                                                <p class="text-right">
+                                                    <span class="label label-lg label-inverse arrowed-in">Property ref. 12345678</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Field: Comission -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Comission</label>
+                                                <select class="form-control">
+                                                    <option>Please select</option>
+                                                    <option>5%</option>
+                                                    <option>10%</option>
+                                                    <option>15%</option>
+                                                    <option>20%</option>
+                                                </select>
+                                            </div>
+                                            <!-- Field: Tenancy -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Tenancy</label>
+                                                <select class="form-control">
+                                                    <option>Please select</option>
+                                                    <option>Option #1</option>
+                                                    <option>Option #2</option>
+                                                    <option>Option #3</option>
+                                                </select>
+                                            </div>
+                                            <!-- Field: Extension of Bookings -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Ext. of Bookings</label>
+                                                <select class="form-control">
+                                                    <option>Please select</option>
+                                                    <option>Option #1</option>
+                                                    <option>Option #2</option>
+                                                    <option>Option #3</option>
+                                                </select>
+                                            </div>
+                                            <!-- Field: Deposits -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Deposits</label>
+                                                <select class="form-control">
+                                                    <option>Please select</option>
+                                                    <option>Option #1</option>
+                                                    <option>Option #2</option>
+                                                    <option>Option #3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Field: Room type -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Room Type</label>
+                                                <!-- Markup for cases when the user needs to either select from a dropdow or enter his own text -->
+                                                <input class="form-control room-type-selector" type="hidden" />
+                                            </div>
+                                            <!-- Field: Rates -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Rates</label>
+                                                <input class="form-control" type="text" />
+                                            </div>
+                                            <!-- Field: Tax -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Tax</label>
+                                                <input class="form-control" type="text" />
+                                            </div>
+                                            <!-- Field: Tax rate -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Tax Rate</label>
+                                                <input class="form-control" type="text" />
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Field: Offer Details -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Offer Details</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <!-- Field: Charges -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Charges</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <!-- Field: Invoicing -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Invoicing</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <!-- Field: Cancellation -->
+                                            <div class="col-sm-3 form-group">
+                                                <label>Cancellation</label>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!-- Field: Payment Terms -->
+                                            <div class="col-sm-4 form-group">
+                                                <label class="mr-5">Payment Terms</label>
+                                                <select class="form-control mb-15">
+                                                    <option>Please select</option>
+                                                    <option>Option #1</option>
+                                                    <option>Option #2</option>
+                                                    <option>Option #3</option>
+                                                </select>
+                                                <textarea class="form-control"></textarea>
+                                            </div>
+                                            <!-- Field: Booking Procedure -->
+                                            <div class="col-sm-4 form-group">
+                                                <label>Booking Procedure</label>
+                                                <textarea class="form-control h-130"></textarea>
+                                            </div>
+                                            <!-- Field: Notes -->
+                                            <div class="col-sm-4 form-group">
+                                                <label>Notes</label>
+                                                <textarea class="form-control h-130"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="btn btn-success btn-sm" data-dismiss="modal">save offer</a>
+                                    <a class="btn btn-default btn-sm" data-dismiss="modal">close</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End of Property Item #1 -->
+            <!-- Do not remove the below table end -->
+
+        </td>
+    </tr>
+    </table>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+
+    </div>

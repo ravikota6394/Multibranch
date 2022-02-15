@@ -1,0 +1,27 @@
+﻿@model eTrak.Dal.Models.AvailabilityReason
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>No Availability Reason</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Reason")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.av_Reason)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.av_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

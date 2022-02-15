@@ -1,0 +1,66 @@
+﻿@model eTrak.Dal.Models.Supplier
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Supplier</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.suDescripton)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suDescripton)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suEmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suEmailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suFaxNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suFaxNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.suCity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.suCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

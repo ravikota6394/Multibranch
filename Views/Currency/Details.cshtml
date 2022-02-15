@@ -1,0 +1,35 @@
+﻿@model eTrak.Dal.Models.Currency
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Currency</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayName("Currency")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cu_Currencies)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("GBP Conversion")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cu_CurrencyGBPConversion)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.cu_Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+

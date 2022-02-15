@@ -1,0 +1,157 @@
+﻿@model eTrak.Dal.Models.EmailTemplate
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Template</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etDescription, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etDescription, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etLanguage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etLanguage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etLanguage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etSubject, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etSubject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etSubject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etTemplate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etTemplate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etTemplate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.etStatus, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.etStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etLanguageCode, "etLanguageCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("etLanguageCode", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.etLanguageCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div ng-show="false" class="form-group">
+            @Html.LabelFor(model => model.etWhiteLabelCode, "etWhiteLabelCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("etWhiteLabelCode", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.etWhiteLabelCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etSoCode, "etSoCode", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("etSoCode", null, "Please Select a Source", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.etSoCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.etTemplateType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("etTemplateType", new List<SelectListItem>
+                    {
+                      new SelectListItem { Text="Please Select a Template ", Value = ""},
+                        new SelectListItem { Text="Assignee Email", Value ="Assignee Email"},
+                        new SelectListItem { Text="Automated Chase1 Email To Landlord", Value ="Automated Chase1 Email To Landlord"},
+                        new SelectListItem { Text="Automated Chase1 Email To Client", Value ="Automated Chase1 Email To Client"},
+                        new SelectListItem { Text="Automated Chase1 Email To Client (Landlord Not Responsive)", Value ="Automated Chase1 Email To Client (Landlord Not Responsive)"},
+                        new SelectListItem { Text="Automated Chase2 Email To Landlord", Value ="Automated Chase2 Email To Landlord"},
+                        new SelectListItem { Text="Automated Chase2 Email To Client", Value ="Automated Chase2 Email To Client"},
+                        new SelectListItem { Text="Automatic Email Confirmation", Value = "Automatic Email Confirmation"},
+                        new SelectListItem { Text="Automatic Email Confirmation (for Scripts)", Value = "Automatic Email Confirmation (for Scripts)"},
+                        new SelectListItem { Text="Autoresponder For Weekend Received Emails", Value = "Autoresponder For Weekend Received Emails"},
+                        new SelectListItem { Text="BookNow Acknowledgement", Value ="BookNow Acknowledgement"},
+                        new SelectListItem { Text="Book Now", Value ="Book Now"},
+                        new SelectListItem { Text="Book Now Error Message Display", Value = "Book Now Error Message Display"},
+                        new SelectListItem { Text="Book Now Other Options", Value = "Book Now Other Options"},
+                        new SelectListItem { Text="Check Availability", Value = "Check Availability"},
+                        new SelectListItem { Text="Client Group Details", Value = "Client Group Details"},
+                        new SelectListItem { Text="Docusign", Value = "Docusign"},
+                        new SelectListItem { Text="Docusign Email Confirmation", Value = "Docusign Email Confirmation"},
+                        new SelectListItem { Text="Esig Terms", Value ="Esig Terms"},
+                        new SelectListItem {Text="Fivewin Success Notification Mail", Value="Fivewin Success Notification Mail" },
+                        new SelectListItem {Text="Fivewin Error Notification Mail", Value="Fivewin Error Notification Mail" },
+                        new SelectListItem { Text="General", Value ="General"},
+                        new SelectListItem { Text="Generate Proposal", Value = "Generate Proposal"},
+                        new SelectListItem { Text="Guest Services", Value = "Guest Services"},
+                        new SelectListItem { Text="Info", Value = "Info"},
+                        new SelectListItem { Text="Landlord Response", Value ="Landlord Response"},
+                        new SelectListItem { Text="Landlord Report", Value ="Landlord Report"},
+                        new SelectListItem { Text="No Availability", Value = "No Availability"},
+                        new SelectListItem { Text="Queries Schedule", Value = "Queries Schedule"},
+                        new SelectListItem { Text="Reply", Value ="Reply"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Exclusive Client Group)", Value ="Resteam Chase1 Email (Exclusive Client Group)"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Payment Done)", Value ="Resteam Chase1 Email (Payment Done)"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Payment Not Done)", Value ="Resteam Chase1 Email (Payment Not Done)"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Landlord Not Responded - Exclusive Client Group)", Value ="Resteam Chase1 Email (Landlord Not Responded - Exclusive Client Group)"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Landlord Not Responded - Not Exclusive Client Group)", Value ="Resteam Chase1 Email (Landlord Not Responded - Not Exclusive Client Group)"},
+                        new SelectListItem { Text="Resteam Chase1 Email (Landlord Response - Not Satisfactory)", Value ="Resteam Chase1 Email (Landlord Response - Not Satisfactory)"},
+                        new SelectListItem { Text="Reservation Confirmation Details", Value = "Reservation Confirmation Details"},
+                        new SelectListItem { Text="Secure Booking Form", Value ="Secure Booking Form"},
+                        new SelectListItem { Text="Secure Booking Form Error Message Display", Value = "Secure Booking Form Error Message Display"},
+                        new SelectListItem { Text="Secure Booking Form Success Message Display", Value = "Secure Booking Form Success Message Display"},
+                        new SelectListItem { Text="Thankyou Landing Page", Value = "Thankyou Landing Page"},
+                        
+                    }, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.etTemplateType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                @if (Request.IsAuthenticated && ((User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))))
+                {
+                    <input type="submit" value="Save" class="btn btn-default" />
+                }
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html ng-app="eTrakApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/angular.min.js"></script>
+    <script>
+        var eTrakApp = angular.module('eTrakApp', []);
+        eTrakApp.controller('eTrakApartmentTypesController', function ($scope) {
+            $scope.apartmentTypes = [
+                 { ID: 8765, atID: 1, atDescription: 'grrr', atStatus: 'A Status' }
+            ];
+        });
+    </script>
+
+    <!--Google Analytics Script-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!--Ended Google Analytics Script-->
+
+</head>
+<body ng-controller="eTrakApartmentTypesController">
+
+    <div class="container body-content">
+        @RenderBody()
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Trip Types</h2>
+
+<p>
+    <a href="/TripTypes/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="TripTypes" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="tripTypes" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+        <tr>
+            <th data-class="expand">Trip Type</th>
+            <th data-class="expand">Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="tripType in tripTypes ">
+            <td>{{tripType.tt_Description}}</td>
+            <td>{{tripType.tt_Status}}</td>
+            <td>
+                @*<a href="TripTypes/Edit/{{tripType.tt_Id}}">Edit</a> |*@
+                <a href="TripTypes/Details/{{tripType.tt_Id}}">Details</a> 
+                @*<a href="TripTypes/Delete/{{tripType.tt_Id}}">Delete</a>*@
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+

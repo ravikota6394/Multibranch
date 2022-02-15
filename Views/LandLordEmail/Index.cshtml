@@ -1,0 +1,553 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LandlordEmailLayout.cshtml";
+}
+<h2></h2>
+<link href="~/css/Custom.css" rel="stylesheet" />
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<body ng-controller="LandLordEmailController">
+
+    <!--Modal for checking availability-->
+    <div class="modal fade" id="id_IsAvailabile" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="text-align:center">Check Availability Status</h4>
+                </div>
+                <div class="modal-body" style="height: 10em;">
+                    <div class="col-sm-offset-3">
+                        <br />
+                        <div style="font-size: 17px;">
+                            <input type="radio" id="isAvailable" value="true" name="availablility" ng-model="isAvailable" ng-click="DissmissAvailabilityCheck();"> <span>Availability </span>
+                        </div>
+                        <br />
+                        <div style="font-size: 17px;">
+                            <input type="radio" id="isNotAvailable" value="true" name="noavailability" ng-model="isNotAvailable" ng-click="ConfirmNoAvailability();"> <span>No Availability </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended Modal for checking availability-->
+    <!--Modal for confirming noavailability-->
+    <div class="modal fade" id="id_ConfirmAvailability" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="text-align:center"></h4>
+                </div>
+                <div class="modal-body">
+                    <h6 style="text-align:center">You are about to confirm 'No Availability' for this Enquiry. Click ok to proceed.</h6>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" class="btn btn-success" ng-click="NoAvailabity()">OK</button>
+                        <button type="button" class="btn btn-danger" ng-click="DismissNoAvailability()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended Modal for confirming noavailability-->
+    <!--Modal for checking whether the apartment type changed or not-->
+    <div class="modal fade" id="id_ChangeSuppliedApartmentType" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div><h6 style="line-height: 35px;text-align: center;">Please note the client has requested the Apartment Type as advised. If you change this, please tell us why in the Accommodation Offer Note. Do you want to change the Apartment Type?</h6></div>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" class="btn btn-success" ng-click="AgreeToChangeApartmentType()">Yes</button>
+                        <button type="button" class="btn btn-danger" ng-click="NotToChangeApartmentType()">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended Modal for checking whether the apartment type changed or not-->
+    <header class="page-header" ng-show="InputDivVisible">
+        <div class="row">
+            <input type="hidden" id="txtEmailKey" value="@ViewBag.EmailKey">
+            <div class="small-3 medium-6 columns">
+                <a href="https://v2.apartmentservice.com" target="_blank">
+                    <img src="https://forms.apartmentservice.com/etrak/images/newsletter/logo-header.png" alt="The Apartment Service" style="display: block;" height="61" width="112">
+                </a>
+            </div>
+            <div class="small-9 medium-6 columns">
+                <ul class="contact-list list-unstyled">
+                    <li>Reservations:&nbsp;<span>+44 (0) 20 8944 1444</span></li>
+                    <li>Corporate Sales:&nbsp;<span>+44 (0) 20 8944 3612</span></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!-- ===== Page Content ===== -->
+    <div class="page-content" ng-show="InputDivVisible">
+        <div class="row">
+            <div class="small-12 medium-8 columns">
+                <h2 class="mb-0">Accommodation offer details</h2>
+                <h5 class="subtitle mb-30">for enquiry:#{{prEncode}}</h5>
+                <p class="text-italic lead">Please let us have details of your accommodation offer:</p>
+                <form id="accomodation-offer-form" class="mb-30" role="form">
+                    <div class="row">
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-apartmenttype" class="label-required">Apartment Type</label>
+                                <select id="aof-apartmenttype" name="aof-apartmenttype" ng-model="atDescription" ng-change="ChangeApartmentType(atDescription)">
+                                    <option value="">Please Select</option>
+                                    <option ng-repeat="apartment in ApartmentTypes | orderBy : 'Name'" value="{{apartment.Name}}">{{apartment.Name}}</option>
+                                    <option value="Other">Other</option>
+                                </select> <br />
+                                <input type="text" id="apartment-Type" ng-model="atDescriptionWhenOther" ng-blur="ChangeApartmentText(atDescriptionWhenOther)" style="display: none" />
+                                <label id="appartmentType" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-ratepernight" class="label-required">Rate per night</label>
+                                <input id="aof-ratepernight" name="aof-ratepernight" placeholder="Please enter" ng-model="avDayRate" type="text" />
+                                <label id="ratePerNight" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-taxesapplicable" class="label-required">Are all taxes included in your rate?</label>
+                                <select id="aof-taxesapplicable" name="aof-taxesapplicable" ng-model="prTaxIncluded">
+                                    <option value="">Please Select</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                                <label id="taxApplied" hidden style="color: red; display: none"></label>
+                            </p>
+                            @*<p class="field-wrap">
+                                <label for="aof-tomsTax">TOMS tax</label>
+                                <select id="aof-tomsTax" name="aof-tomsTax" ng-model="prTomsTaxIncluded">
+                                    <option value="">Please Select</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                </select>
+                            </p>*@
+                            <p class="field-wrap">
+                                <label for="aof-taxRate" class="label-required">Tax Rate Applicable<i class="fa fa-question-circle tooltip textcolor-primary" title="Tell us please, so we can contact you if necessary"></i></label>
+                                <input id="aof-taxRate" placeholder="Please enter" name="aof-taxRate" ng-model="prTaxRate" class="required" type="text" ng-keypress="ValidateTaxRate($event)" />
+                                <label id="taxRate" hidden style="color: red; display: none"></label>
+                                <label id="validate_TaxRate" hidden style="color: red; display: none"></label>
+                            </p>
+                            <p class="field-wrap">
+                                <label for="aof-taxappliedallnights" class="label-required">Tax applied all nights?</label>
+                                <select id="aof-taxappliedallnights" name="aof-taxappliedallnights" ng-model="prTaxAppliedAllNights" class="required">
+                                    <option value="">Please Select</option>
+                                    <option>Yes</option>
+                                    <option>No</option>
+                                    <option>See tax notes</option>
+                                    @*<option>Rates quoted under TOMS - local taxes are not reclaimable</option>*@
+                                </select>
+                                <label id="taxAppliedAllNights" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-currency" class="label-required">Currency</label>
+                                <input id="aof-currency" name="aof-currency" ng-readonly="true" placeholder="Please enter" ng-model="prCurrency" type="text" />
+                            </p>
+                            <p class="field-wrap">
+                                <label for="aof-taxnotes" style="color: red">Give breakdown of ALL applicable taxes(including government tax,city tax,etc)</label>
+                                <textarea id="aof-taxnotes" name="aof-taxnotes" ng-model="prTaxNotes"></textarea>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-commissioninclinrate" class="label-required">Commission included in rate</label>
+                                <select id="aof-commissioninclinrate" name="aof-commissioninclinrate" ng-model="prCommissionIncluded" ng-change="saveCommissionIncluded(prCommissionIncluded)">
+                                    <option value="">Please select</option>
+                                    <option value="10%">10%</option>
+                                    <option value="15%">15%</option>
+                                    <option value="20%">20%</option>
+                                    <option value="Remote 5%">Remote 5%</option>
+                                    <option value="Other">Other</option>
+                                </select><br />
+                                <input type="text" id="commission-Included" ng-model="CommissionIncludedRate" style="display: none" />
+                                <label id="commissionIncluded" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-offerhelduntil" class="label-required" title="You agree to let us book it on your behalf within this period">Option on hold until</label>
+                                <select class="medium-6 columns" id="aof-offerhelduntil" name="aof-offerhelduntil" ng-model="HeldUntil" ng-change="saveHeldUntil(HeldUntil)">
+                                    <option value="">Please select</option>
+                                    <option value="12hrs">12hrs</option>
+                                    <option value="24hrs">24hrs</option>
+                                    <option value="48hrs">48hrs</option>
+                                    <option value="72hrs">72hrs</option>
+                                    <option value="5days">5days</option>
+                                    <option value="7days">7days</option>
+                                    <option value="1Month">1Month</option>
+                                    <option value="Other">Other</option>
+                                </select><span class="medium-1 columns"></span>
+                                <select class="medium-5 columns" id="aof-utcofferhelduntil" name="aof-utcofferhelduntil" ng-model="heldUntilUTC">
+                                    <option value="UTC -12:00">UTC -12:00</option>
+                                    <option value="UTC -11:00">UTC -11:00</option>
+                                    <option value="UTC -10:00">UTC -10:00</option>
+                                    <option value="UTC -09:30">UTC -09:30</option>
+                                    <option value="UTC -09:00">UTC -09:00</option>
+                                    <option value="UTC -08:00">UTC -08:00</option>
+                                    <option value="UTC -07:00">UTC -07:00</option>
+                                    <option value="UTC -06:00">UTC -06:00</option>
+                                    <option value="UTC -05:00">UTC -05:00</option>
+                                    <option value="UTC -04:30">UTC -04:30</option>
+                                    <option value="UTC -04:00">UTC -04:00</option>
+                                    <option value="UTC -03:30">UTC -03:30</option>
+                                    <option value="UTC -03:00">UTC -03:00</option>
+                                    <option value="UTC -02:00">UTC -02:00</option>
+                                    <option value="UTC -01:00">UTC -01:00</option>
+                                    <option value="UTC 00:00">UTC 00:00</option>
+                                    <option value="UTC +01:00">UTC +01:00</option>
+                                    <option value="UTC +02:00">UTC +02:00</option>
+                                    <option value="UTC +03:00">UTC +03:00</option>
+                                    <option value="UTC +03:30">UTC +03:30</option>
+                                    <option value="UTC +04:00">UTC +04:00</option>
+                                    <option value="UTC +04:30">UTC +04:30</option>
+                                    <option value="UTC +05:00">UTC +05:00</option>
+                                    <option value="UTC +05:30">UTC +05:30</option>
+                                    <option value="UTC +05:45">UTC +05:45</option>
+                                    <option value="UTC +06:00">UTC +06:00</option>
+                                    <option value="UTC +06:30">UTC +06:30</option>
+                                    <option value="UTC +07:00">UTC +07:00</option>
+                                    <option value="UTC +08:00">UTC +08:00</option>
+                                    <option value="UTC +08:45">UTC +08:45</option>
+                                    <option value="UTC +09:00">UTC +09:00</option>
+                                    <option value="UTC +09:30">UTC +09:30</option>
+                                    <option value="UTC +10:00">UTC +10:00</option>
+                                    <option value="UTC +10:30">UTC +10:30</option>
+                                    <option value="UTC +11:00">UTC +11:00</option>
+                                    <option value="UTC +11:30">UTC +11:30</option>
+                                    <option value="UTC +12:00">UTC +12:00</option>
+                                    <option value="UTC +12:45">UTC +12:45</option>
+                                    <option value="UTC +13:00">UTC +13:00</option>
+                                    <option value="UTC +14:00">UTC +14:00</option>
+                                </select>
+
+                                <div id="offer_HeldUntil" class="row">
+                                    <div class="col-lg-12">
+                                        <div class="col-lg-2" style="padding-left:0px">
+                                            <select id="offer_HeldUntilDay" ng-model="heldUntilDay" name="menu" style="width:44px;">
+                                                <option value="">Day</option>
+                                                <option value="1">01</option>
+                                                <option value="2">02</option>
+                                                <option value="3">03</option>
+                                                <option value="4">04</option>
+                                                <option value="5">05</option>
+                                                <option value="6">06</option>
+                                                <option value="7">07</option>
+                                                <option value="8">08</option>
+                                                <option value="9">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <select id="offer_HeldUntilMonth" ng-model="heldUntilMonth" name="menu">
+                                                <option value="">Month</option>
+                                                <option value="1">Jan</option>
+                                                <option value="2">Feb</option>
+                                                <option value="3">Mar</option>
+                                                <option value="4">Apr</option>
+                                                <option value="5">May</option>
+                                                <option value="6">Jun</option>
+                                                <option value="7">Jul</option>
+                                                <option value="8">Aug</option>
+                                                <option value="9">Sep</option>
+                                                <option value="10">Oct</option>
+                                                <option value="11">Nov</option>
+                                                <option value="12">Dec</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input id="offer_HeldUntilYear" type="text" placeholder="YYYY" ng-model="heldUntilYear" />
+                                        </div>
+                                        <div class="col-lg-3" style="padding-right:0px;">
+                                            <input id="offer_HeldUntilTime" type="text" placeholder="HH:mm" ng-model="heldUntilTime" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <label id="offerHeldUntil" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-cancellationpolicy" class="label-required">Cancellation policy and terms <i class="fa fa-question-circle tooltip textcolor-primary" title="Leave blank if these are your standard terms as published on the TAS website"></i></label>
+                                <textarea id="aof-cancellationpolicy" name="aof-cancellationpolicy" class="required" ng-model="avCancellationPolicy"></textarea>
+                                <label id="cancellationpolicy" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <div class="medium-6 columns">
+                            <p class="field-wrap">
+                                <label for="aof-offernotes">Accommodation offer note <i class="fa fa-question-circle tooltip textcolor-primary" title="Let us have any details or description to help us sell your space"></i></label>
+                                <textarea id="aof-offernotes" name="aof-offernotes" ng-model="prOfferDetails"></textarea>
+                                <label id="offerNotes" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="medium-4 columns">
+                            <p class="field-wrap">
+                                <label for="aof-name" class="label-required">Your name <i class="fa fa-question-circle tooltip textcolor-primary" title="Tell us please, so we can contact you if necessary"></i></label>
+                                <input id="aof-name" placeholder="Please enter" name="aof-name" ng-model="prHolderName" class="required" type="text" />
+                                <label id="name" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <div class="medium-4 columns">
+                            <p class="field-wrap">
+                                <label for="aof-reference">Your internal reference (if any)</label>
+                                <input id="aof-reference" placeholder="Please enter" name="aof-reference" ng-model="prInternalReference" type="text" />
+                            </p>
+                        </div>
+                        <div class="medium-4 columns">
+                            <p class="field-wrap">
+                                <label for="aof-phone" class="label-required">Your direct telephone number</label>
+                                <input id="aof-phone" placeholder="Please enter" name="aof-phone" ng-model="prTelephoneNumber" class="required" type="text" />
+                                <label id="phone" hidden style="color: red; display: none"></label>
+                            </p>
+                        </div>
+                        <input type="hidden" id="id_PropertyName" ng-model="avPropertyName" />
+                    </div>
+                    
+                <div>
+                    <label><input type="checkbox" id="termsAndConditions" name="termsAndConditions" ng-model="termsAndConditions" ng-true-value="1" ng-false-value="0" ng-click=""> I agree to <a href="@ViewBag.TermsAndConditionsKey" target="_black">Terms and Conditions</a> <span style="color: red">*</span></label>
+                    <label id="hasAgreedToTerms" hidden style="color: red; display: none"></label>
+                    <label><input type="checkbox" id="gdpr" name="gdprValue" ng-model="gdpr" ng-true-value="1" ng-false-value="0"> I agree to <a href="@ViewBag.GDPRKey" target="_blank">Privacy Policy</a> <span style="color: red">*</span></label>
+                    <label id="hasAgreedToPrivacy" hidden style="color: red; display: none"></label>
+                </div>
+
+                <p>** Please note that the standard TAS terms and conditions you have published on the TAS website will apply</p>
+                    <hr />
+                    <p class="text-center">
+                        <button class="button tas" type="button" ng-click="UpdateInformation()" style="line-height: 43px">
+                            Confirm rates and availability
+                        </button>
+                        @*<input type="button" ng-click="UpdateInformation()" class="button tas" value="Confirm rates and availability" />*@
+                    </p>
+                </form>
+            </div>
+            <div class="small-12 medium-4 columns">
+                <div class="panel panel-dark">
+                    <h5 style="color:turquoise">Property Details: (reminder)</h5>
+                    <table class="table mb-0" style="word-wrap: break-word">
+                        <tr>
+                            <th>Real Property Name:</th>
+                            <td class="text-strong">{{avRealPropertyName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Property Address:</th>
+                            <td class="text-strong">{{prAddress}}</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <h5 style="color: turquoise">Enquiry Details: (reminder)</h5>
+                    <table class="table mb-0" style="word-wrap: break-word">
+                        <tr>
+                            <th>Lead Guest:</th>
+                            <td class="text-strong">{{enEDLeadPassengerName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Town:</th>
+                            <td class="text-strong">{{coCity}}</td>
+                        </tr>
+                        <tr>
+                            <th>Country:</th>
+                            <td class="text-strong">{{coName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Arrival:</th>
+                            <td class="text-strong">{{enEDDateOfArrival | date:'dd-MMM-yyyy'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Departure:</th>
+                            <td class="text-strong">{{enEDDepartureDate | date:'dd-MMM-yyyy'}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nights:</th>
+                            <td class="text-strong">{{enEDNights}}</td>
+                        </tr>
+                        <tr>
+                            <th>ETA:</th>
+                            <td class="text-strong">{{enEDTimeOfArrival}}</td>
+                        </tr>
+                        <tr>
+                            <th>Guests:</th>
+                            <td class="text-strong">{{enEDTotalPassengers}}</td>
+                        </tr>
+                        <tr>
+                            <th>Budget:</th>
+                            <td class="text-strong">{{bcDescription}}</td>
+                        </tr>
+                        <tr>
+                            <th>Currency:</th>
+                            <td class="text-strong">{{currencyName}}</td>
+                        </tr>
+                        <tr>
+                            <th>Nightly Amount:</th>
+                            <td class="text-strong">{{enEDBudgetAmount}}</td>
+                        </tr>
+                        <tr>
+                            <th>Parking Required:</th>
+                            <td class="text-strong">{{enEDParkingRequired}}</td>
+                        </tr>
+                        <tr>
+                            <th>Pets Required:</th>
+                            <td class="text-strong">{{enEDPetsRequired}}</td>
+                       </tr>
+                        <tr>
+                            <th>Pets Type:</th>
+                            <td class="text-strong">{{enEDPetsType}}</td>
+                        </tr>
+                        <tr>
+                            <th>Apartment Type:</th>
+                            <td class="text-strong">{{enEDApartmentType}}</td>
+                        </tr>
+                        <tr>
+                            <th>Comments:</th>
+                            <td class="text-strong">{{prLongDescription}}</td>
+                        </tr>
+                        <tr>
+                            <th>Special Request Notes:</th>
+                            <td class="text-strong">{{enEDComments}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Page Footer ===== -->
+    <footer class="page-footer" ng-show="InputDivVisible">
+        <div class="row">
+            <div class="medium-6 columns">
+                <div class="col-md-1 col-sm-1 col-lg-1"></div>
+                <div class="col-md-11 col-sm-11 col-lg-11">
+                    <p>
+                        <strong>The Apartment Service</strong>, 5-6 Francis Grove, London, SW19 4DT<br />
+                        Tel: +44 (0) 20 8944 1444&nbsp;&nbsp;Fax: +44 (0) 20 8944 6744<br>
+                        ©&nbsp;2001-2012 The Apartment Service
+                    </p>
+                </div>
+            </div>
+            <div class="medium-6 columns">
+                <div class="col-md-11 col-sm-11 col-lg-11">
+                    <ul class="social-list mb-10  text-right">
+                        <li><a href="/news_room/blog" title="The Apartment Service behind the scenes"><i class="fa fa-3x fa-pencil-square"></i></a></li>
+                        <li><a href="http://www.linkedin.com/companies/the-apartment-service" title="Network with us through LinkedIn"><i class="fa fa-3x fa-linkedin-square"></i></a></li>
+                        <li><a href="http://www.facebook.com/pages/The-Apartment-Service/130727753184" title="Like us on Facebook to be the first to learn about special offers and promotions"><i class="fa fa-3x fa-facebook-square"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-md-1 col-sm-1 col-lg-1"></div>
+            </div>
+        </div>
+    </footer>
+
+    <div ng-show="MessageVisible" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" style="text-align: center; border: 2px solid; border-color: grey; border-radius: 21px; padding: 47px; margin-bottom: 20em; margin-top: 10em;">
+        <div style="font-weight: 500; line-height: 29px; font-size: 17px; font-family: Georgia" ng-bind-html=Message></div>
+    </div>
+    <div ng-show="ShowMessage" class="col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1" style="text-align: center; border: 2px solid; border-color: grey; border-radius: 21px; padding: 47px; margin-bottom: 20em; margin-top: 10em;">
+        <div style="font-weight: 500; line-height: 58px; font-size: 24px; font-family: Georgia">{{Message}}</div>
+    </div>
+</body>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+<link href="~/css/base.css" rel="stylesheet" />
+<link href="~/css/plugins.css" rel="stylesheet" />
+<link href="~/css/screen.css" rel="stylesheet" />
+<!-- ===== Page Header ===== -->
+<!-- ==================== Scripts =================== -->
+<script src="~/Scripts/jquery-2.1.5.min.js"></script>
+<script src="~/Scripts/jquery.datetimepicker.js"></script>
+<script src="~/Scripts/jquery.tooltipster.min.js"></script>
+<script src="~/Scripts/jquery.validate.1.0.min.js"></script>
+<script src="~/Scripts/script-1.1.js"></script>
+
+<script src="~/Scripts/jquery-2.2.0.min.js"></script>
+<script src="~/Scripts/plugins.min.js"></script>
+<script src="~/Scripts/frameworks.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+<script type="text/javascript" src="https://rawgit.com/betsol/angular-input-date/master/src/angular-input-date.js"></script>
+<script src="~/Scripts/angular-datatables.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-sanitize.min.js"></script>
+<script src="~/Scripts/angular-mocks.js"></script>
+<script src="~/Scripts/ui-bootstrap-tpls-0.13.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.min.js"></script>
+<script src="~/Scripts/summernote.js"></script>
+<script src="~/Scripts/ui-bootstrap-tpls-0.13.4.min.js"></script>
+<script src="~/Scripts/angular-confirm.js"></script>
+<script src="~/Scripts/spin.min.js"></script>
+<script src="~/Scripts/toastr.min.js"></script>
+<script src="https://v2.apartmentservice.com/JS/tas_.searchwidget.js" type="text/javascript"></script>
+
+<script src="~/SPA/eTrakApp/00-Modules/eTrakAppModuleLandlord.js"></script>
+<script src="~/SPA/eTrakApp/14-LandLord-Email-Controller/LandLordEmailController.js"></script>
+<script src="~/SPA/eTrakApp/14-LandLord-Email-Controller/LandLordEmailService.js"></script>
+
+<script>
+    $(function () {
+        setUpDatetimepickers();
+        setUpTooltips();
+        $("#accomodation-offer-form").validate();
+    });
+</script>
+<script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "YYYY-MMM-DD HH:mm"
+    });
+</script>

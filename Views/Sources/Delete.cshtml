@@ -1,0 +1,64 @@
+﻿@model eTrak.Dal.Models.Source
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Enquiry Sources</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.soDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soAffiliate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soAffiliate)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.LanguageCode.lcCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LanguageCode.lcCode)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.soIsApproved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

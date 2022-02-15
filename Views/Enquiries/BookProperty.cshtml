@@ -1,0 +1,10 @@
+﻿@model eTrak.Dal.Models.EmailTemplate
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+            {
+    @Html.Raw(@Model.etTemplate)
+}
+

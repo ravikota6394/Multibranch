@@ -1,0 +1,636 @@
+﻿<script>
+	$(function() {
+		setUpFormUtilities();
+	});
+</script>
+
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<!-- Tabbed Navigation -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="sidebar h-sidebar navbar-collapse collapse" id="tabbed-navigation">
+			<ul class="nav nav-list">
+				<li>
+					<a ui-sref="detailsTab({enqRef: '{{glbCurrentEnquiryRef}}'})">
+						<i class="menu-icon fa fa-bars"></i>
+						<span class="menu-text">Details</span>
+					</a>
+				</li>
+				<li>
+					<a ui-sref="detailsTab.search">
+						<i class="menu-icon fa fa-search"></i>
+						<span class="menu-text">Search</span>
+					</a>
+				</li>
+				<li>
+					<a ui-sref="detailsTab.shortlist">
+						<i class="menu-icon fa fa-filter"></i>
+						<span class="menu-text">Shortlist</span>
+					</a>
+				</li>
+				<li>
+					<a ui-sref="detailsTab.emails">
+						<i class="menu-icon fa fa-envelope"></i>
+						<span class="menu-text">Emails</span>
+					</a>
+				</li>
+				<li>
+					<a ui-sref="detailsTab.actions">
+						<i class="menu-icon fa fa-magic"></i>
+						<span class="menu-text">Actions</span>
+					</a>
+				</li>
+				@*<li>
+					<a ui-sref="detailsTab.notes">
+						<i class="menu-icon fa fa-pencil-square-o"></i>
+						<span class="menu-text">Notes</span>
+					</a>
+				</li>*@
+@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("Resteam") || User.IsInRole("Client Manager")))
+{
+
+    <li>
+        <a ui-sref="detailsTab.qaCheck">
+            <i class="menu-icon fa fa-star"></i>
+            <span class="menu-text">QA Check</span>
+        </a>
+    </li>
+}
+                @*<li class="active">
+                    <a ui-sref="detailsTab.companyDetails">
+                        <i class="menu-icon fa fa-briefcase"></i>
+                        <span class="menu-text">Company Details</span>
+                    </a>
+                </li>*@
+				@*<li>
+					<a ui-sref="detailsTab.clientUsers">
+						<i class="menu-icon fa fa-user"></i>
+						<span class="menu-text">Client Users</span>
+					</a>
+				</li>*@
+				@*<li>
+					<a ui-sref="detailsTab.clientOpAgreement">
+						<i class="menu-icon fa fa-check-square"></i>
+						<span class="menu-text">Client Operations Agreement</span>
+					</a>
+				</li>*@
+				@*<li>
+					<a ui-sref="detailsTab.enquiryHistory">
+						<i class="menu-icon fa fa-history"></i>
+						<span class="menu-text">Enquiry History</span>
+					</a>
+				</li>*@
+
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- End Tabbed Navigation -->
+<!-- Company Details Tab Content -->
+<div class="row">
+	<div class="col-xs-12">
+		<div class="tab-content">
+			<div class="row">
+				<div class="col-sm-6">
+					<!-- Company Contact -->
+					<h4 class="header">Contact</h4>
+					<div class="well well-sm">
+						<form action="#" method="post">
+							<!-- Submit/Cancel Buttons -->
+							<div class="row">
+								<div class="col-xs-12 text-right">
+									<button class="btn btn-success btn-sm mb-3" type="submit">
+										<i class="ace-icon fa fa-check bigger-110"></i>
+										Save Details
+									</button>
+									<button class="btn btn-purple btn-sm mb-3" title="Reset Form" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110 icon-only"></i>
+									</button>
+								</div>
+							</div>
+							<!-- Fields -->
+							<div class="row">
+								<div class="col-md-6">
+									<!-- Field: Company name -->
+									<div class="form-group">
+										<label>Company Name</label>
+										<input class="form-control" type="text" />
+									</div>
+									<!-- Field: Office address -->
+									<div class="form-group">
+										<label>Office Address</label>
+										<textarea class="form-control h-110"></textarea>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<!-- Field: Contact name -->
+									<div class="form-group">
+										<label>Contact Name</label>
+										<input class="form-control" type="text" />
+									</div>
+									<!-- Field: Telephone -->
+									<div class="form-group">
+										<label>Telephone</label>
+										<input class="form-control" type="text" />
+									</div>
+									<!-- Field: Email -->
+									<div class="form-group">
+										<label>Email</label>
+										<input class="form-control" type="text" />
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<!-- Company Groups -->
+					<h4 class="header">Groups</h4>
+					<div class="well well-sm">
+						<form action="#" method="post">
+							<div class="row">
+								<!-- Field: Group name -->
+								<div class="col-xl-4 form-group">
+									<div class="row form-group">
+										<label class="col-sm-3 no-padding-right">Name</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" />
+										</div>
+									</div>
+								</div>
+								<!-- Field: Group leader -->
+								<div class="col-xl-4 form-group">
+									<div class="row form-group">
+										<label class="col-sm-3 no-padding-right">Leader</label>
+										<div class="col-sm-9">
+											<select class="select2 form-control">
+												<option>Please select</option>
+												<option>Option #1</option>
+												<option>Option #2</option>
+												<option>Option #3</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- Submit/Cancel Buttons -->
+								<div class="col-xl-4 form-group text-right">
+									<button class="btn btn-success btn-sm mb-3" type="submit">
+										<i class="ace-icon fa fa-check bigger-110"></i>
+										Save Group
+									</button>
+									<button class="btn btn-purple btn-sm mb-3" title="Reset Form" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110 icon-only"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+
+						<!-- Groups Table -->
+						<table class="responsive datatable-basic table table-bordered table-striped bg-grey">
+							<thead>
+								<tr>
+									<th data-class="expand" class="no-sort w-25"></th>
+									<th>ref</th>
+									<th>name</th>
+									<th>leader</th>
+									<th class="no-sort w-65">action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 1</td>
+									<td>Simon Pegg</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 2</td>
+									<td>John Smith</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 3</td>
+									<td>Albert Jones</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 1</td>
+									<td>Simon Pegg</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 2</td>
+									<td>John Smith</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Company Group 3</td>
+									<td>Albert Jones</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Edit Group" class="btn btn-minier bigger btn-info mb-3">
+												<i class="ace-icon fa fa-pencil icon-only bigger-120"></i>
+											</a>
+											<a href="#" title="Remove Group" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<!-- Preferred Properties -->
+					<h4 class="header">Preferred Properties</h4>
+					<div class="well well-sm">
+						<form action="#" method="post">
+							<div class="row">
+								<!-- Field: Property Ref -->
+								<div class="col-lg-7 col-xl-8">
+									<div class="row form-group">
+										<label class="col-sm-3 col-md-4 no-padding-right">Property Ref</label>
+										<div class="col-sm-9 col-md-8">
+											<select class="select2 form-control">
+												<option>Please select</option>
+												<option>12345678</option>
+												<option>87654321</option>
+												<option>62315489</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<!-- Submit/Cancel Buttons -->
+								<div class="col-lg-5 col-xl-4 text-right form-group">
+									<button class="btn btn-success btn-sm mb-3" type="submit">
+										<i class="ace-icon fa fa-plus bigger-110"></i>
+										Add Property
+									</button>
+									<button class="btn btn-purple btn-sm mb-3" title="Reset Form" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110 icon-only"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+
+						<!-- Preferred Properties Table -->
+						<table class="responsive datatable-basic table table-bordered table-striped bg-grey">
+							<thead>
+								<tr>
+									<th data-class="expand" class="no-sort w-25"></th>
+									<th>ref</th>
+									<th>name</th>
+									<th>address</th>
+									<th class="no-sort">action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Acacia Villas</td>
+									<td>123 Acacia Villas, Brighton, UK</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345676</td>
+									<td>Dubai Hills</td>
+									<td>420 Dubai Hills, Dubai, UAE</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Acacia Villas</td>
+									<td>123 Acacia Villas, Brighton, UK</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345676</td>
+									<td>Dubai Hills</td>
+									<td>420 Dubai Hills, Dubai, UAE</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345678</td>
+									<td>Acacia Villas</td>
+									<td>123 Acacia Villas, Brighton, UK</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td class="text-center">
+										<label>
+											<input type="checkbox" class="ace">
+											<span class="lbl"></span>
+										</label>
+									</td>
+									<td>12345676</td>
+									<td>Dubai Hills</td>
+									<td>420 Dubai Hills, Dubai, UAE</td>
+									<td class="text-center">
+										<div class="btn-group">
+											<a href="#" title="Remove Property" class="btn btn-minier bigger btn-danger mb-3">
+												<i class="ace-icon fa fa-times icon-only bigger-120"></i>
+											</a>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<!-- SLA Response Times -->
+					<h4 class="header">SLA Response Times</h4>
+					<div class="well well-sm">
+						<div class="row">
+							<!-- Field: Initial response time -->
+							<div class="col-lg-4 form-group">
+								<label>Initial Response Time</label>
+								<input class="form-control" type="text" />
+							</div>
+							<!-- Field: Follow up time -->
+							<div class="col-lg-4 form-group">
+								<label>Follow Up Time</label>
+								<input class="form-control" type="text" />
+							</div>
+							<!-- Field: Proposal creation time -->
+							<div class="col-lg-4 form-group">
+								<label>Proposal Creation Time</label>
+								<input class="form-control" type="text" />
+							</div>
+						</div>
+						<div class="row">
+							<!-- Field: Company policies -->
+							<div class="col-xs-12 form-group">
+								<label>Company Policies</label>
+								<select multiple class="select2 form-control">
+									<option>Amenity #1</option>
+									<option>Amenity #2</option>
+									<option>Amenity #3</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- Company About -->
+					<h4 class="header">About</h4>
+					<div class="well well-sm">
+						<form action="#" method="post">
+							<div class="row">
+								<div class="col-md-6">
+									<!-- Field: TAS account manager -->
+									<div class="form-group">
+										<label>TAS Account Manager</label>
+										<input class="form-control" type="text" />
+									</div>
+									<!-- Field: TAS reservations manager -->
+									<div class="form-group">
+										<label>TAS Reservations Manager</label>
+										<input class="form-control" type="text" />
+									</div>
+									<!-- Field: Company type -->
+									<div class="form-group">
+										<label>Company Type</label>
+										<select class="form-control">
+											<option>Please select</option>
+											<option>Option #1</option>
+											<option>Option #2</option>
+											<option>Option #3</option>
+										</select>
+									</div>
+								</div>
+								<!-- Field: Notes -->
+								<div class="col-md-6 form-group">
+									<label>Notes</label>
+									<textarea class="form-control h-180"></textarea>
+								</div>
+							</div>
+
+							<!-- Submit/Cancel Buttons -->
+							<div class="row">
+								<div class="col-xs-12 form-group text-right">
+									<button class="btn btn-success btn-sm mb-3" type="submit">
+										<i class="ace-icon fa fa-check bigger-110"></i>
+										Save Details
+									</button>
+									<button class="btn btn-purple btn-sm mb-3" title="Reset Form" type="reset">
+										<i class="ace-icon fa fa-undo bigger-110 icon-only"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<!-- Company Recent Notes -->
+					<h4 class="header">Recent Notes</h4>
+					<div class="well well-sm">
+						<table id="notes-table" class="responsive datatable-basic table table-striped table-bordered bg-grey">
+							<thead>
+								<tr>
+									<th data-class="expand">ref</th>
+									<th>created</th>
+									<th>user</th>
+									<th>note</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><a href="#">12345678</a></td>
+									<td>08 Oct, 10:05</td>
+									<td>Unassigned</td>
+									<td>This is note text here</td>
+								</tr>
+								<tr>
+									<td><a href="#">12345678</a></td>
+									<td>08 Oct, 10:05</td>
+									<td>Sarah Jones</td>
+									<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo, illum!</td>
+								</tr>
+								<tr>
+									<td><a href="#">12345678</a></td>
+									<td>08 Oct, 10:05</td>
+									<td>Sarah Jones</td>
+									<td>
+										Velit sed incidunt cumque quasi ullam at. Ea expedita, dicta quae reprehenderit, quis temporibus
+										veniam quod vero facilis ipsa repellendus.
+									</td>
+								</tr>
+								<tr>
+									<td><a href="#">12345678</a></td>
+									<td>08 Oct, 10:05</td>
+									<td>Sarah Jones</td>
+									<td>Email received</td>
+								</tr>
+								<tr>
+									<td><a href="#">12345678</a></td>
+									<td>08 Oct, 10:05</td>
+									<td>Sarah Jones</td>
+									<td>Shortlist updates</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div><!-- End Company Details Tab Content -->
+

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<eTrak.Dal.Models.ApartmentType>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Apartment Types</h2>
+
+@*<p>
+    <strong> @Html.ActionLink("Create New", "Create")</strong>
+</p>*@
+<p>
+    <a href="/ApartmentTypes/Create/" class="btn btn-success btn-sm">Create New</a>
+    @*<strong>@Html.ActionLink("Create New", "Create")</strong>*@
+</p>
+<div ng-controller="R_ApartmentTypes" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="ApartmentTypes" class="responsive   table table-striped table-bordered">
+        <!--added extra datatable in class to see what happens-->
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Description</th>
+                <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in ApartmentTypes ">
+                <td>{{edRec.atDescription}}</td>
+                <td>{{edRec.atStatus}}</td>
+                <td>
+                    <a href="ApartmentTypes/Edit/{{edRec.atCode}}">Edit</a> |
+                    <a href="ApartmentTypes/Details/{{edRec.atCode}}">Details</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+

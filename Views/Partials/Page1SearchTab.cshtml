@@ -1,0 +1,492 @@
+﻿<script>
+    $(function () {
+        setUpSearchWidgetResultsTable();
+        setUpFormUtilities();
+    });
+</script>
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+<!-- Tabbed Navigation -->
+<!-- Search Tab Content -->
+<!-- Tabbed Navigation -->
+<div class="row">
+    <div class="col-xs-12">
+        <div class="sidebar h-sidebar navbar-collapse collapse" id="tabbed-navigation">
+            <ul class="nav nav-list">
+                <li class="">
+                    <a ui-sref="detailsTab({enqRef: '{{glbCurrentEnquiryRef}}'})">
+                        <i class="menu-icon fa fa-bars"></i>
+                        <span class="menu-text">Details</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a ui-sref="detailsTab.search">
+                        <i class="menu-icon fa fa-search"></i>
+                        <span class="menu-text">Search</span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="detailsTab.shortlist">
+                        <i class="menu-icon fa fa-filter"></i>
+                        <span class="menu-text">Shortlist</span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="detailsTab.emails">
+                        <i class="menu-icon fa fa-envelope"></i>
+                        <span class="menu-text">Emails</span>
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="detailsTab.actions">
+                        <i class="menu-icon fa fa-magic"></i>
+                        <span class="menu-text">Actions</span>
+                    </a>
+                </li>
+
+                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("Resteam") || User.IsInRole("Client Manager")))
+                {
+                    <li>
+                        <a ui-sref="detailsTab.qaCheck">
+                            <i class="menu-icon fa fa-star"></i>
+                            <span class="menu-text">QA Check</span>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div><!-- End Tabbed Navigation -->
+
+<div class="row">
+    <div>
+        <div>
+            <div class="col-xs-12">
+                <div class="tab-content">
+                    <div>
+                        <div ng-controller="R_Properties">
+                            @*{{title}}*@
+                            <div ng-controller="R_EnquiryFilters">
+                                @*{{efok}}*@
+                                <h4 class="header">
+                                    Property Search
+                                </h4>
+                                <div>
+                                    <div class="widget-box transparent">
+                                        <div class="widget-header">
+                                            <h5 class="widget-title">
+                                                Filters
+                                            </h5>
+                                            <div class="widget-toolbar">
+                                                <a data-action="collapse">
+                                                    <i class="ace-icon fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <div class="widget-body">
+                                            <div class="widget-main no-padding">
+                                                <div id="enquiryFilters" class="scrollable display" width="100%" data-height="325">
+                                                    <table id="idEnquiryFilters" show-filter="true" datatable="ng" dt-options="efOptions" class="responsive   table table-striped table-bordered">
+                                                        <!--added extra datatable in class to see what happens-->
+                                                        <thead class="thin-border-bottom">
+                                                            <tr>
+                                                                <th data-class="expand"><div class="col-xs-3">Filter Name</div></th>
+                                                                <th data-hide="screen_xs,screen_sm"><div class="col-xs-3">Filter Summary</div></th>
+                                                                <th data-hide="screen_xs,screen_sm">Action</th>
+                                                                <th data-hide="screen_xs,screen_sm">Search</th>
+                                                                <th data-hide="screen_xs,screen_sm">Copy Filter</th>
+                                                                <th data-hide="screen_xs,screen_sm"><div class="col-xs-6">Details</div></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr ng-repeat="ef in EnquiryFilters">
+                                                                <td>
+                                                                    <span width="100%">
+                                                                        {{ef.efFilterName}}
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ef.efFilterSummary}}</td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-info" type="button" ng-click="deleteFilter(ef.ID)">
+                                                                        Remove
+                                                                    </button>
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-info" type="button" ng-click="searchWithFilter(ef.efHtmlUrl);">
+                                                                        Search
+                                                                    </button>
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-sm btn-info" type="button" ng-click="copyFilter(ef.ID);">
+                                                                        Copy Filter
+                                                                    </button>
+                                                                </td>
+                                                                <td width="200">
+                                                                    <div ng-controller="R_Countries">
+                                                                        <div ng-controller="R_Cities">
+                                                                            <div ng-controller="R_ApartmentTypes">
+                                                                                <div ng-controller="R_BudgetCategories">
+                                                                                    <div>
+                                                                                        <div>
+                                                                                            <div class="col-xs-12 col-lg-12">
+                                                                                                <div class="widget-box transparent collapsed">
+                                                                                                    <div class="widget-header">
+                                                                                                        <h5 class="widget-title">
+                                                                                                            Details
+                                                                                                        </h5>
+                                                                                                        <div class="widget-toolbar">
+                                                                                                            <a data-action="collapse">
+                                                                                                                <i class="ace-icon fa fa-chevron-down"></i>
+                                                                                                            </a>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="widget-body">
+                                                                                                        <div class="widget-main no-padding">
+                                                                                                            <!-- Copied iFrame Html here -->
+                                                                                                            <div class="filters">
+                                                                                                                <div class="filters-inner">
+                                                                                                                    <form id="efDetails">
+                                                                                                                        <div>
+                                                                                                                            <!--Keywords-->
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Filter Name:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Filter Name content -->
+                                                                                                                                    <div class="col-md-4 form-group">
+                                                                                                                                        <input id="idEFFilterName-{{ef.ID}}" ng-model="ef.efFilterName" class="form-control" placeholder="Enter Name of Filter">
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div><!-- / Filter Names -->
+                                                                                                                            <hr class="hr-dashed" style="width: 1000px;" />
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Destination:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Country -->
+                                                                                                                                    <div class="col-md-5 form-group">
+                                                                                                                                        <label>Country</label><br />
+                                                                                                                                        <input ng-model="ef.efCountryCode" id="idEFCountryCode-{{ef.ID}}" class="form-control" type="hidden" />
+                                                                                                                                        <input readonly ng-model="ef.efCountry" id="idEFCountryCode-{{ef.ID}}" class="form-control" type="text" style="width: 300px;" />
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: City -->
+                                                                                                                                    <div class="col-md-5 form-group">
+                                                                                                                                        <label>City</label><br />
+                                                                                                                                        <ui-select id="idEFCityCode-{{ef.ID}}" on-select="selectCityFunction($model, ef.ID,$select)" ng-model="ef.efCityCode" class="form-control" style="width: 100%">
+                                                                                                                                            <ui-select-match placeholder="Please select a City">{{$select.selected.ciDescription }}</ui-select-match>
+                                                                                                                                            <ui-select-choices repeat="RCRec.ciCode as RCRec in Cities |  orderBy:['ciDescription'] | citiesFilter : DTEnquiry.enProgress : $select.search | filter: $select.search" ui-disable-choice="RCRec.ciStatus != 'L'">
+                                                                                                                                                {{ RCRec.ciDescription }}, {{ RCRec.coName }}
+                                                                                                                                                <div ng-bind-html="RCRec.ciCode | highlight: {{ef.efCityCode}}"></div>
+                                                                                                                                            </ui-select-choices>
+                                                                                                                                        </ui-select>
+
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Dates:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Arrival date -->
+                                                                                                                                    <div class="col-sm-6 col-xl-3 form-group">
+                                                                                                                                        <div ng-controller="DPEFControllerDateOfArrival">
+                                                                                                                                            <label>Arrival Date</label><br />
+                                                                                                                                            <p class="input-group">
+                                                                                                                                                <input type="text" id="idEFDateOfArrival-{{ef.ID}}" class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="ef.efDateOfArrival" show-weeks="false" is-open="status.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                                                                                                                                <span class="input-group-btn">
+                                                                                                                                                    <a class="btn btn-sm btn-default no-border">
+                                                                                                                                                        <i class="fa fa-calendar bigger-110" ng-click="open($event)"></i>
+                                                                                                                                                    </a>
+                                                                                                                                                </span>
+                                                                                                                                            </p>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Departure date -->
+                                                                                                                                    <div class="col-sm-6 col-xl-3 form-group">
+                                                                                                                                        <div ng-controller="DPEFControllerDepartureDate">
+                                                                                                                                            <label>Departure Date</label><br />
+                                                                                                                                            <p class="input-group">
+                                                                                                                                                <input type="text" id="idEFDepartureDate-{{ef.ID}}" class="form-control" datepicker-popup="dd-MMM-yyyy" ng-model="ef.efDepartureDate" show-weeks="false" is-open="status.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                                                                                                                                                <span class="input-group-btn">
+                                                                                                                                                    <a class="btn btn-sm btn-default no-border">
+                                                                                                                                                        <i class="fa fa-calendar bigger-110" ng-click="open($event)"></i>
+                                                                                                                                                    </a>
+                                                                                                                                                </span>
+                                                                                                                                            </p>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Nights of stay -->
+                                                                                                                                    <div class="col-sm-6 col-xl-3 form-group">
+                                                                                                                                        <label>Nights of Stay</label><br />
+                                                                                                                                        <input readonly id='idEFNights-{{ef.ID}}' ng-model="ef.efNights" id="nights-of-stay" class="form-control" type="text" />
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <!-- / Dates -->
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <!-- Apartment -->
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Apartment:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Budget -->
+                                                                                                                                    <div class="col-md-5 form-group">
+                                                                                                                                        <label>Budget</label><br />
+                                                                                                                                        <ui-select style="width: 100%" id="idEFBudgetCategoryCode-{{ef.ID}}" ng-model="ef.efBudgetCategoryCode" on-select="selectBudgetCategoryFunction($model, ef.ID,$select)" class="form-control">
+                                                                                                                                            <ui-select-match placeholder="Please select Apartment Type">{{$select.selected.bcDescription}}</ui-select-match>
+                                                                                                                                            <ui-select-choices repeat="RTRec.bcCode as RTRec in BudgetCategories |  orderBy:['bcDescription']| filter: $select.search" ui-disable-choice="RTRec.bcStatus != 'L'">
+                                                                                                                                                {{ RTRec.bcDescription}}
+                                                                                                                                                <div ng-bind-html="RTRec.bcCode | highlight: {{ef.efBudgetCategoryCode}}"></div>
+                                                                                                                                            </ui-select-choices>
+                                                                                                                                        </ui-select>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Field: Apartment Type -->
+                                                                                                                                    <div class="col-md-5 form-group">
+                                                                                                                                        <label>Apartment Type</label><br />
+                                                                                                                                        <ui-select style="width: 100%" id="idEFApartmentTypeCode-{{ef.ID}}" ng-model="ef.efApartmentTypeCode" on-select="selectApartmentTypeFunction($model, ef.ID,$select)" class="form-control">
+                                                                                                                                            <ui-select-match placeholder="Please select Apartment Type">{{$select.selected.atDescription}}</ui-select-match>
+                                                                                                                                            <ui-select-choices repeat="RTRec.atCode as RTRec in ApartmentTypes |  orderBy:['atDescription'] | apartmentTypeFilter : DTEnquiry.enProgress : $select.search | filter: $select.search" ui-disable-choice="RTRec.atStatus != 'L'">
+                                                                                                                                                {{ RTRec.atDescription}}
+                                                                                                                                                <div ng-bind-html="RTRec.atCode | highlight: {{ef.efApartmentTypeCode}}"></div>
+                                                                                                                                            </ui-select-choices>
+                                                                                                                                        </ui-select>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <!-- / Apartment -->
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <!-- Amenities -->
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Amenities:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <div class="col-md-3 form-group">
+                                                                                                                                            <label class="checkbox-inline">
+                                                                                                                                                <input type="checkbox" id="idEFPetFriendly-{{ef.ID}}" ng-true-value="1" ng-false-value="0" ng-click="doPrimaryContactChoiceCD();" ng-model='ef.efPetFriendly'>&nbsp;&nbsp; Pets Friendly
+                                                                                                                                            </label>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-3 form-group">
+                                                                                                                                            <label class="checkbox-inline">
+                                                                                                                                                <input type="checkbox" id="idEFWheelchairAccess-{{ef.ID}}" ng-true-value="1" ng-false-value="0" ng-click="doPrimaryContactChoiceCD();" ng-model='ef.efWheelchairAccess'>&nbsp;&nbsp; Wheelchair Access
+                                                                                                                                            </label>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-3 form-group">
+                                                                                                                                            <label class="checkbox-inline">
+                                                                                                                                                <input type="checkbox" id="idEFWasherDryer-{{ef.ID}}" ng-true-value="1" ng-false-value="0" ng-click="doPrimaryContactChoiceCD();" ng-model='ef.efWasherDryer'>&nbsp;&nbsp; Washer/Dryer
+                                                                                                                                            </label>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-3 form-group">
+                                                                                                                                            <label class="checkbox-inline">
+                                                                                                                                                <input type="checkbox" id="idEFParking-{{ef.ID}}" ng-true-value="1" ng-false-value="0" ng-click="doPrimaryContactChoiceCD();" ng-model='ef.efParking'> &nbsp;&nbsp;Parking
+                                                                                                                                            </label>
+                                                                                                                                        </div>
+                                                                                                                                        <div class="col-md-3 form-group">
+                                                                                                                                            <label class="checkbox-inline">
+                                                                                                                                                <input type="checkbox" id="idEFSecurity-{{ef.ID}}" ng-true-value="1" ng-false-value="0" ng-click="doPrimaryContactChoiceCD();" ng-model='ef.efSecurity'> &nbsp;&nbsp;Security
+                                                                                                                                            </label>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <!-- / Amenities -->
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <!-- Guests -->
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Guests:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <div class="col-xs-6 col-sm-6 col-md-6">
+                                                                                                                                        <div>
+
+                                                                                                                                            <div class="col-md-4 form-group">
+                                                                                                                                                <label>Total Guests</label><br />
+                                                                                                                                                <input ng-model="ef.efTotalPassengers" id="idEFTotalPassengers-{{ef.ID}}" class="" type="number" min="0" max="99" />
+                                                                                                                                            </div>
+
+                                                                                                                                            <!-- Field: Total Adults -->
+                                                                                                                                            <div class="col-md-4 form-group">
+                                                                                                                                                <label>Total Adults</label><br />
+                                                                                                                                                <input ng-model="ef.efNoAdultPassengers" id="idEFNoAdultPassengers-{{ef.ID}}" class="" type="number" min="0" max="99" />
+                                                                                                                                            </div>
+                                                                                                                                            <!-- Field: Total Children -->
+                                                                                                                                            <div class="col-md-4 form-group">
+                                                                                                                                                <label>Total Children</label><br />
+                                                                                                                                                <input ng-model="ef.efNoChildren" id="idEFNoChildren-{{ef.ID}}" class="" type="number" min="0" max="99" />
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                        <!-- Guests content -->
+                                                                                                                                    </div><!-- / Guests content -->
+                                                                                                                                </div>
+                                                                                                                            </div><!-- / Guests -->
+                                                                                                                            <!-- Property -->
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Property:</label>
+                                                                                                                                    </div>
+
+                                                                                                                                    <div @*class="col-xs-6 col-sm-6 col-md-6"*@>
+                                                                                                                                        <div>
+                                                                                                                                            <!-- Field: Specific Apartment -->
+                                                                                                                                            <div class="col-md-3 form-group">
+                                                                                                                                                <label>Specific Apartment</label>
+                                                                                                                                                <input style="width: 200px;" ng-model="ef.efSpecificApartment" id="idEFSpecificApartment-{{ef.ID}}" type="text" class="form-control" />
+                                                                                                                                            </div>
+
+                                                                                                                                            <div class="col-md-3 form-group">
+                                                                                                                                                <label>Chain Name</label>
+                                                                                                                                                <input style="width: 200px;" id="idEFChainName-{{ef.ID}}" class="form-control" placeholder="Chain Name" ng-model="ef.efChainName">
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div><!-- / Property content -->
+                                                                                                                                </div><!-- / Property -->
+                                                                                                                            </div>
+                                                                                                                            <!-- / Property-->
+                                                                                                                            <hr class="hr-dashed" style="width: 100%;" />
+                                                                                                                            <!--Keywords-->
+                                                                                                                            <div class="row">
+                                                                                                                                <div class="col-xs-12 filter-section">
+                                                                                                                                    <div class="col-xs-2 col-sm-2 col-md-2">
+                                                                                                                                        <label>Keywords:</label>
+                                                                                                                                    </div>
+                                                                                                                                    <!-- Keywords content -->
+                                                                                                                                    <div class="col-md-4 form-group">
+                                                                                                                                        <input id="idEFKeyWords-{{ef.ID}}" ng-model="ef.efKeyWords" style="width: 500px;" @* class="form-control"*@ placeholder="eg. leisure, business, city, sea etc.">
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div><!-- / Keywords -->
+
+                                                                                                                            <div class="row">
+                                                                                                                                <!--P_D-->
+                                                                                                                                <div class="col-xs-12 text-center">
+
+                                                                                                                                    <button @*unsaved-warning-clear*@ ng-click="doSave(ef.ID);" class="btn btn-success btn-lg mb-10">
+                                                                                                                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                                                                                                                        Save Filter and Search
+                                                                                                                                    </button>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div><!-- / Save Button -->
+                                                                                                                    </form>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- END Filters -->
+
+                                <div class="widget-box transparent">
+                                    <div class="widget-header">
+                                        <h5 class="widget-title">
+                                            Chosen Properties
+                                        </h5>
+                                        <input id="idSearchProperty" ng-model="chosenProperty.Name" ng-keyup="selectPropertyName(chosenProperty.Name)" />
+                                        <button class="btn btn-sm btn-info" type="button" ng-click="AddChosenPropertyToTable()">
+                                            Add Property
+                                        </button><br />
+                                        <select class="form-group" ng-hide="autoDropdownForProperty" size="10" id="autoComplete" ng-change="selectedProperty(chosenProperty)" ng-model="chosenProperty" value="{{c.PropertyID}}" ng-options="c.Name for c in chosenPropertyDetails"></select>
+
+                                        <div class="widget-toolbar">
+                                            <a data-action="collapse">
+                                                <i class="ace-icon fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="widget-body">
+                                        <div class="widget-main no-padding">
+                                            <div id="chosenProperties" class="scrollable display" width="100%" data-height="325">
+                                                <table id="idSearchWidgetResults" show-filter="true" datatable="ng" dt-options="swOptions" class="responsive   table table-striped table-bordered">
+                                                    <!--added extra datatable in class to see what happens-->
+                                                    <thead class="thin-border-bottom">
+                                                        <tr>
+                                                            <th data-class="expand">Property ID#</th>
+                                                            <th data-hide="screen_xs,screen_sm">Property Name</th>
+                                                            <th data-hide="screen_xs,screen_sm">Property Info</th>
+                                                            <th data-hide="screen_xs,screen_sm">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr ng-repeat="property in ChosenProperties">
+                                                            <td>{{property.prPropertyCode}}</td>
+                                                            <td class="search-preview">
+                                                                <a class="email-preview-trigger">{{ property.prShortDescription }}</a>
+                                                                <p class="email-preview-text">{{ property.prLongDescription }}</p>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-info" type="button" ng-click="displayPropertyInfo(property.prPropertyPopUpHTML,property.prName,property.prPropertyCode)">
+                                                                    Property Info
+                                                                </button>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-info" type="button" ng-click="onPropertyRemoved(property.ID,property.prPropertyCode)">
+                                                                    Remove
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <iframe id="searchWidget" ng-src="{{iFrameHTML}}" height="500" width="100%" seamless frameborder="0"></iframe>
+                                <hr class="hr-dashed" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Search Tab Content -->
+<!--Modal for displaying properties error-->
+<div class="modal fade" id="propertiesModal" @*data-backdrop="static" data-keyboard="false"*@ role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 style="text-align:center">Property is already in the selected properties list.</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal for displaying properties error-->

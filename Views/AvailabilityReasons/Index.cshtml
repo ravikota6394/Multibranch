@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>No Availability Reasons</h2>
+
+<p>
+    <a href="/AvailabilityReasons/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="AvailabilityReasons" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="availabilityReasons" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Reason</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="availabilityReason in availabilityReasons ">
+            <td>{{availabilityReason.av_Reason}}</td>
+            <td>
+                <a href="AvailabilityReasons/Edit/{{availabilityReason.av_Id}}">Edit</a> |
+                <a href="AvailabilityReasons/Details/{{availabilityReason.av_Id}}">Details</a> |
+                <a href="AvailabilityReasons/Delete/{{availabilityReason.av_Id}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+</div>
+

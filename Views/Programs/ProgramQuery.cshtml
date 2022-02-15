@@ -1,0 +1,179 @@
+﻿﻿@model eTrak.Controllers.ProgramWithRoles
+
+@{
+    ViewBag.Title = "ProgramQuery";
+}
+
+<h2>Query</h2>
+
+<div ng-controller="Programs">
+
+    <div class="queryElements">
+        <ul class="programQueryUl">
+            <li>
+                <a ng-click="getAuditDetails()">Audit</a> |
+                <a ng-click="getProgramSyntax()">Syntax</a>
+            </li>
+        </ul>
+    </div>
+
+    <form class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-sm-2 queryLabel"></label>
+            <div class="col-sm-10">
+                <label class="display-none" id="progressBar">Schedule run is in progress...</label>
+            </div>
+        </div>
+
+        <div></div><div></div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2 queryLabel">Name:</label>
+            <div class="col-sm-10">
+                @*<label class="queryNameLabel">@Html.DisplayFor(model => model.pgProgramName)</label>*@
+                <div class="display-none">
+                    @Html.EditorFor(model => model.pgId, new { htmlAttributes = new { @class = "form-control", id = "programId" } })
+                </div>
+                <div>
+                    @Html.EditorFor(model => model.pgProgramName, new { htmlAttributes = new { @class = "form-control", id = "programName", style = "width: 726px;" } })
+                </div>
+                <label id="scriptName" hidden style="color: red; display: none"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2 queryLabel">Query:</label>
+            <div class="col-sm-10">
+                <textarea rows="16" cols="100" ng-model="programQuery" style="resize: both" id="programQuery"></textarea>
+                <input class="display-none" type="text" ng-model="programQueryId" />
+                <label id="scriptQuery" hidden style="color: red; display: none"></label>
+            </div>
+        </div>
+
+        <label class="control-label col-sm-2 queryLabel">Visible to:</label>
+        <div class="col-md-10" id="checkboxes">
+            @foreach (var user in Model.UserRoles)
+            {
+                if (Model.selectedrole.Contains(user.id))
+                {
+                    <input type="checkbox" id="userrole" name="selectedrole" value="@user.id" checked />@user.name
+                }
+                else
+                {
+                    <input type="checkbox" id="userrole" name="selectedrole" value="@user.id" />@user.name
+                }
+            }
+        </div>
+
+        <div class="col-sm-offset-2 col-sm-10">
+            <label id="scriptRoles" hidden style="color: red; display: none"></label>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a class="btn btn-success btn-sm" ng-disabled="programInitialized == true ? true : false" ng-click="saveProgramQuery()">Save</a>
+                <a class="btn btn-success btn-sm" ng-disabled="programInitialized == true ? true : false" ng-click="runProgramQuery()">Run now</a>
+                <a class="btn btn-success btn-sm" ng-disabled="programInitialized == true || programQueryId == undefined ? true : false" ng-click="initializeOrStopQueryRun(true)">Run Continuously</a>
+                <a class="btn btn-danger btn-sm" ng-disabled="programInitialized != true || programQueryId == undefined ? true : false" ng-click="initializeOrStopQueryRun(false)">Stop</a>
+                <a class="btn btn-info btn-sm" ng-disabled="programRunning == false ? true : false || programRunning == null ? true : false" ng-click="pauseOrResumeQuery(true)">Pause</a>
+                <a class="btn btn-info2 btn-sm" ng-disabled="programPaused == false ? false : true" ng-click="pauseOrResumeQuery(false)">Resume</a>
+                <a class="btn btn-primary btn-sm" ng-click="beautifyXml(programQuery, 'Query')">Beautify</a>
+                <a class="btn btn-danger btn-sm" ng-click="DeleteScript(programIdValue)">Delete</a>
+            </div>
+        </div>
+
+    </form>
+
+
+
+    <!---Modal for displaying sucess message-->
+    <div class="modal fade" id="programQuerySuccess" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body center">
+                    <h5>{{Status}}</h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--Ended Modal for displaying sucess message-->
+    <!--Modal for displaying Audit details-->
+    <div class="modal fade" id="id_QueryAuditDetails" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title alignCenter">Audit Details</h4>
+                </div>
+                <div class="modal-body">
+                    <table datatable="ng" dt-options="dtqueryAudit" class="responsive table table-bordered table-striped">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th data-hide="screen_xs">Description</th>
+                                <th data-hide="screen_xs">Created Date</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="queryAudit in queryAuditDetails">
+                            <td>{{queryAudit.paDescription}}</td>
+                            <td>{{queryAudit.paCreatedDate | date:'dd-MMM-yyyy HH:mm'}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for displaying Audit details-->
+    <!--Modal for displaying Syntax details-->
+    <div class="modal fade" id="programSyntax" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title alignCenter">Program Syntax</h4>
+                </div>
+                <div class="modal-body center">
+                    <textarea rows="20" cols="100" ng-model="programSyntax">{{programSyntax}}</textarea>
+                </div>
+                <div class="modal-footer center">
+                    <a class="btn btn-primary btn-sm" ng-click="beautifyXml(programSyntax, 'Syntax')">Beautify</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for displaying Syntax details-->
+    <!--Modal for confirming ScriptDelete-->
+    <div class="modal fade" id="id_DeleteScript" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" style="text-align:center"></h4>
+                </div>
+                <div class="modal-body">
+                    <h5 style="text-align:center">Are you sure to delete this Script?</h5>
+                </div>
+                <div class="modal-footer">
+                    <div>
+                        <button type="button" class="btn btn-success" ng-click="DeleteScriptCofirm()" id="id_ConfirmScriptDelete">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended Modal for confirming ScriptDelete-->
+
+</div>

@@ -1,0 +1,481 @@
+﻿<script>
+
+    setUpFormUtilities();
+    setUpActionNew();
+    //var $window = $(window),
+    //    $stickyEl = $('#the-sticky-div'),
+    //    elTop = $stickyEl.offset().top;
+
+    //$window.scroll(function () {
+    //    $stickyEl.toggleClass('sticky', $window.scrollTop() > elTop);
+    //});
+
+</script>
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<div>
+    <!-- Tabbed Navigation -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="sidebar h-sidebar navbar-collapse collapse" id="tabbed-navigation">
+                <ul class="nav nav-list">
+                    <li>
+                        <a ui-sref="detailsTab({enqRef: '{{glbCurrentEnquiryRef}}'})">
+                            <i class="menu-icon fa fa-bars"></i>
+                            <span class="menu-text">Details</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="detailsTab.search">
+                            <i class="menu-icon fa fa-search"></i>
+                            <span class="menu-text">Search</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="detailsTab.shortlist">
+                            <i class="menu-icon fa fa-filter"></i>
+                            <span class="menu-text">Shortlist</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="detailsTab.emails">
+                            <i class="menu-icon fa fa-envelope"></i>
+                            <span class="menu-text">Emails</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a ui-sref="detailsTab.actions">
+                            <i class="menu-icon fa fa-magic"></i>
+                            <span class="menu-text">Actions</span>
+                        </a>
+                    </li>
+                    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("Resteam") || User.IsInRole("Client Manager")))
+                    {
+                        <li>
+                            <a ui-sref="detailsTab.qaCheck">
+                                <i class="menu-icon fa fa-star"></i>
+                                <span class="menu-text">QA Check</span>
+                            </a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div><!-- End Tabbed Navigation -->
+    <!-- Actions Tab Content -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tab-content">
+                <!-- Add New Action -->
+                <div class="widget-box transparent">
+                    <div class="widget-header">
+                        <h4 class="widget-title">
+                            Add New Action
+                        </h4>
+                        @*<div class="widget-box transparent">
+                            <div class="widget-header">
+                                <h5 class="widget-title">
+                                    Filters
+                                </h5>
+                                <div class="widget-toolbar">
+                                    <a data-action="collapse">
+                                        <i class="ace-icon fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="widget-body"   id="the-sticky-div">
+                                <div class="widget-main no-padding">
+                                    <div ng-controller="R_EnquiryFilters">
+                                        <table id="idEnquiryFilters" show-filter="true" datatable="ng" dt-options="efOptions" class="responsive   table table-striped table-bordered">
+                                            <thead class="thin-border-bottom">
+                                            <tr>
+                                                <th data-class="expand"><div class="col-xs-3">Filter Name</div></th>
+                                                <th data-hide="screen_xs,screen_sm"><div class="col-xs-3">Filter Summary</div></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="ef in EnquiryFilters">
+                                                <td>{{ef.efFilterName}}</td>
+                                                <td>{{ef.efFilterSummary}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                        <div class="widget-toolbar">
+                            <a data-action="collapse" href="#">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    @*<div ng-controller="R_Users">*@
+                    <div ng-controller="R_DeadReasons">
+                      <div ng-controller="Programs">
+                      <div ng-controller="P_ShortlistTab">
+                          <div ng-controller="P_ActionsTab">
+                            <div class="widget-body">
+                                <div class="widget-main bg-light-grey">
+                                    @*<form action="#" method="post">*@
+                                    <div class="row">
+                                        <!-- Field: User assigned -->
+                                        <div class="col-sm-4 col-xl-3">
+                                            <div class="row form-group">
+                                                <label class="col-lg-4 no-padding-right">User Assigned</label>
+                                                <div class="col-lg-8">
+
+                                                    <ui-select id="idDTenEDUserAssigned" ng-model="actionsRecord.trUserCode" class="form-control" ng-disabled="false">
+                                                        <ui-select-match placeholder="Please select a User">{{$select.selected.usDescription}}</ui-select-match>
+                                                        <ui-select-choices repeat="RTRec.usCode as RTRec in Users | orderBy : 'usCode' | liveUsersFilter : $select.search | filter: $select.search" ui-disable-choice="RTRec.usStatus != 'L'">
+                                                            {{ RTRec.usCode}} - {{ RTRec.usDescription}}
+                                                            <div ng-bind-html="RTRec.usCode | highlight: {{actions.trUserCode}}"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    @*<input class="form-control" type="text" ng-model="DTEnquiry.enEDUserAssigned" readonly="readonly" />*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Field: Add delay -->
+                                        <div class="col-sm-4 col-xxl-4">
+                                            <div ng-controller="DPATNextActionDate"> 
+                                                <div class="row form-group">
+                                                    <label class="col-lg-4 no-padding-right">Add Time Delay to Next Action being:-<br /> {{disActionTabPage.disDateNextAction}}</label>
+                                                    <div class="col-lg-8 col-sm-8 col-md-8">
+                                                        <p>
+                                                            <span class="col-lg-2" style="padding-left:0px">
+                                                                <select id="idDTenTRDayLastActioned" name="menu" ng-model="actionsRecord.trDayNextAction" style="width:60px;padding-left:0px;">
+                                                                    <option value="">Day</option>
+                                                                    <option value="1">01</option>
+                                                                    <option value="2">02</option>
+                                                                    <option value="3">03</option>
+                                                                    <option value="4">04</option>
+                                                                    <option value="5">05</option>
+                                                                    <option value="6">06</option>
+                                                                    <option value="7">07</option>
+                                                                    <option value="8">08</option>
+                                                                    <option value="9">09</option>
+                                                                    <option value="10">10</option>
+                                                                    <option value="11">11</option>
+                                                                    <option value="12">12</option>
+                                                                    <option value="13">13</option>
+                                                                    <option value="14">14</option>
+                                                                    <option value="15">15</option>
+                                                                    <option value="16">16</option>
+                                                                    <option value="17">17</option>
+                                                                    <option value="18">18</option>
+                                                                    <option value="19">19</option>
+                                                                    <option value="20">20</option>
+                                                                    <option value="21">21</option>
+                                                                    <option value="22">22</option>
+                                                                    <option value="23">23</option>
+                                                                    <option value="24">24</option>
+                                                                    <option value="25">25</option>
+                                                                    <option value="26">26</option>
+                                                                    <option value="27">27</option>
+                                                                    <option value="28">28</option>
+                                                                    <option value="29">29</option>
+                                                                    <option value="30">30</option>
+                                                                    <option value="31">31</option>
+                                                                </select>
+                                                            </span>
+                                                            <span class="col-lg-3">
+                                                                <select id="idDTenTRMonthLastActioned" style="width: 68px;padding-left:0px;" name="menu" ng-model="actionsRecord.trMonthNextAction">
+                                                                    <option value="">Month</option>
+                                                                    <option value="1">Jan</option>
+                                                                    <option value="2">Feb</option>
+                                                                    <option value="3">Mar</option>
+                                                                    <option value="4">Apr</option>
+                                                                    <option value="5">May</option>
+                                                                    <option value="6">Jun</option>
+                                                                    <option value="7">Jul</option>
+                                                                    <option value="8">Aug</option>
+                                                                    <option value="9">Sep</option>
+                                                                    <option value="10">Oct</option>
+                                                                    <option value="11">Nov</option>
+                                                                    <option value="12">Dec</option>
+                                                                </select>
+                                                            </span>
+                                                            <span class="col-lg-1" style="padding-left:0px">
+                                                                <input type="text" placeholder="YYYY" style="width:38px;height: 25px;" ng-model="actionsRecord.trYearNextAction" id="idDTenTRYearLastActioned" />
+                                                            </span>
+                                                            <span class="col-lg-2">
+                                                                <input type="text" placeholder="HH:mm" style="width: 54px;height:25px;" ng-model="actionsRecord.trNextTimeAction" id="idDTenTRTimeLastActioned" />
+                                                            </span>
+                                                             <span class="col-lg-4">
+                                                                 <select id="idDTenEDUTCLastActioned" style="width:101px;padding-left:0px;" name="menu" ng-model="actionsRecord.trUTCNextAction">
+                                                                     <option value="UTC -12:00">UTC -12:00</option>
+                                                                     <option value="UTC -11:00">UTC -11:00</option>
+                                                                     <option value="UTC -10:00">UTC -10:00</option>
+                                                                     <option value="UTC -09:30">UTC -09:30</option>
+                                                                     <option value="UTC -09:00">UTC -09:00</option>
+                                                                     <option value="UTC -08:00">UTC -08:00</option>
+                                                                     <option value="UTC -07:00">UTC -07:00</option>
+                                                                     <option value="UTC -06:00">UTC -06:00</option>
+                                                                     <option value="UTC -05:00">UTC -05:00</option>
+                                                                     <option value="UTC -04:30">UTC -04:30</option>
+                                                                     <option value="UTC -04:00">UTC -04:00</option>
+                                                                     <option value="UTC -03:30">UTC -03:30</option>
+                                                                     <option value="UTC -03:00">UTC -03:00</option>
+                                                                     <option value="UTC -02:00">UTC -02:00</option>
+                                                                     <option value="UTC -01:00">UTC -01:00</option>
+                                                                     <option value="UTC 00:00">UTC 00:00</option>
+                                                                     <option value="UTC +01:00">UTC +01:00</option>
+                                                                     <option value="UTC +02:00">UTC +02:00</option>
+                                                                     <option value="UTC +03:00">UTC +03:00</option>
+                                                                     <option value="UTC +03:30">UTC +03:30</option>
+                                                                     <option value="UTC +04:00">UTC +04:00</option>
+                                                                     <option value="UTC +04:30">UTC +04:30</option>
+                                                                     <option value="UTC +05:00">UTC +05:00</option>
+                                                                     <option value="UTC +05:30">UTC +05:30</option>
+                                                                     <option value="UTC +05:45">UTC +05:45</option>
+                                                                     <option value="UTC +06:00">UTC +06:00</option>
+                                                                     <option value="UTC +06:30">UTC +06:30</option>
+                                                                     <option value="UTC +07:00">UTC +07:00</option>
+                                                                     <option value="UTC +08:00">UTC +08:00</option>
+                                                                     <option value="UTC +08:45">UTC +08:45</option>
+                                                                     <option value="UTC +09:00">UTC +09:00</option>
+                                                                     <option value="UTC +09:30">UTC +09:30</option>
+                                                                     <option value="UTC +10:00">UTC +10:00</option>
+                                                                     <option value="UTC +10:30">UTC +10:30</option>
+                                                                     <option value="UTC +11:00">UTC +11:00</option>
+                                                                     <option value="UTC +11:30">UTC +11:30</option>
+                                                                     <option value="UTC +12:00">UTC +12:00</option>
+                                                                     <option value="UTC +12:45">UTC +12:45</option>
+                                                                     <option value="UTC +13:00">UTC +13:00</option>
+                                                                     <option value="UTC +14:00">UTC +14:00</option>
+                                                                 </select>
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-- Field: Fivestar ref: -->
+                                        <div class="col-sm-4 col-xxl-3">
+                                            <div class="row form-group">
+                                                <label class="col-lg-4 no-padding-right">Fivestar Ref:</label>
+                                                <div class="col-lg-8">
+                                                    <input readonly ng-model="actionTabs.enECFiveStarRef" id="idDTenECFiveStarRef" class="form-control" type="text" maxlength="12" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <div class="row">
+                                    @*<div class="col-sm-3 col-xl-3 col-md-3">
+                                            <div class="row">
+                                                  <!--Field: Close Enquiry-->
+                                                <div class="col-sm-4 col-md-3 no-padding-right display-none">
+                                                    <label>
+                                                        <button class="btn   {{atDisableDeadReasonButtonClassType}} btn-sm mb-3" ng-click="atToCloseEnquiry()">
+                                                            <i class="ace-icon  {{atDisableDeadReasonButtonClass}} bigger-110"></i>
+                                                            {{atDisableDeadReasonButtonWords}}
+                                                        </button>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="col-md-4">
+                                        <label>Note</label>
+                                        <textarea class="form-control" id="idtrDescription" ng-model="actionsRecord.trDescription"></textarea>
+                                    </div>
+                                    <div class="col-sm-4 form-group">
+                                        <label>Closed Reason</label>
+                                        <ui-select id="idActionClosedReason" ng-model="actionTabs.atDeadReasonCode" class="form-control">
+                                            <ui-select-match placeholder="Please select a Closed Reason">{{$select.selected.drReason }}</ui-select-match>
+                                            <ui-select-choices repeat="RCRec.drCode as RCRec in DeadReasons |  orderBy:['drReason'] | deadReasonsFilter : $select.search | filter: $select.search" ui-disable-choice="RCRec.drStatus != 'L'">
+                                                {{ RCRec.drReason }}
+                                                <div ng-bind-html="RCRec.drCode | highlight: {{actionTabs.atDeadReasonCode}}"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <!-- <scan style="color:RCRec.StatusColour"> -->
+                                    </div>
+                                    <div class="col-sm-3 col-xxl-3 col-md-4">
+                                        <input ng-model="atPriority" value="1" id="idatPriority" class="ace" type="checkbox" checked />
+                                        <label class="mr-5 no-padding">
+                                            <input ng-model="atPriority" value="1" id="idatPriority" class="ace" type="checkbox" checked />
+                                            <span class="lbl"> Priority</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-sm-4 form-group">
+                                        <label>Select script...</label>
+                                        <ui-select id="idActionProgramName" ng-model="actionTabs.atActionProgramCode" class="form-control">
+                                            <ui-select-match placeholder="Please select a Script">{{$select.selected.pgProgramName}}</ui-select-match>
+                                            <ui-select-choices repeat="program.pgId as program in actionTabScripts | orderBy : 'pgProgramName' | filter: $select.search">
+                                                {{ program.pgProgramName}}
+                                            </ui-select-choices>
+                                        </ui-select>
+                                        <label id="idActionTabScriptValidation" hidden style="color: red; display: none">Please select a script</label>
+                                    </div>
+                                    <div class="col-sm-3 col-xxl-3 col-md-4">
+                                        <button class="btn btn-purple btn-sm" ng-Click="atRunActionScript(actionTabs.atActionProgramCode, glbCurrentEnquiryRef)" style="margin-top: 15px;">
+                                            <i class="ace-icon fa fa-file-code-o bigger-110"></i>
+                                            Run Script
+                                        </button>
+                                    </div>
+                                </div>
+
+                                    <!-- Field: Note -->
+                                <div class="row form-group">
+                                    
+                                    
+                                      @if (Request.IsAuthenticated)
+                                      {
+                                        @*<div class="col-md-3">
+                                            <label>Script</label>
+                                            <ui-select id="idProgramName" ng-model="actionTabs.atProgramCode" class="form-control">
+                                                <ui-select-match placeholder="Please select a Script">{{$select.selected.pgProgramName}}</ui-select-match>
+                                                <ui-select-choices repeat="program.pgId as program in programsBasedOnRoles | orderBy : 'pgProgramName' | filter: $select.search">
+                                                    {{ program.pgProgramName}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <label id="idScriptValidation" hidden style="color: red; display: none">Please select a script</label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>Property</label>
+                                            <ui-select id="idPropertyName" ng-model="actionTabs.atProperties" class="form-control">
+                                                <ui-select-match placeholder="Please select a Property">{{$select.selected.prName}}</ui-select-match>
+                                                <ui-select-choices repeat="property.prPropertyCode as property in APSProperties | orderBy : 'prName' | filter: $select.search">
+                                                    {{ property.prName}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <label id="idPropertyValidation" hidden style="color: red; display: none">Please select a property</label>
+                                        </div>
+                                        <div class="col-md-1 text-right">
+                                            <label style="visibility: hidden">Run script</label>
+                                            <button class="btn btn-purple btn-sm" ng-Click="atRunScript(actionTabs.atProgramCode, actionTabs.atProperties)">
+                                                <i class="ace-icon fa fa-file-code-o bigger-110"></i>
+                                                Run Script
+                                            </button>
+                                        </div>*@
+                                          @*<div class="col-md-3">
+                                            <label>Duplicate this Enquiry</label>
+                                            <ui-select id="idActionProgramName" ng-model="actionTabs.atActionProgramCode" class="form-control">
+                                                <ui-select-match placeholder="Please select a Script">{{$select.selected.pgProgramName}}</ui-select-match>
+                                                <ui-select-choices repeat="program.pgId as program in actionTabScripts | orderBy : 'pgProgramName' | filter: $select.search">
+                                                    {{ program.pgProgramName}}
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <label id="idActionTabScriptValidation" hidden style="color: red; display: none">Please select a script</label>
+                                        </div>*@
+                                        @*<div class="col-md-1 text-right">
+                                            <button class="btn btn-purple btn-sm" ng-Click="atRunActionScript(actionTabs.atActionProgramCode, glbCurrentEnquiryRef)">
+                                                <i class="ace-icon fa fa-file-code-o bigger-110"></i>
+                                                Run Script
+                                            </button>
+                                        </div>*@
+                                    }
+                                </div>
+                                    
+                                
+                                    <div class="row">
+                                        <div class="col-xs-12 text-right">
+                                            <button class="btn btn-success btn-sm mb-3" ng-Click="atSaveActionsRecord()">
+                                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                                Save Action
+                                            </button>
+                                            <button class="btn btn-danger btn-sm mb-3" ng-Click="atResetActionsRecord()">
+                                                <i class="ace-icon fa fa-times bigger-110"></i>
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Add New Action -->
+                            <!-- Tracking Table -->
+                            <h3 class="header">
+                                Tracking Entries
+                            </h3>
+                            <div ng-controller="PV_TrackingEntries">
+                                @Html.Partial("../Partials/ActionsTabTrackingEntries")
+                            </div>
+                            <!-- Tracking Table -->
+                          </div>
+                          </div>
+                    </div>
+                   </div>
+                @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div><!-- End Actions Tab Content -->
+</div>
+
+
+<!---Modal for displaying notification message-->
+<div class="modal fade" id="actionTabScript" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body center">
+                <h5 style="color:green">Script run is in progress...</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Ended Modal for displaying notification message-->
+
+<!---Modal for creating duplicate enquiries-->
+<div class="modal fade" id="actionTabScriptRun" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <p class="modal-title" style="text-align: center"><b>Enter number of duplicates of {{glbCurrentEnquiryRef}} required 1-99</b></p>
+            </div>
+            <div class="modal-body center">
+                <div class="row">
+                    <div>
+                        @*<div class="row col-lg-12">
+                            <div class="col-lg-6" style="text-align: left"><b>Enquiry Reference</b></div>
+                            <div class="col-lg-6"><input type="text" style="margin-bottom: 5px;" id="idEnquiryRef" ng-model="duplicateEnquiryRef"/>
+                                <label id="idValidateEnqRef" hidden style="color: red; display: none"></label>
+                            </div>
+                        </div>*@
+                        <p></p>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6" style="text-align: left"><b>Number of Duplicates</b></div>
+                            <div class="col-lg-6"><input style="height: 25px;"type="text" id="idDuplicateEnquiriesCount" ng-model="duplicateEnquiriesCount"/>
+                                <label id="idValidateDuplicatesCount" hidden style="color: red; display: none"></label>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" ng-Click="CreateDuplicateEnquiries(duplicateEnquiryRef, duplicateEnquiriesCount)">Confirm</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Ended Modal for creating duplicate enquiries-->

@@ -1,0 +1,50 @@
+﻿@model eTrak.Dal.Models.LanguageCode
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LanguageCode</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.lcCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcCultureCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcCultureCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.lcISO639)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.lcISO639)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.lcID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,50 @@
+﻿@model eTrak.Dal.Models.WhiteLabel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>WhiteLabel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.wlName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wlName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wlURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wlURL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.wlStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.wlStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LanguageCode.lcCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LanguageCode.lcCode)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.wlCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

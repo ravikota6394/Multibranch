@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4>GDPR Process</h4>
+
+<div ng-controller="P_GDPRData" class="container">
+    <div class="row">
+
+        <div class="form-group">
+            <b>List Of Emails <span style="color:red;">*</span></b>
+            <textarea rows="5" ng-model="emails" id="id_emails" class="form-control"></textarea>
+            <label id="id_Emails" hidden style="color: red; display: none"></label>
+        </div>
+
+        <div class="form-group">
+            <b>Status <span style="color:red;">*</span></b>
+            <select id="id_status" ng-model="status" class="form-control">
+                <option value="">Please Select</option>
+                <option value="Retain my Information AND Send me a copy">Retain my Information AND Send me a copy</option>
+                <option value="Delete my Information">Delete my Information</option>
+                <option value="Delete my Information but also send me a copy">Delete my Information but also send me a copy</option>
+            </select>
+            <label id="id_Status" hidden style="color: red; display: none"></label>
+        </div>
+        <div class="form-group">
+            <p>
+                <button class="btn btn-success btn-sm" ng-click="validateEmails()">Submit</button>
+            </p>
+        </div>
+    </div>
+
+
+    <!-- GdprDetails Modal -->
+    <div class="modal fade" id="idshowGdprDetails" data-backdrop="static" data-keyboard="false" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Details of Users</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div>
+                            <table id="idDTDataTable" show-filter="true" dt-options="dtCSOptions" class="table table-fixed table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Email</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="records in emailList">
+                                        <td>{{records.Email}}</td>
+                                        <td>{{records.Message}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-12" style="text-align:center">
+                            <button class="btn btn-success btn-sm mb-10" type="button" ng-click="submitConfirmation()">
+                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                Proceed
+                            </button>
+                            <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times bigger-110"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--GDPR data-ng-bind-html-->
+    <div class="modal fade" id="id_GDPRData" role="dialog" data-backdrop="static">
+        <div class="modal-dialog" style="width: 50%">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> GDPR Data</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="id_recordsFound" style="display:none">
+                        <table id="idGDPRDataTable" show-filter="true" dt-options="dtCSOptions" class="table table-fixed table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th><input id="selectAllGDPR" type="checkbox" name="Select All" ng-click="selectAllGDPR()"></th>
+                                    <th>Email</th>
+                                    <th>File</th>
+                                </tr>
+                            </thead>
+                            <div id="id_loading" style="height: 5px">
+                                <div class="loader" style="height: 5px"></div>
+                            </div>
+                            <tbody>
+                                <tr ng-repeat="records in gdprDATA">
+                                    <td><input type="checkbox" ng-click="selectRecord($index)" ng-checked="records.IsSelected"></td>
+                                    <td>{{records.Email}}</td>
+                                    <td><a ng-click="OpenFile(records.FilePath)">{{records.FileName}}</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="id_NoRecorsFound" style="display: none">
+                        <h5>No Records Found</h5>
+                    </div>
+                    <p id="GDPRError" style="display:none;color: red">Please select atleast one Entry</p>
+                    <p id="GDPR_DeleteNotes" style="color: red;font-weight: bold">Note : Data with attribute IsCC = 1 will be retained in the systems</p>
+                    @*<h5 style="text-align:center">A mail will be sent consisting of user's respective data from all systems to each user mentioned in the list</h5>*@
+                </div>
+                <div class="modal-footer">
+                    <button id="GDPRSubmit" type="button" class="btn btn-success" ng-click="validateGDPR()">Submit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of GDPR data-ng-bind-html-->
+    <!-- Modal for processing -->
+    <div class="modal fade" id="id_processing" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <h5 style="text-align:center">
+                        <p id="id_senMail" style="display: none">A mail will be sent consisting of user's respective data from all systems to each user selected</p>
+                        <p id="id_both" style="display: none"> AND </p>
+                        <p id="id_isDelete" style="display: none"> All the data excluding CC Info will be deleted from all our systems for each user selected </p>
+                    </h5>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for processing CC details-->
+
+</div>

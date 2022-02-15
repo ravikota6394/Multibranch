@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Currencies</h2>
+
+<p>
+    <a href="/Currency/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="Currencies" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="currencies" class="responsive   table table-striped table-bordered">
+      
+        <thead class="thin-border-bottom">
+        <tr>
+            <th data-class="expand">Currency</th>
+            <th data-class="expand">Conversion to GBP </th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="currency in currencies ">
+            <td>{{currency.cu_Currencies}}</td>
+            <td>{{currency.cu_CurrencyGBPConversion}}</td>
+            <td>
+                <a href="Currency/Edit/{{currency.cu_Id}}">Edit</a> |
+                <a href="Currency/Details/{{currency.cu_Id}}">Details</a> |
+                <a href="Currency/Delete/{{currency.cu_Id}}">Delete</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,224 @@
+﻿<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<script src="~/js/plugins/bootstrap-contextmenu.js"></script>
+<link href="~/css/Custom.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div>
+    <table id="idTrackingEmails" show-filter="true" datatable="ng" dt-options="dtOptions" class="responsive   table table-striped table-bordered">
+
+        <thead>
+            <tr>
+                <th data-class="expand" hidden>trCode</th>
+                <th data-class="expand">Ref #</th>
+                <th>Created</th>
+                <th hidden>Created Copy</th>
+                <th data-hide="screen_xs">User</th>
+                <th data-hide="screen_xs">Sender / Receiver</th>
+                <th data-hide="screen_xs,screen_sm">Message</th>
+                <th data-hide="screen_xs,screen_sm">Subject</th>
+                <th data-hide="screen_xs,screen_sm" class="no-sort">Controls</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="menu_links" ng-repeat="edRec in trackingEmails" ng-click="ShowEmailDetails(edRec.trEmailID,edRec.trCode)">
+                <td hidden>{{edRec.trCode}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } "><span title="Email Sent" ng-show="edRec.Action == 'Sent'"><i class="rightarrow ace-icon fa fa-arrow-circle-right icon-only"></i></span> <span title="Email Received" ng-show="edRec.Action == 'Received'"><i class="leftarrow ace-icon fa fa-arrow-circle-left icon-only"></i></span> {{edRec.trenCode}}</td>
+                <td hidden ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">{{edRec.trCreatedDateTime}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">{{edRec.trDateStamp | date:'dd-MMM-yyyy'}} {{edRec.trTimeStamp}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">{{edRec.disUserCode}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } "><span ng-show="edRec.Action == 'Sent'">{{edRec.DisplayTo}}</span><span ng-show="edRec.Action == 'Received'">{{edRec.DisplayFrom}}</span></td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">{{edRec.trDescription}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">{{edRec.Subject}}</td>
+                <td ng-class="{'mailSent': edRec.trDescription == 'New email sent from eTrak' || edRec.trDescription.indexOf('New enquiry added from email') > -1, 'warning': edRec.trDescription.indexOf('Assign to user by') > -1 } ">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" ng-click="ShowEmailDetails(edRec.trEmailID,edRec.trCode)">
+                        <i class="ace-icon fa {{edRec.disIconCSS}} icon-only"></i>
+                    </button>
+                    <span id="id_{{edRec.trCode}}" title="Viewed this email on {{edRec.DateTimeViewed | date:'dd-MMM-yyyy HH:mm'}} by {{edRec.ViewedUsers}}" ng-show="edRec.DateTimeViewed == null ? false : true "><i class="glyphicon glyphicon-ok"></i></span>
+                    <span id="{{edRec.trCode}}" title="Viewed this email on {{edRec.DateTimeViewed | date:'dd-MMM-yyyy HH:mm'}} by {{edRec.ViewedUsers}}" ng-show="showIcon"><i class="glyphicon glyphicon-ok"></i></span>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="context-menu">
+        <ul class="dropdown-menu" role="menu">
+            <li class="markAsUnRead"><a tabindex="-1">Mark as unread</a></li>
+        </ul>
+    </div>
+
+</div>
+
+
+<!--Modal Design for Emails-->
+<div class="modal fade " id="emailPopup" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table style="width:100%" class="EMailTable   well well-sm">
+                        <tr>
+                            <th colspan="2" style="background-color:navajowhite;"><center>ENQUIRY&nbsp;&nbsp;{{EmailDetails.eTrakEnquiryID}}&nbsp;-&nbsp;EMAIL&nbsp;&nbsp;RESPONSE</center></th>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">Display From:</td>
+                            <td class="TableBody">{{EmailDetails.DisplayFrom}}</td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">Subject:</td>
+                            <td class="TableBody">{{EmailDetails.Subject}}</td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">Display To:</td>
+                            <td class="TableBody">{{EmailDetails.SentTo}}</td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">CC:</td>
+                            <td class="TableBody">{{EmailDetails.CC}}</td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">BCC:</td>
+                            <td class="TableBody">{{EmailDetails.BCC}}</td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">DateTimeReceived:</td>
+                            <td class="TableBody">{{EmailDetails.DateTimeReceived | date:'yyyy-MM-dd  HH:mm:ss'}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p id="scroller" ng-bind-html=Body style="width:843px;">
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">Attachments:</td>
+                            <td class="TableBody"><a ng-hide="hideAttachments" ng-click="ShowAttachments(EmailDetails.ID)">Click here to find attachments</a></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <center>
+                            <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to REPLY the Email" ng-click="ReplyToEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DisplayTo,'','',EmailDetails.DateTimeReceived, EmailDetails.ID)"><i class="fa fa-mail-reply"> Reply</i></a>
+                            <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to REPLY ALL the Email" ng-click="ReplyToEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DisplayTo,EmailDetails.CC,EmailDetails.BCC,EmailDetails.DateTimeReceived, EmailDetails.ID)"><i class="fa fa-mail-reply-all"> Reply All</i></a>
+                            <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to FORWARD the Email" ng-click="ForwardEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DateTimeReceived,EmailDetails.DisplayTo, EmailDetails.ID)"><i class="fa fa-mail-forward"> Forward</i></a>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End Modal Design for Emails-->
+<!--Modal Design for Old Emails-->
+<div class="modal fade " id="oldEmailPopup" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table style="width:100%" class="EMailTable   well well-sm">
+                        <tr>
+                            <td colspan="2">
+                                <p id="scroller1" ng-bind-html=Body style="width:843px;">
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="Tablelabel">Attachments:</td>
+                            <td class="TableBody"><a ng-hide="hideAttachments" ng-click="ShowAttachments(EmailDetails.ID)">Click here to find attachments</a></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to REPLY the Email" ng-click="ReplyToEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DisplayTo,'','',EmailDetails.DateTimeReceived, EmailDetails.ID)"><i class="fa fa-mail-reply"> Reply</i></a>
+                        <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to REPLY ALL the Email" ng-click="ReplyToEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DisplayTo,EmailDetails.CC,EmailDetails.BCC,EmailDetails.DateTimeReceived, EmailDetails.ID)"><i class="fa fa-mail-reply-all"> Reply All</i></a>
+                        <a style="cursor:pointer; font-size: 17px;padding-left:5em" title="Click here to FORWARD the Email" ng-click="ForwardEmail(EmailDetails.DisplayFrom,EmailDetails.Subject,Body,EmailDetails.DateTimeReceived,EmailDetails.DisplayTo, EmailDetails.ID)"><i class="fa fa-mail-forward"> Forward</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal Design for Old emails-->
+<!--Modal for displaying Attachment Paths-->
+<div class="modal fade" id="myAttachments" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Attachments</h4>
+            </div>
+            <div class="modal-body">
+                <div ng-repeat="attachmentPath in AttachmentsList">
+                    <b><a class="breakWord" ng-click="ShowAttachment(attachmentPath.PhysicalFilePath)">{{$index+1}}. {{attachmentPath.PhysicalFilePath}}</a></b><br />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--Ended Modal for displaying Attachment Paths-->
+<style>
+    table, th, td {
+        border: 3px solid white;
+        border-collapse: collapse;
+    }
+
+    #scroller {
+        display: block;
+        height: 396px;
+        overflow-y: scroll;
+    }
+
+    #scroller1 {
+        display: block;
+        height: 648px;
+        overflow-y: scroll;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    .modal-header {
+        padding: 25px;
+        margin-top: -13px;
+    }
+
+    .Tablelabel {
+        width: 20%;
+    }
+
+    .TableBody {
+        width: 80%;
+    }
+
+    .markAsUnRead > a:hover {
+        background: none !important; 
+        color: #151414 !important;
+    }
+</style>

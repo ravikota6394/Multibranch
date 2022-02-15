@@ -1,0 +1,970 @@
+﻿<style type="text/css">
+    table, tr, td {
+    }
+
+        tr.noBorder td {
+            border: 0;
+        }
+</style>
+<link href="~/css/Custom.css" rel="stylesheet" />
+<script>
+    $(function () {
+        setUpFormUtilities();
+        $(".ideMailOutput").code('hello');
+    });
+</script>
+<script>
+    $(function () {
+        setUpFormUtilities();
+        setUpWysiwygEditor();
+        //        setUpEmailNew();
+    });
+</script>
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<div class="property-list property-list-striped">
+    <div id="idAPSDataTable" class="scrollable display" width="100%" data-height="325">
+        <div class="content">
+            <table id="idAPS" class="responsive table table-bordered  table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="property in APSProperties">
+                        <td>
+                            <!-- Property Item #1 -->
+                            <!-- This table keeps it intact do not remove -->
+                            <table class="table">
+                                <tr class="noBorder">
+                                    <td>
+                                        {{property.prEnqCode}}
+                                        <!-- Property Name -->
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="property-actions">
+                                                    <a ng-click="BookProperty(property.prPropertyCode)" class="btn btn-success btn-xs"><i class="ace-icon fa fa-book"></i> book</a>
+
+                                                    <button class="btn btn-sm btn-danger ace-icon fa fa-minus-square" type="button" ng-click="removeFromProposal(property.ID);" title="Remove property from proposal">
+                                                        proposal
+                                                    </button>
+                                                    @*<a href="#" class="btn btn-danger btn-xs" title="Remove property from proposal"><i class="ace-icon fa fa-minus-square" ng-click="removeFromProposal(property.ID);"></i> proposal</a>*@
+                                                </div>
+                                                <h5 class="property-name">
+                                                    <a @*href="#"*@ data-toggle="modal" data-target="#apartment1-details-modal">
+                                                        {{$index + 1}}. {{property.prName}}
+                                                    </a>
+                                                    <span style="color:#00B050" ng-hide="(property.prPriority == 'A' || property.prPriority == 'B' || property.prPriority == 'C' || property.prPriority == 'D' || property.prPriority == 'E' || property.prPriority == 'F' || property.prPriority == 'G' || property.prPriority == 'AD' || property.prPriority == 'BD' || property.prPriority == 'ED') ? false : true"><b>Priority - {{property.prPriority}}</b></span>
+                                                    <span style="color:#FA9500" ng-hide="(property.prPriority == 'H' || property.prPriority == 'I' || property.prPriority == 'J' || property.prPriority == 'K' || property.prPriority == 'KD' || property.prPriority == 'HD') ? false : true"><b>Priority - {{property.prPriority}}</b></span>
+                                                    <span style="color:#FF4B4B" ng-hide="(property.prPriority == 'L' || property.prPriority == 'M' || property.prPriority == 'MD' || property.prPriority == 'LD') ? false : true"><b>Priority - {{property.prPriority}}, Please check availability with Supply Chain</b></span>
+                                                    <span style="color:#DA0000" ng-hide="(property.prPriority == 'N' || property.prPriority == 'O' || property.prPriority == 'P' || property.prPriority == 'Q') ? false : true"><b>Priority - {{property.prPriority}}</b></span>
+                                                </h5>
+                                            </div>
+
+                                            <div class="row">
+                                                <!-- Property Description -->
+                                                <div class="property-description col-lg-8">
+                                                    <a><img src="{{property.prPropertyImageUrl}}" alt="{{property.prName}}" ng-click="displayPropertyInfo(property.prPropertyPopUpHTML,property.prName,property.prPropertyCode)" class="property-image" style="width: 20em;" /></a>
+                                                    <p>
+                                                    <p>{{property.prLongDescription}}
+                                                    <p>
+                                                        <a class="btn btn-xs btn-info" ng-click="displayPropertyInfo(property.prPropertyPopUpHTML,property.prName,property.prPropertyCode)">view property</a>
+                                                        <a class="btn btn-xs btn-default" data-toggle="modal" ng-click="checkAvailabilityTypes(property.Contacts, property)">check availability</a>
+                                                        @*<span ng-show="(property.prBookedDate) == null ? false :true"><b>Booked on {{property.prBookedDateFormat}}</b></span>*@
+                                                        <a title="View CreditCard Details" ng-show="(property.prSecureBookingStatus) == '1' ? true :false" data-toggle="modal" ng-click="ViewCreditCardDetails(property.prEnCode,property.prPropertyCode,property.prFiveWinID)"><img src="~/Content/Images/creditCard.png" class="credit_card" /></a>
+                                                    <p style="color:red;font-size: 16px;"><b>{{property.prMessage}}</b></p>
+                                                    <p style="color:red;font-size: 16px;"><b>{{property.prAvailabilityStatusMessage}}</b></p>
+                                                    </p>
+                                                </div>
+
+                                                <!-- Contact Table -->
+                                                <div class="property-details col-lg-4">
+                                                    <div id="my-emails" class="scrollable display" width="100%" data-height="325">
+                                                        <div class="content ">
+                                                            <table id="idContactShortlist" class="responsive datatable-basic table table-bordered table-striped bg-grey mb-10">
+                                                                <thead class="thin-border-bottom">
+                                                                    <tr>
+                                                                        <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Contact Type</th>
+                                                                        <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Contact Name</th>
+                                                                        <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Phone</th>
+                                                                        <th class="no-sort"><i class="ace-icon fa fa-caret-right blue"></i> Email</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="contact in property.Contacts">
+                                                                        <td>{{ contact.Type }}</td>
+                                                                        <td>{{ contact.Name }}</td>
+                                                                        <td>{{ contact.Phone }}</td>
+                                                                        <td>
+                                                                            <a ui-sref="detailsTab.emails({ emailAddress: contact.Email })" class="btn btn-white btn-primary btn-xs">
+                                                                                <i class="ace-icon fa fa-envelope"></i> {{ contact.Email }}
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="hr-dashed" />
+
+                                            <!-- Offer Fields -->
+                                            <h5>Offer Fields</h5>
+                                            <form id="offer-form1" action="#" method="post" class="offer-form form-editable">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <!-- Field: Client requested -->
+                                                        <div class="form-group">
+                                                            <label>Client requested</label>
+                                                            <input value="{{property.prClientRequestedDate | date:'dd-MMM-yyyy HH:mm'}} ({{property.prUTCDateAdded}})" class="form-control" type="text" ng-readonly="true" />
+                                                        </div>
+                                                        <!-- Field: Added to shortlist -->
+                                                        <div class="form-group">
+                                                            <label>Added to shortlist</label>
+                                                            <input value="{{property.prDateAdded | date:'dd-MMM-yyyy HH:mm'}} ({{property.prUTCDateAdded}})" class="form-control" type="text" ng-readonly="true" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <!-- Field: Offer Details -->
+                                                        <div class="form-group">
+                                                            <label>Accommodation offer note (Public)</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prOfferNoteUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForOfferNote"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" class="form-control h-110" ng-model="property.prOfferDetails"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <!-- Field: Cancellation Policy -->
+                                                        <div class="form-group">
+                                                            <label>Cancellation Policy</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prCancellationPolicyUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForCancellationPolicy"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" id="cancellation" class="form-control h-110" ng-model="property.prCancellationPolicy"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+
+                                                    <!-- Field: Rate Per Night -->
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Rate Per Night</label>
+                                                            <div class="form-inline">
+                                                                <input ng-blur="SavePropertyDetails(property)" type="text" ng-model="property.Currency" id="currency" style="display: none" />
+                                                                <label>{{property.Currency}}</label>
+                                                                <input ng-blur="SavePropertyDetails(property)" id="ratePerNight" ng-model="property.prRatePerNight" type="text" class="form-control" />
+                                                                <span style="color: red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prRatePerNightUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span style="color: green" title="Landlord responded but not updated" ng-show="property.showGreenTickForRatePerNight"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Tax</label>
+                                                            <span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTaxUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTaxIncluded"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <div class="radio">
+                                                                <label class="mr-5 no-padding">
+                                                                    <input ng-change="SavePropertyDetails(property)" name="property1-tax" class="ace" value=1 type="radio" ng-model="property.prTaxIncluded" />
+                                                                    <span class="lbl">included </span>
+                                                                </label>
+                                                                <label>
+                                                                    <input ng-change="SavePropertyDetails(property)" name="property1-tax" class="ace" value=0 type="radio" ng-model="property.prTaxIncluded" />
+                                                                    <span class="lbl">excluded</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>N/A - TOMS</label>
+                                                            @*<span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTomsTaxUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTomsTaxIncluded"><i class="glyphicon glyphicon-ok"></i></span>*@
+                                                            <div class="radio">
+                                                                <label class="mr-5 no-padding">
+                                                                    <input ng-change="SavePropertyDetails(property)" class="ace" value=1 type="radio" ng-model="property.prTomsTaxIncluded" />
+                                                                    <span class="lbl">included </span>
+                                                                </label>
+                                                                <label>
+                                                                    <input ng-change="SavePropertyDetails(property)" class="ace" value=0 type="radio" ng-model="property.prTomsTaxIncluded" />
+                                                                    <span class="lbl">excluded</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Resteam") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin") || User.IsInRole("Supervisor")))
+                                                    {
+                                                        <div class="col-lg-3">
+                                                            <!-- Field: Offer Details -->
+                                                            <div class="form-group">
+                                                                <label>Private Notes</label>
+                                                                <textarea ng-blur="SavePropertyDetails(property)" class="form-control h-110" ng-model="property.prPrivateNotes"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                    <!-- Field: Your direct telephone number -->
+                                                    <div class="col-lg-6 form-group">
+                                                        <label>Your direct Telephone number (Please start with +(country code) and then add local telephone number)</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTelephoneUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTelephone"><i class="glyphicon glyphicon-ok"></i></span>
+                                                        <input ng-blur="SavePropertyDetails(property)" ng-model="property.prTelephoneNumber" class="form-control" type="text" />
+                                                    </div>
+                                                    <!-- Field: Held until -->
+                                                    <div class="row">
+                                                        <div class="col-lg-3 form-group">
+                                                            <label>Held Until</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prHeldUntilUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForHeldUntil"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <div class="row">
+                                                                <div class="col-lg-2">
+                                                                    @*<input class="form_datetime date form-control" ng-model="property.prHeldUntilDate" type="text">*@
+                                                                    <select ng-change="SavePropertyDetails(property)" ng-model="property.prHeldUntilDay" name="menu" class="form-control">
+                                                                        <option value="">Day</option>
+                                                                        <option value="1">01</option>
+                                                                        <option value="2">02</option>
+                                                                        <option value="3">03</option>
+                                                                        <option value="4">04</option>
+                                                                        <option value="5">05</option>
+                                                                        <option value="6">06</option>
+                                                                        <option value="7">07</option>
+                                                                        <option value="8">08</option>
+                                                                        <option value="9">09</option>
+                                                                        <option value="10">10</option>
+                                                                        <option value="11">11</option>
+                                                                        <option value="12">12</option>
+                                                                        <option value="13">13</option>
+                                                                        <option value="14">14</option>
+                                                                        <option value="15">15</option>
+                                                                        <option value="16">16</option>
+                                                                        <option value="17">17</option>
+                                                                        <option value="18">18</option>
+                                                                        <option value="19">19</option>
+                                                                        <option value="20">20</option>
+                                                                        <option value="21">21</option>
+                                                                        <option value="22">22</option>
+                                                                        <option value="23">23</option>
+                                                                        <option value="24">24</option>
+                                                                        <option value="25">25</option>
+                                                                        <option value="26">26</option>
+                                                                        <option value="27">27</option>
+                                                                        <option value="28">28</option>
+                                                                        <option value="29">29</option>
+                                                                        <option value="30">30</option>
+                                                                        <option value="31">31</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <select ng-change="SavePropertyDetails(property)" ng-model="property.prHeldUntilMonth" name="menu" class="form-control" style="width:63px;">
+                                                                        <option value="">Month</option>
+                                                                        <option value="1">Jan</option>
+                                                                        <option value="2">Feb</option>
+                                                                        <option value="3">Mar</option>
+                                                                        <option value="4">Apr</option>
+                                                                        <option value="5">May</option>
+                                                                        <option value="6">Jun</option>
+                                                                        <option value="7">Jul</option>
+                                                                        <option value="8">Aug</option>
+                                                                        <option value="9">Sep</option>
+                                                                        <option value="10">Oct</option>
+                                                                        <option value="11">Nov</option>
+                                                                        <option value="12">Dec</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <input ng-blur="SavePropertyDetails(property)" type="text" placeholder="YYYY" ng-model="property.prHeldUntilYear" class="form-control" />&nbsp;
+                                                                </div>
+                                                                <div class="col-lg-2">
+                                                                    <input ng-blur="SavePropertyDetails(property)" type="text" placeholder="HH:mm" ng-model="property.prHeldUntilTime" class="form-control" />
+                                                                </div>
+                                                                <div class="col-lg-4">
+                                                                    <select ng-change="SavePropertyDetails(property)" name="menu" ng-model="property.prHeldUntilUTC">
+                                                                        <option value="UTC -12:00">UTC -12:00</option>
+                                                                        <option value="UTC -11:00">UTC -11:00</option>
+                                                                        <option value="UTC -10:00">UTC -10:00</option>
+                                                                        <option value="UTC -09:30">UTC -09:30</option>
+                                                                        <option value="UTC -09:00">UTC -09:00</option>
+                                                                        <option value="UTC -08:00">UTC -08:00</option>
+                                                                        <option value="UTC -07:00">UTC -07:00</option>
+                                                                        <option value="UTC -06:00">UTC -06:00</option>
+                                                                        <option value="UTC -05:00">UTC -05:00</option>
+                                                                        <option value="UTC -04:30">UTC -04:30</option>
+                                                                        <option value="UTC -04:00">UTC -04:00</option>
+                                                                        <option value="UTC -03:30">UTC -03:30</option>
+                                                                        <option value="UTC -03:00">UTC -03:00</option>
+                                                                        <option value="UTC -02:00">UTC -02:00</option>
+                                                                        <option value="UTC -01:00">UTC -01:00</option>
+                                                                        <option value="UTC 00:00">UTC 00:00</option>
+                                                                        <option value="UTC +01:00">UTC +01:00</option>
+                                                                        <option value="UTC +02:00">UTC +02:00</option>
+                                                                        <option value="UTC +03:00">UTC +03:00</option>
+                                                                        <option value="UTC +03:30">UTC +03:30</option>
+                                                                        <option value="UTC +04:00">UTC +04:00</option>
+                                                                        <option value="UTC +04:30">UTC +04:30</option>
+                                                                        <option value="UTC +05:00">UTC +05:00</option>
+                                                                        <option value="UTC +05:30">UTC +05:30</option>
+                                                                        <option value="UTC +05:45">UTC +05:45</option>
+                                                                        <option value="UTC +06:00">UTC +06:00</option>
+                                                                        <option value="UTC +06:30">UTC +06:30</option>
+                                                                        <option value="UTC +07:00">UTC +07:00</option>
+                                                                        <option value="UTC +08:00">UTC +08:00</option>
+                                                                        <option value="UTC +08:45">UTC +08:45</option>
+                                                                        <option value="UTC +09:00">UTC +09:00</option>
+                                                                        <option value="UTC +09:30">UTC +09:30</option>
+                                                                        <option value="UTC +10:00">UTC +10:00</option>
+                                                                        <option value="UTC +10:30">UTC +10:30</option>
+                                                                        <option value="UTC +11:00">UTC +11:00</option>
+                                                                        <option value="UTC +11:30">UTC +11:30</option>
+                                                                        <option value="UTC +12:00">UTC +12:00</option>
+                                                                        <option value="UTC +12:45">UTC +12:45</option>
+                                                                        <option value="UTC +13:00">UTC +13:00</option>
+                                                                        <option value="UTC +14:00">UTC +14:00</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 form-group">
+                                                            <!-- Field: Commission Included In Rate -->
+                                                            <div class="form-group">
+                                                                <label class="label-required">Commission included in rate</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prCommissionIncludedUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForCommissionIncluded"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <select ng-change="SavePropertyDetails(property);saveCommissionIncluded(property.CommissionIncluded,property.ID,property)" ng-model="property.CommissionIncluded" class="form-control">
+                                                                    <option value="">Please select</option>
+                                                                    <option value="10%">10%</option>
+                                                                    <option value="15%">15%</option>
+                                                                    <option value="20%">20%</option>
+                                                                    <option value="Remote 5%">Remote 5%</option>
+                                                                    <option value="Other">Other</option>
+                                                                </select>
+                                                                <input ng-blur="SavePropertyDetails(property)" type="text" id="commissionIncluded" ng-show="property.showOtherField" ng-model="property.prCommissionIncludedInRate" data-commissionpropertyid="{{property.ID}}" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-3 form-group ">
+                                                        <!-- Field: Apartment Type -->
+                                                        <div class="form-group">
+                                                            <label>Apartment Type</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prApartmentTypeUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForApartmentType"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <select ng-model="property.prApartmentType" class="form-control" ng-change="OnPropertyChange(property.prApartmentType,property.ID,property)">
+                                                                <option value="">Please select</option>
+                                                                <option ng-repeat="apartment in property.ApartmentTypes | orderBy : 'Name'" value="{{ apartment.Name }}" ng-selected="{{property.prApartmentType == apartment.Name}}"> {{ apartment.Name }} </option>
+                                                                <option value="Other">Other</option>
+                                                            </select>
+                                                            <input ng-blur="SavePropertyDetails(property)" type="text" id="id_atDescription" ng-show="property.showApartmentOtherField" ng-model="property.prApartmentTypeWhenOther" data-apartmentTypeid="{{property.ID}}" class="form-control" />
+                                                        </div>
+                                                        <!--Field: Your Name-->
+                                                        <div class="form-group">
+                                                            <label>Your Name</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prNameUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForName"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <input ng-blur="SavePropertyDetails(property)" ng-model="property.prHolderName" class="form-control" type="text" />
+                                                        </div>
+                                                    </div>
+                                                    <!-- Field: Tax Notes -->
+                                                    <div class="col-lg-3 form-group">
+                                                        <div class="form-group">
+                                                            <label>Tax Notes</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTaxNotesUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTaxNotes"><i class="glyphicon glyphicon-ok"></i></span>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" class="form-control h-110" ng-model="property.prTaxNotes"></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Field: Your internal reference (if any) -->
+                                                    <div class="col-lg-6 form-group">
+                                                        <label class="label-required">Your internal reference (if any)</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prReferenceUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForReference"><i class="glyphicon glyphicon-ok"></i></span>
+                                                        <input ng-blur="SavePropertyDetails(property)" ng-model="property.prInternalReference" class="form-control" type="text" />
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-lg-3 form-group">
+                                                            <!-- Field: Tax Applied All Nights -->
+                                                            <div class="form-group">
+                                                                <label class="label-required">Tax Applied All Nights</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTaxAppliedUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTaxApplied"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <select ng-change="SavePropertyDetails(property)" ng-model="property.prTaxAppliedAllNights" class="form-control">
+                                                                    <option>Yes</option>
+                                                                    <option>No</option>
+                                                                    <option>See tax notes</option>
+                                                                    <option>Rates quoted under TOMS - local taxes are not reclaimable</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3 form-group">
+                                                            <!-- Field: Your Tax Rate-->
+                                                            <div class="form-group">
+                                                                <label>Tax Rate</label><span style="color:red" title="Landlord updated" ng-show="((property.prHasLandLordUpdated) && (property.prTaxRateUpdated)) ? true : false"><i class="glyphicon glyphicon-ok"></i></span><span style="color:green" title="Landlord responded but not updated" ng-show="property.showGreenTickForTaxRate"><i class="glyphicon glyphicon-ok"></i></span>
+                                                                <input ng-blur="SavePropertyDetails(property)" ng-model="property.prTaxRate" class="form-control" type="text" id="taxRate" ng-keypress="ValidateTaxRate($event)" />
+                                                                <span id="validate_TaxRate" style="color:red"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6 col-md-12 col-xl-6">
+                                                        <label>Notes</label>
+                                                        <!-- Field: Notes -->
+                                                        <textarea ng-blur="SavePropertyDetails(property)" rows="2" ng-model="property.prNotes" class="form-control" style="min-height: 0 !important;"></textarea><br />
+                                                    </div>
+                                                    <div class="col-sm-6 col-md-12 col-xl-6">
+                                                        <label>Extension policy</label>
+                                                        <!-- Field: Extension policy -->
+                                                        <textarea ng-blur="SavePropertyDetails(property)" rows="2" ng-model="property.prDepositPolicy" class="form-control" style="min-height: 0 !important; "></textarea><br />
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Early termination policy</label>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" rows="2" class="form-control" style="min-height: 0 !important; " ng-model="property.prEarlyTerminationPolicy"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <label>Security deposit</label>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" rows="2" class="form-control" style="min-height: 0 !important; " ng-model="property.prSecurityDeposit"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <!-- Field: Cancellation Policy -->
+                                                        <div class="form-group">
+                                                            <label>Parking</label>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" rows="2" class="form-control" style="min-height: 0 !important; " ng-model="property.prParking"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3">
+                                                        <!-- Field: Cancellation Policy -->
+                                                        <div class="form-group">
+                                                            <label>Payment terms</label>
+                                                            <textarea ng-blur="SavePropertyDetails(property)" rows="2" class="form-control" style="min-height: 0 !important; " ng-model="property.prPaymentTerms"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Edit/Submit Buttons -->
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <button class="btn btn-success btn-primary btn-sm mb-15"
+                                                                ng-click="SavePropertyDetails(property)" type="button">
+                                                            <i class="ace-icon fa fa-save"></i> save offer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <div style="text-align:center">
+                <button type="submit" class="btn btn-success" data-toggle="modal" ng-click="BookNowAcknowledgement()">
+                    <span class="ace-icon fa fa-book"></span> Book Now
+                </button>
+                <button type="submit" class="btn btn-success" data-toggle="modal" ng-click="GenerateProposal()">
+                    <span class="glyphicon glyphicon-ok-sign"></span> Generate Proposal
+                </button>
+                <button type="submit" class="btn btn-success" data-toggle="modal" ng-click="CheckAvailabilitiesNotYetResponded()()">
+                    Check Availabilities Not Yet Responded
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@if (Request.IsAuthenticated && (User.IsInRole("Resteam")) || (User.IsInRole("Client User")))
+{
+    <input type="hidden" id="IsResteamInShortlist" value="true" />
+}
+else
+{
+    <input type="hidden" id="IsResteamInShortlist" value="false" />
+}
+
+<!--Modal Design For Check Availability / Generate Proposal-->
+<div ng-controller="R_V_EmailAddresses">
+    <div ng-controller="R_EmailTemplates">
+        <div class="modal fade" id="idCheckAvailability" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" ng-click="emailConfirmationFuncion()">&times;</button>
+                        <h4 class="modal-title" style="text-align:center">Compose Email</h4>
+                    </div>
+                    <div class="modal-body" style="height:55em;overflow-y: scroll;">
+                        <div class="container row col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12 well well-sm">
+                                    <div class="space-14"></div>
+                                    <div class="row form-group">
+                                        <label class="col-lg-4 no-padding-right">From</label>
+                                        <div class="col-lg-8">
+                                            <input id="idETEmailFrom" ng-model="ETEmailFrom" class="form-control" type="text" ng-readonly="isResteamShortlist == 'true' ? false : true" />
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="col-lg-1 no-padding-right">To</label>
+                                        <table>
+                                            <tr>
+                                                <td width="250">
+
+                                                    <ui-select id="idETenLastEmailSentTo" ng-hide="hideEmailSentToCheckAvailability" ng-model="contact.EmailSentTo" class="form-control bg-light-red" ng-change="BindEmailSendToTextBox(contact.EmailSentTo)" ng-disabled="false">
+                                                        <ui-select-match placeholder="Please select an Email Address">{{$select.selected.Email}}</ui-select-match>
+                                                        <ui-select-choices repeat="contact in ContactsList  | filter: $select.search">
+                                                            {{ contact.Name }}<br />
+                                                            {{ contact.Type }} <br />
+                                                            {{ contact.Email }}
+                                                            @*<div ng-bind-html="contact.Email | highlight: {{DTEnquiry.enLastEmailSentTo}}"></div>*@
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                    <ui-select id="idETenLastEmailSentTo" ng-hide="hideEmailSentToGenerateProposal" ng-model="DTEnquiry.enLastEmailSentTo" class="form-control bg-light-red" ng-disabled="false">
+                                                        <ui-select-match placeholder="Please select an Email Address">{{$select.selected.CameFrom}}</ui-select-match>
+                                                        <ui-select-choices repeat="RTRec.CameFrom as RTRec in EmailAddresses  | filter: $select.search">
+                                                            {{ RTRec.Source }} {{ RTRec.DisplayFrom }}
+                                                            <div ng-bind-html="RTRec.CameFrom | highlight: {{DTEnquiry.enLastEmailSentTo}}"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                </td>
+                                                <td width="450">
+                                                    <div class="col-lg-12">
+                                                        <!-- Markup for cases when the user needs to either select from a dropdow or enter his own text -->
+                                                        <input id='idETenLastEmailSentToFreeEntry' ng-hide="hideEmailSentToGenerateProposal" name='free-email-to' class="form-control" type="text" ng-model="DTEnquiry.enLastEmailSentTo" />
+
+                                                        <input id='id_getOldNewValues' ng-hide="hideEmailSentToCheckAvailability" name='free-email-to' class="form-control" type="text" ng-model="DTEnquiry.enLastEmailSentTo" />
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="col-lg-4 no-padding-right">Subject</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <span class="input-group-btn hidden-xs">
+                                                    <span class="btn disabled btn-sm btn-primary">ENQ: #&lt;{{glbCurrentEnquiryRef}}&gt;# </span>
+                                                </span>
+                                                <input id="id_ETSubject" class="form-control" ng-model="ETEmailSubject" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="col-lg-1 no-padding-right">CC</label>
+
+                                        <table>
+                                            <tr>
+                                                <td width="250">
+
+                                                    <ui-select id="idETenLastEmailCCTo" ng-hide="hideEmailSentToCheckAvailability" ng-model="contact.EmailCCTo" class="form-control bg-light-red" ng-change="BindEmailCCToTextBox(contact.EmailCCTo)" ng-disabled="false">
+                                                        <ui-select-match placeholder="Please select an Email Address">{{$select.selected.Email}}</ui-select-match>
+                                                        <ui-select-choices repeat="contact in ContactsList  | filter: $select.search">
+                                                            {{ contact.Name }}<br />
+                                                            {{ contact.Type }} <br />
+                                                            {{ contact.Email }}
+                                                            @*<div ng-bind-html="RTRec.CameFrom | highlight: {{DTEnquiry.enLastEmailSentTo}}"></div>*@
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                    <ui-select id="idETenLastEmailCCTo" ng-hide="hideEmailSentToGenerateProposal" ng-model="DTEnquiry.enLastEmailCCTo" class="form-control bg-light-red" ng-disabled="false">
+                                                        <ui-select-match placeholder="Please select an Email Address">{{$select.selected.CameFrom}}</ui-select-match>
+                                                        <ui-select-choices repeat="RTRec.CameFrom as RTRec in EmailAddresses  | filter: $select.search">
+                                                            {{ RTRec.Source }} {{ RTRec.DisplayFrom }}
+                                                            <div ng-bind-html="RTRec.CameFrom | highlight: {{DTEnquiry.enLastEmailSentTo}}"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+
+                                                </td>
+                                                <td width="450">
+                                                    <div class="col-lg-12">
+                                                        <!-- Markup for cases when the user needs to either select from a dropdow or enter his own text -->
+                                                        <input id='idETenLastEmailCCToFreeEntry' ng-hide="hideEmailSentToGenerateProposal" name='free-CCemail-to' class="form-control" type="text" ng-model="DTEnquiry.enLastEmailCCTo" />
+
+                                                        <input id='idETenLastEmailCCToFreeEntry' ng-hide="hideEmailSentToCheckAvailability" name='free-CCemail-to' class="form-control" type="text" ng-model="DTEnquiry.enLastEmailCCTo" />
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <label class="col-lg-4 no-padding-right">Attach File <p style="color:red">Max file size 1Gb</p></label>
+                                        <div class="col-lg-8">
+                                            <input type="file" multiple="multiple" onchange="angular.element(this).scope().getFileDetails(this)" ng-model="ETEmailFileAttchments" id="clearFile" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-xs-12">
+                                            <label>Attachment List</label>
+                                            <ul class="attachment-list list-unstyled" ng-repeat="file in files">
+                                                <li>
+                                                    <label>
+                                                        @*<i class="ace-icon fa fa-file-pdf-o bigger-110"></i>*@
+                                                        <span class="attached-name">{{file.name}}</span>
+                                                    </label>
+                                                    <span class="action-buttons">
+                                                        @*<a href="#"><i class="ace-icon fa fa-download bigger-125 blue"></i></a>*@
+                                                        <a ng-click="RemoveFile($index)"><i class="ace-icon fa fa-trash-o bigger-125 red"></i></a>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-sm-12 ">
+                                        <div ng-controller="R_EmailTemplates">
+                                            <label>Message</label>
+                                            <div rows="20" cols="80" id="idemailoutput" style="font-family: Verdana; font-size: 18px; background-color: rgb(255, 255, 255);" class="summernote ideMailOutput note-editable"></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-xs-12" style="text-align:center">
+                                <button class="btn btn-success btn-sm mb-10" id="id_sendEmail" ng-click="ETSendEmail();" type="button">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    Send Email
+                                </button>
+                                <button class="btn btn-danger btn-sm mb-10" ng-click="emailConfirmationFuncion()">
+                                    <i class="ace-icon fa fa-times bigger-110"></i>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal Design for Check Availability / Generate Proposal-->
+
+<div class="modal fade" id="idConfirmationModal" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <h5 style="text-align: center;">Changes you made may not be saved. Are you sure to discard the changes?</h5>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success btn-sm mb-10" previewModal="button" ng-click="closeEmailPopup()">Yes</button>
+                <button previewModal="button" class="btn btn-danger btn-sm mb-10" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal Design for shortlisting properties-->
+<div class="modal fade" id="idShortlistedProperties" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="text-align:center">Client proposal options</h4>
+            </div>
+            <div class="modal-body" style="height: 30em;">
+                <div class="container row col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div ng-repeat="property in APSProperties">
+                        <label><input type="checkbox" value="{{property.prPropertyCode}}" ng-model="property.prHasLandLordUpdated" name="shortlistedProperty"> {{property.prName}}</label><br />
+                        <label ng-show='showhideCurrency'>{{property.prCurrency}}</label><label ng-show='showhideCurrency' title="Leave blank for continuous credit card authority">*</label>
+                        <input type="text" ng-show='showhideCurrency' name="price" value="{{property.prRatePerNight*DTEnquiry.enEDNights}}" />
+                        <input type="text" hidden name="propertyId" value="{{property.prPropertyCode}}" />
+                    </div><br />
+                    <h6>Available Templates</h6>
+                    <div>
+                        <select id="proposalTemplates-List" name="templates-List" ng-model="selectedTemplateValue" style="width:100%" ng-change="GetTemplateId(selectedTemplateValue)">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="template in templatesList" value="{{template.ID}} - {{template.etSubject}}">{{template.etCode}}</option>
+                        </select>
+                        <label id="id-validateProposalTemplate" hidden style="color: red; display: none"></label>
+                    </div> <br />
+                    <label><input type="checkbox" ng-model="includeFooterSignature"> Include footer signature?</label>
+
+                    <div>
+                        <h6>Book Now </h6>
+                        <input type="radio" id="secureBookingFormSelected" ng-model="secureBookingStatus" value="true" name="paynow" ng-click="showHideDropDown(secureBookingStatus)" /> <label>Secure Booking Form</label>
+                        <div></div><div></div>
+                        <select id="id_secureBookingTemplates" ng-show='showhidedropdown' name="templates-List" ng-model="selectedtemplate" style="width:100%">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="template in secureBookingTypeTemplates" value="{{template.ID}}">{{template.etCode}}</option>
+                        </select>
+                        <div></div><div></div>
+                        <label id="id-validateSecureBookingTemplate" hidden style="color: red; display: none"></label>
+                        <input type="radio" ng-model="payNowStatus" id="payNowSelected" value="true" name="paynow" ng-click="HideSecureBookingDropdown(payNowStatus)" /> <label>Pay now</label>
+                        <div></div><div></div>
+                        <input type="radio" ng-model="bookNowStatus" id="acknowledgementSelected" value="true" name="paynow" ng-click="showHideAcknowledgementDropDown(bookNowStatus)" /> <label>Acknowledgement</label>
+                        <div></div><div></div>
+                        <select id="id_acknowledgementTemplates" ng-show='showhideBookNowdropdown' name="acknowledgement-Templates" ng-model="bookNowtemplate" style="width:100%" ng-change="GetBookNowTemplateId(bookNowtemplate)">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="template in bookNowTemplateTypes" value="{{template.ID}}">{{template.etCode}}</option>
+                        </select>
+                        <div></div><div></div>
+                        <label id="id-validateBookNowTemplate" hidden style="color: red; display: none"></label>
+                        <label ng-show='showhideBookNowdropdown'><input type="checkbox" ng-model="includeFooterSignatureForBookNow" /> Include footer signature for Acknowledgement?</label><br />
+                        @*<label><input type="checkbox" ng-model="includeAllTemplateTypes" id="IncludeAllTemplatesForShortlists" ng-click="IncludeAllTemplatesForShortlists(glbCurrentEnquiryRef)" /> Include Template Source - All</label>*@
+                        <label id="id-validateAllTemplateTypes" hidden style="color: red; display: none"></label>
+                        <div></div><div></div>
+                        <label style="color:red" ng-hide="validationForBookNow">Please select any of the option from Book Now</label>
+                    </div>
+                </div>
+
+            </div>
+            <br /><br />
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12" style="text-align:center">
+                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="SaveSelectedProperties()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Continue
+                        </button>
+                        <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal Design for shortlisting properties-->
+<!--Modal Design for booknow acknowledgement-->
+<div class="modal fade" id="id_BookNowAcknowledgement" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="text-align:center">Book Now</h4>
+            </div>
+            <div class="modal-body" style="height: 30em;">
+                <div class="container row col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div ng-repeat="property in APSProperties">
+                        <label><input type="checkbox" value="{{property.prPropertyCode}}" ng-model="property.prHasLandLordUpdated" name="bookNowShortlistedProperty"> {{property.prName}}</label><br />
+                        <input type="text" hidden name="propertyId_BookNow" value="{{property.prPropertyCode}}" />
+                    </div><br />
+                    <div>
+                        <h6>Available Templates</h6>
+                        <select id="bookNowTemplates-List" name="templates-List" ng-model="selectedBookNowTemplateValue" style="width:100%" ng-change="SelectedTemplateType(selectedBookNowTemplateValue)">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="bookNowTemplate in bookNowTemplateTypeTemplates" value="{{bookNowTemplate.ID}} - {{bookNowTemplate.etSubject}}">{{bookNowTemplate.etCode}}</option>
+                        </select>
+                        <label id="id-validateBookNow" hidden style="color: red; display: none"></label>
+                    </div><br />
+                    <label><input type="checkbox" ng-model="includeFooterSignature"> Include footer signature?</label><br />
+                    @*<label><input type="checkbox" id="includeAllBookNowTemplates" ng-click="IncludeAllBookNowTemplates(glbCurrentEnquiryRef)"> Include Template Source - All</label>*@
+                </div>
+            </div>
+            <br /><br />
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12" style="text-align:center">
+                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="DisplaySelectedProperties()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Continue
+                        </button>
+                        <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended modal design for booknow acknowledgement-->
+<!--Modal Design for Check availabilities that have not yet responded-->
+<div class="modal fade in" id="checkAvailabilitiesNotYetResponded" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <center><h5>Check availabilities that have not yet responded</h5></center>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <table id="idDTDataTable" show-filter="true" dt-options="dtCSOptions" class="table table-fixed well table-responsive" style="width:100%">
+                        <tr>
+                            <Th data-hide="screen_xs,screen_sm">Enq ref:</Th>
+                            <td>{{glbCurrentEnquiryRef}}</td>
+                        </tr>
+                        <tr>
+                            <Th data-hide="screen_xs,screen_sm">Client Email:</Th>
+                            <td>{{globalCDClientEmail}}</td>
+                        </tr>
+                        <tr>
+                            <Th data-hide="screen_xs,screen_sm">Date Added:</Th>
+                            <td>{{globalEnEDDateAdded | date: "dd-MMM-yyyy HH:mm"}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <table id="idDTDataTable" show-filter="true" dt-options="dtCSOptions" class="table table-fixed table-bordered" style="width:100%">
+                    <thead class="thin-border-bottom">
+                        <tr>
+                            <th data-hide="screen_xs,screen_sm">Property Code</th>
+                            <th data-hide="screen_xs,screen_sm">Property Name</th>
+                            <th data-hide="screen_xs,screen_sm">Landlord Email Address</th>
+                            <th data-hide="screen_xs,screen_sm">DateTime Received</th>
+                            <th data-hide="screen_xs,screen_sm">Landlord Updated</th>
+                            <th data-hide="screen_xs,screen_sm">Difference (In Days)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="edRec in checkAvailabilitiesNotYetResponded">
+                            <td class="{{edRec.HilightNotRespondedEnq}}"><a ng-click="displayPropertyInfo(edRec.prPropertyPopUpHTML,edRec.prName,edRec.prPropertyCode);">{{edRec.prPropertyCode }}</a></td>
+                            <td class="{{edRec.HilightNotRespondedEnq}}">{{edRec.prPropertyName }}</td>
+                            <td class="{{edRec.HilightNotRespondedEnq}}">{{edRec.landlordEmailId }}</td>
+                            <td class="{{edRec.HilightNotRespondedEnq}}">{{edRec.DateTimeReceived }}</td>
+                            <td class="{{edRec.HilightNotRespondedEnq}}">{{edRec.landlordUpdated }}</td>
+                            <td class="{{edRec.HilightNotRespondedEnq}}">{{edRec.DifferenceBetweenTime}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended Modal Design for Check availabilities that have not yet responded-->
+<!-- CardDetails Modal -->
+<div class="modal fade" id="idshowcardDetails" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">CreditCard Details</h4>
+                <p style="color: red">CVV Number can only be viewed once and will then be erased!!! You have been warned!</p>
+            </div>
+            <label style="color: red;margin-left: 19px;" ng-show='validationForCardDetails'>Please enter correct encrypted key</label>
+            <div class="modal-body" style="margin-left: 31px;">
+                <div class="row">
+                    <div>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6"><b>EnqRef</b></div>
+                            <div class="col-lg-6">{{enCode}}</div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6"><b>PropRef</b></div>
+                            <div class="col-lg-6">{{prCode}}</div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="col-lg-6"><b>FivestarRef</b></div>
+                            <div class="col-lg-6">{{prFiveWinId}}</div>
+                        </div>
+                        <div class="row col-lg-12" ng-show='key'>
+                            <div class="col-lg-6"><b>Encrypted key</b></div>
+                            <div class="col-lg-6"><input style="height: 25px;" type="text" ng-model="data" /></div>
+                        </div>
+                    </div>
+                    <div ng-show='details'>
+                        <div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>CardHolderName</b></div>
+                                <div class="col-lg-6">{{cardName}}</div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>CardHolderBillingAddress</b></div>
+                                <div class="col-lg-6">{{cardHolderBillingAddress}}</div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>CardType</b></div>
+                                <div class="col-lg-6">{{cardType}}</div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>CardNumber</b></div>
+                                <div class="col-lg-6">{{cardNumber}}</div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>ExpiryDate</b></div>
+                                <div class="col-lg-6">{{expiryDate}}</div>
+                            </div>
+                            <div class="row col-lg-12">
+                                <div class="col-lg-6"><b>SecurityCode</b></div>
+                                <div class="col-lg-6">{{securityCode}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show='footer' class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12" style="text-align:center">
+                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="submitKey(enCode,prCode,data)">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Submit
+                        </button>
+                        <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for check availability-->
+<div class="modal fade" id="id_CheckAvailability" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h5 class="modal-title" style="text-align:center">{{selectedPropertyName}}</h5>
+            </div>
+            <div class="modal-body" style="height: 30em;">
+                <div class="container row col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                    <div>
+                        <h6>Available Templates for Check Availability</h6>
+                        <select id="checkAvailabilityTemplates-List" name="templates-List" ng-model="caTemplate" style="width:100%" ng-change="SelectedTemplateType(caTemplate)">
+                            <option value="">Please Select</option>
+                            <option ng-repeat="checkAvailabilityTemplate in checkAvailabilityTypeTemplates" value="{{checkAvailabilityTemplate.ID}} - {{checkAvailabilityTemplate.etSubject}}">{{checkAvailabilityTemplate.etCode}}</option>
+                        </select>
+                        <label id="" hidden style="color: red; display: none"></label>
+                    </div><br />
+                    <label><input type="checkbox" ng-model="includeFooterSignature"> Include footer signature?</label><br />
+                    @*<label><input type="checkbox" id="inAllCheckAvailabilityTemplates" ng-click="IncludeAllCheckAvailabilityTemplates(glbCurrentEnquiryRef)"> Include Template Source - All</label>*@
+
+                </div>
+            </div>
+            <br /><br />
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12" style="text-align:center">
+                        <button class="btn btn-success btn-sm mb-10" type="button" ng-click="checkAvailability()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Continue
+                        </button>
+                        <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Ended modal for check availability-->

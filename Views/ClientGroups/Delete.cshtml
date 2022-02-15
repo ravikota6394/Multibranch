@@ -1,0 +1,176 @@
+﻿@model eTrak.Dal.Models.ClientGroup
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ClientGroup</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFileImportCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFileImportCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgOrganisationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgOrganisationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgMiddleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgMiddleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress5)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress5)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgPoCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgPoCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFaxNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFaxNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgEmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgEmailAddress)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.cgIsExclusiveClientGroup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExclusiveClientGroup)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgStatus)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

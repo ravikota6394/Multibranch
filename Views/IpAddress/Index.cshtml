@@ -1,0 +1,36 @@
+﻿@model eTrak.Dal.Models.IpAddress
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>IpAddresses</h2>
+
+<p>
+    <a href="/IpAddress/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="IpAddress" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="currencies" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">IpAddress</th>
+                <th data-class="expand">Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="ip in ipAddresses ">
+                <td>{{ip.ipDescription}}</td>
+                <td>{{ip.ipStatus}}</td>
+                <td>
+                    <a href="IpAddress/Edit/{{ip.ipCode}}">Edit</a> |
+                    <a href="IpAddress/Details/{{ip.ipCode}}">Details</a> |
+                    <a href="IpAddress/Delete/{{ip.ipCode}}">Delete</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

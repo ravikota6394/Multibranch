@@ -1,0 +1,163 @@
+﻿
+h2 {
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+
+#tfheader {   
+    background-image: url('images/TAS_Images/Map.png');
+    background-size: 100% 100%;
+    min-height: 500px;
+}
+
+#newsearch {
+    float: initial;
+    padding-left: 204px;
+    padding-right: 204px;
+    padding-top: 318px;
+}
+
+.textinput {
+    margin-left: 577px;
+    padding: 5px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    border: 1px solid #ada9a9;
+    border-right: 0px;
+    border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;
+}
+
+.inputfortext {
+    padding: 12px 22px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border: 1px solid #ada9a9;
+    border-top-left-radius: 5px 5px;
+    border-bottom-left-radius: 5px 5px;
+}
+
+.searchbutton {
+    padding: 19px 24px 19px 24px;
+    font-family: Arial;
+    font-size: 16px;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    border: solid 1px #e93838;
+    background: #e93838;
+}
+
+.heading {
+    font-family: Arial;
+    font-weight: normal;
+    color: #044a81;
+    text-align: center;
+}
+
+#Adderess {
+    font-family: Arial;
+    font-weight: normal;
+    margin-top: 40px;
+}
+
+.search-styles {
+    padding-left: 0px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #FFFFFF;
+}
+
+#Search-btn {
+    background-color: #e93838;
+}
+
+#Search-icon {
+    padding: 12px;
+    color: white;
+    font-size: 25px;
+}
+
+#hide-icon {
+    margin-top: 117px;
+    font-size: 25px;
+    color: orangered;
+}
+
+#srch-term {
+    font-size: 16px;
+    padding: 30px;
+    font-weight: bold;
+    font-family: Arial;
+}
+
+#srch-termicon {
+    font-size: 16px;
+    padding: 30px;
+    font-weight: bold;
+    font-family: Arial;
+}
+
+.search-padding {
+    padding-top: 100px;
+}
+
+#navbarCollapse {
+    font-weight: bold;
+    font-family: Arial;
+    background-color: #939598;
+    color: #FFFFFF;
+}
+
+#navbar-fontcolor {
+    color: #FFFFFF;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #FFFFFF;
+}
+
+.nav-padding {
+    padding-left: 5px;
+}
+
+@media (min-width: 320px) {
+    .Img-height {
+        width: 170px;
+        height: 137px;
+    }
+
+    .search-in-xs {
+        padding-left: 0px;
+    }
+
+    #Adderess {
+        margin-top: 30px;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .searchbutton {
+        padding-left: 31px;
+        padding-right: 31px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .searchbutton {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+.navbar-header {
+    background-color: #939598;
+}
+
+.navbar-default .navbar-toggle .Menu-bar {
+    background-color: #FFFFFF;
+}

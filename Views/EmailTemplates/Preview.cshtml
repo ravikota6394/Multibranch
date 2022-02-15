@@ -1,0 +1,30 @@
+﻿@model eTrak.Dal.Models.EmailTemplate
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Preview</h2>
+
+<div>
+    <h4>EmailTemplate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.etTemplate)
+
+        </dt>
+        <dd>
+            @Html.Raw(Model.etTemplate)
+
+            @*@Html.TextAreaFor(model => model.etTemplate, new {htmlAttributes = new {@class = "form-control"}, @cols = 150, @rows = 15})*@
+
+        </dd>
+        
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

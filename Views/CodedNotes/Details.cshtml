@@ -1,0 +1,42 @@
+﻿@model eTrak.Dal.Models.CodedNote
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CodedNote</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cnDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cnDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cnStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cnStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cnNoteFlag)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cnNoteFlag)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.cnCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

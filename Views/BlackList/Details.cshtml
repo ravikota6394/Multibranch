@@ -1,0 +1,33 @@
+﻿@model eTrak.Dal.Models.EmailsBlackList
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.blEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.blEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.blStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.blStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.blId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

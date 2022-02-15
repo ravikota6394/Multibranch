@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Guest Service Reasons</h2>
+
+<p>
+    <a href="/GuestServiceReason/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-controller="GuestServiceReason" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="guestServiceReason" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+        <tr>
+            <th data-class="expand">Guest Service Reason</th>
+            <th data-class="expand">Status </th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="reason in guestServiceReason">
+            <td>{{reason.GsrDescription}}</td>
+            <td>{{reason.GsrStatus}}</td>
+            <td>
+                <a href="GuestServiceReason/Edit/{{reason.GsrId}}">Edit</a> |
+                <a href="GuestServiceReason/Details/{{reason.GsrId}}">Details</a> |
+                <a href="GuestServiceReason/Delete/{{reason.GsrId}}">Delete</a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,342 @@
+﻿@model eTrak.Dal.Models.ClientGroup
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ClientGroup</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFileImportCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFileImportCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgOrganisationName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgOrganisationName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgMiddleName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgMiddleName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgLastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress4)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress4)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgAddress5)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgAddress5)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgPoCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgPoCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTelephone3)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTelephone3)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFaxNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFaxNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgEmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgEmailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgIsExclusiveClientGroup)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExclusiveClientGroup)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSendGSPreArr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendGsPreArr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSendGSPostArr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendGsPostArr)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSendGSPreDep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendGsPreDep)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSendGSPreDep1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendGsPreDep1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSendGSPostDep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendGsPostDep)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgCheckedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgCheckedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgClientType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgClientType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgProductOffering)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgProductOffering)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgTasOfficeOwnership)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgTasOfficeOwnership)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgReservationTeamOwnerShip)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgReservationTeamOwnerShip)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgPaymentManagedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgPaymentManagedBy)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgPaymentTerms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgPaymentTerms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgIsIdRequired)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgIsIdRequired)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgBilledFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgBilledFrom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgCommissionStructure)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgCommissionStructure)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgContractRates)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgContractRates)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgReservationProcess)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgReservationProcess)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgBookingFormTemplate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgBookingFormTemplate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgEtrakDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgEtrakDetails)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSalesManager)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgSalesManager)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgSla)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgSla)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgKeyContact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgKeyContact)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgOtherKeyInfo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgOtherKeyInfo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.cgFinancialAgreement)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cgFinancialAgreement)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.cgCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

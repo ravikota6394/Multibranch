@@ -1,0 +1,40 @@
+﻿@model eTrak.Dal.Models.Currency
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Currency</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.cu_Id)
+
+        <div class="form-group">
+            @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cu_Currencies, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#atDescription')" } })
+                @Html.ValidationMessageFor(model => model.cu_Currencies, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("GBP Conversion", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cu_CurrencyGBPConversion, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrConvertToUpper(this,'#atStatus')" } })
+                @Html.ValidationMessageFor(model => model.cu_CurrencyGBPConversion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

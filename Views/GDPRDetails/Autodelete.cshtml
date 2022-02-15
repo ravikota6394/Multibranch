@@ -1,0 +1,143 @@
+﻿@model List<eTrak.Models.GdprDetails>
+@{
+    ViewBag.Title = "Autodelete";
+    var source = ViewBag.Source;
+    var token = ViewBag.Token;
+    var createdDate = ViewBag.CreatedDate;
+    var lastUpdatedDate = ViewBag.LastUpdatedDate;
+    var lastDays = ViewBag.LastDays;
+    var email = ViewBag.Email;
+    var pageUrl = "/GdprDetails/Autodelete?token=" + token + "&source=" + source + "&createdDate=" + createdDate + "&lastUpdatedDate=" + lastUpdatedDate + "&lastDays=" + lastDays + "&email=" + email;
+}  
+<h2>Details</h2>
+       
+<div class="container">
+    <input type="hidden" id="returnUrl" value="@pageUrl"/>
+    <table id="idGdprDetails" class="responsive table table-striped table-bordered">
+        <thead class="thin-border-bottom">
+            <tr>
+                <th>Traveller Email</th>
+                <th>Source</th>
+                <th>Fivestar Status</th>
+                <th>eTrak Status</th>
+                <th>Departure Date</th>
+                <th>Fivestar Ref</th>
+                <th>eTrak Ref</th>
+                <th>Recommended Action</th>
+                <th>Delete </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var details in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => details.TravellerEmail)</td>
+                    <td>@Html.DisplayFor(modelItem => details.Source)</td>
+                    <td>@Html.DisplayFor(ModelItem => details.FiveStarStatus)</td>
+                    <td>@Html.DisplayFor(modelItem => details.EnquiryStatus)</td>
+                    <td>@Html.DisplayFor(modelItem => details.DepartureDate)</td>
+                    <td>@Html.DisplayFor(modelItem => details.FivestarRef)</td>
+                    <td>@Html.DisplayFor(modelItem => details.EnquiryRef)</td>
+                    <td>Delete</td>
+                    <td><input type="checkbox" /> </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>
+        <a class="btn btn-success btn-sm pull-right" id="dtnGdprDataSubmit">Submit</a>
+    </p>
+</div>
+
+<div class="modal fade in" id="DeleteEmails" role="dialog" aria-hidden="false" >
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">You are about to delete the following email address details. Click 'Submit' to proceed </h5>
+            </div>
+            <div class="modal-body" style="max-height:160px;overflow-x:hidden">
+                <div style="text-align:center" id="temp" ></div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-danger btn-sm pull-right" style="margin-left:3px" id="dtnDeleteCancel">Cancel</a>
+                <a class="btn btn-success btn-sm pull-right" id="dtnDeleteConfirm">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="SelectEmails" role="dialog" aria-hidden="false">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div style="text-align:center">Please select any option</div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-info btn-sm pull-right" id="dtnSelectEmail">Ok</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#idGdprDetails').DataTable({
+            paging: true
+        });
+    });
+
+    $(function () {
+        var usersemails = "";
+        var emailForDisplay = "";
+
+        $("#dtnDeleteConfirm").click(function () {
+            $("#dtnDeleteConfirm").attr("disabled", 'disabled');
+            var pageUrl = $("#returnUrl").val();
+            var status = "Delete my Information but also send me a copy";
+            var data = { usersemails: usersemails, status: status };
+            $.ajax({
+                type: "POST",
+                url: "GDPRData/SubmitConfirmation",
+                data: data,
+                success: function (response) {
+                    console.log("url " + pageUrl);
+                    window.location.href = pageUrl;
+                }
+            });
+        });
+
+        $('#dtnDeleteCancel').click(function () {
+            $('#DeleteEmails').modal("hide");  
+        });
+
+        $('#dtnSelectEmail').click(function () {
+            $('#SelectEmails').modal("hide");
+        });
+
+        $("#dtnGdprDataSubmit").click(function () {
+            usersemails = "";
+            emailForDisplay = "";
+            $("#idGdprDetails input[type=checkbox]:checked").each(function () {
+                var row = $(this).closest("tr")[0];
+                usersemails += row.cells[0].innerHTML + ",";
+                emailForDisplay += row.cells[0].innerHTML + "," + "</br>";
+            });
+            usersemails = usersemails.substring(0, (usersemails.length - 1));
+            emailForDisplay = emailForDisplay.substring(0, (emailForDisplay.length - 6));
+            console.log(usersemails);
+            $('#temp').html(emailForDisplay);
+            if (usersemails.length > 0) {
+                $('#DeleteEmails').modal("show");  
+            }
+            else {
+                $('#SelectEmails').modal("show");
+            }         
+        });
+    });
+</script>

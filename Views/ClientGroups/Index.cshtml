@@ -1,0 +1,131 @@
+﻿
+
+<link href="~/Content/PagedList.css" rel="stylesheet"
+      type="text/css" />
+@{
+    ViewBag.Title = "Client Groups";
+}
+
+<h2>Client Groups</h2>
+
+<p>
+    @*<a href="/ClientGroups/Create/" class="btn btn-success btn-sm">Create New</a>*@
+    <br/>
+    <div>
+        <br/>
+        <label>Upload CSV File:</label><input type="file" name="file" id="CSVFileUpload"/><br/>
+        <input type="submit" value="Upload File" onclick="SubmitFile()" class="btn btn-info btn-sm"/>
+    </div>
+
+    @*@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+        {
+            <a href="/ClientGroups/ReplaceClientGroup/" class="btn btn-success btn-sm">Associate clients with groups</a>
+        }*@
+</p>
+
+
+<div ng-controller="R_ClientGroups" class="container">
+    <table id="idASPClientGroups" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="ClientGroups" class="responsive   table table-striped table-bordered">
+        <!--added extra datatable in class to see what happens-->
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Organisation Name</th>
+                <th data-class="expand">Title</th>
+                <th data-class="expand">First Name</th>
+                <th data-class="expand">Last Name</th>
+                <th data-class="expand">Address 1</th>
+                <th data-class="expand">PO Code</th>
+                <th data-class="expand">Main Telephone</th>
+                <th data-class="expand">Is Exclusive Client Group</th>
+                <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in ClientGroups ">
+                <td>{{edRec.cgOrganisationName}}</td>
+                <td>{{edRec.cgTitle}}</td>
+                <td>{{edRec.cgFirstName}}</td>
+                <td>{{edRec.cgLastName}}</td>
+                <td>{{edRec.cgAddress1}}</td>
+                <td>{{edRec.cgPoCode}}</td>
+                <td>{{edRec.cgTelephone1}}</td>
+                <td>{{edRec.cgIsExclusiveClientGroup}}</td>
+                <td>{{edRec.cgStatus}}</td>
+                <td>
+                    <a href="ClientGroups/Edit/{{edRec.cgCode}}">Edit</a> |
+                    <a href="ClientGroups/Details/{{edRec.cgCode}}">Details</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    function SubmitFile() {
+        $('#Error_Table').html('');
+        console.log(document.getElementById('CSVFileUpload').files[0]);
+
+        if (document.getElementById('CSVFileUpload').files[0] === undefined || document.getElementById('CSVFileUpload').files[0] === "") {
+            alert("Please choose a file to upload");
+            return false;
+        }
+
+        var fd = new FormData();
+        var file = document.getElementById('CSVFileUpload').files[0];
+        var filetype = file.name.split('.');
+        console.log(filetype);
+        fd.append('file', file);
+
+        if (filetype[1] != "csv") {
+            $("#CSVFileUpload").val("");
+            alert("Please choose only .csv files to upload");
+            return false;
+        }
+
+        $("#id_ImportCSV").modal('show');
+
+        $.ajax({
+            url: "/ClientGroups/ImportCsv",
+            type: 'post',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+
+                if (response === "Success") {
+                    $("#id_ImportCSV").modal('hide');
+                    $("#CSVFileUpload").val("");
+                    alert("File imported successfully");
+                    console.log(response);
+                }
+                else {
+                    $("#id_ImportCSV").modal('hide');
+                    $("#CSVFileUpload").val("");
+                    alert("File imported Failed");
+                    console.log(response);
+                }
+            }
+        });
+        return true;
+    }
+</script>
+
+<div class="modal fade" id="id_ImportCSV" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <h5 style="text-align:center">Processing CSV file...</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

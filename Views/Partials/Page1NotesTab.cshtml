@@ -1,0 +1,209 @@
+﻿<script>
+        $(function () {
+            setUpFormUtilities();
+        });
+</script>								<!-- Tabbed Navigation -->
+
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+   <!-- Tabbed Navigation -->
+<div class="row">
+    <div class="col-xs-12">
+        <div class="sidebar h-sidebar navbar-collapse collapse" id="tabbed-navigation">
+            <ul class="nav nav-list">
+    <li>
+        <a ui-sref="detailsTab({enqRef: '{{glbCurrentEnquiryRef}}'})">
+            <i class="menu-icon fa fa-bars"></i>
+            <span class="menu-text">Details</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="detailsTab.search">
+            <i class="menu-icon fa fa-search"></i>
+            <span class="menu-text">Search</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="detailsTab.shortlist">
+            <i class="menu-icon fa fa-filter"></i>
+            <span class="menu-text">Shortlist</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="detailsTab.emails">
+            <i class="menu-icon fa fa-envelope"></i>
+            <span class="menu-text">Emails</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="detailsTab.actions">
+            <i class="menu-icon fa fa-magic"></i>
+            <span class="menu-text">Actions</span>
+        </a>
+    </li>
+    @*<li class="active">
+            <a ui-sref="detailsTab.notes">
+                <i class="menu-icon fa fa-pencil-square-o"></i>
+                <span class="menu-text">Notes</span>
+            </a>
+        </li>*@
+    <!--
+    <li>
+        <a href="company-info-tab.html">
+            <i class="menu-icon fa fa-briefcase"></i>
+            <span class="menu-text">Company Info</span>
+        </a>
+    </li>
+    -->
+    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("SeniorManager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("ResTeam") || User.IsInRole("ClientManager")))
+    {
+
+        <li>
+            <a ui-sref="detailsTab.qaCheck">
+                <i class="menu-icon fa fa-star"></i>
+                <span class="menu-text">QA Check</span>
+            </a>
+        </li>
+    }
+                @*<li>
+                        <a ui-sref="detailsTab.companyDetails">
+                            <i class="menu-icon fa fa-briefcase"></i>
+                            <span class="menu-text">Company Details</span>
+                        </a>
+                    </li>*@
+                @*<li>
+                        <a ui-sref="detailsTab.clientUsers">
+                            <i class="menu-icon fa fa-user"></i>
+                            <span class="menu-text">Client Users</span>
+                        </a>
+                    </li>*@
+                @*<li>
+                        <a ui-sref="detailsTab.clientOpAgreement">
+                            <i class="menu-icon fa fa-check-square"></i>
+                            <span class="menu-text">Client Operations Agreement</span>
+                        </a>
+                    </li>*@
+                @*<li>
+                        <a ui-sref="detailsTab.enquiryHistory">
+                            <i class="menu-icon fa fa-history"></i>
+                            <span class="menu-text">Enquiry History</span>
+                        </a>
+                    </li>*@
+
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- End Tabbed Navigation -->
+<!-- Notes Tab Content -->
+<div class="row" ng-controller="R_PreCodedNotes">
+    <div class="col-xs-12">
+        <div class="tab-content">
+            <!-- Add New Note -->
+            <div class="widget-box transparent">
+                <div class="widget-header">
+                    <h4 class="widget-title">
+                        Add New Note
+                    </h4>
+                    <div class="widget-toolbar">
+                        <a data-action="collapse" href="#">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main bg-light-grey">
+                        <form  method="post">
+                            <div class="row">
+                                <!-- Field: User assigned -->
+                                <div class="col-lg-6 col-xl-3">
+                                    <div class="row form-group">
+                                        <label class="col-lg-4 no-padding-right">Action Type</label>
+                                        <div class="col-lg-8">
+                                            <select class="form-control" ng-model="trActionType">
+                                                <option>Please select</option>
+                                                <option ng-repeat="description in PreCodedNotes">{{description.cnDescription}}</option>                                               
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Field: Note text -->
+                                <div class="col-lg-6 col-xl-3">
+                                    <div class="row form-group">
+                                        <label class="col-lg-4 no-padding-right">Note text</label>
+                                        <div class="col-lg-8">
+                                            <textarea class="form-control" ng-model="trTextNotes"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-xl-3 text-right">
+                                    <button class="btn btn-success btn-sm mb-3" ng-click="saveTrackingEntry()">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Save Note
+                                    </button>
+                                    <button type="reset" class="btn btn-danger btn-sm mb-3">
+                                        <i class="ace-icon fa fa-times bigger-110"></i>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- End Add New Note -->
+            <!-- Tracking Table -->
+            <h3 class="header">
+                Tracking Entries
+            </h3>
+            <table id="notes-table" class="responsive datatable table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th data-class="expand">Ref #</th>
+                        <th>Created</th>
+                        <th data-hide="screen_xs">User</th>
+                        <th data-hide="screen_xs,screen_sm">Message</th>
+                        <th data-hide="screen_xs,screen_sm">Definition</th>
+                        <th data-hide="screen_xs,screen_sm" class="no-sort">Controls</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="trackingRecord in trackingRecords">
+                    <tr>
+                        <td><a href="#">{{trackingRecord.trenCode}}</a></td>
+                        <td>{{trackingRecord.trDateStamp | date:'dd-MM-yyyy'}} {{trackingRecord.trTimeStamp}}:00</td>
+                        <td>{{trackingRecord.trUserCode}}</td>
+                        <td>{{trackingRecord.trDescription}}</td>
+                        <td>{{trackingRecord.trType}}</td>
+                        <td>
+                            <a ui-sref="detailsTab.notes" title="Open Note" class="btn btn-minier btn-info">
+                                <i class="ace-icon fa fa-pencil-square-o icon-only"></i>
+                            </a>
+                        </td>
+                    </tr>               
+                </tbody>
+            </table>
+            <!-- Tracking Table -->
+        </div>
+    </div>
+</div>
+<!-- End Notes Tab Content -->
+

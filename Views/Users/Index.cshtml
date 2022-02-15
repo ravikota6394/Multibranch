@@ -1,0 +1,125 @@
+﻿@model IEnumerable<eTrak.Dal.Models.User>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.usCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usPassword)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usTelephone1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usTelephone2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usHomeTelephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usMobileTelephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usEmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usPrivilegeLevel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usControllerRefresh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.usBuddy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhiteLabel.wlName)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.usCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usPassword)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usTelephone1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usTelephone2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usHomeTelephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usMobileTelephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usEmailAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usPrivilegeLevel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usControllerRefresh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.usBuddy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhiteLabel.wlName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.usID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.usID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.usID })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

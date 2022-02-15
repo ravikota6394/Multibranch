@@ -1,0 +1,56 @@
+﻿@model eTrak.Dal.Models.GenericTemplatetag
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Generic Template Tag</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.gtTagName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gtTagName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gtDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gtDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => Model.gtHtml)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gtHtml)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.gtStatus)
+
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.gtStatus)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.gtLanguageCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.gtLanguageCode)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.gtId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

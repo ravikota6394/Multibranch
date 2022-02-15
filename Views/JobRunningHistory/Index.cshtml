@@ -1,0 +1,35 @@
+﻿
+
+@{
+                /**/
+
+                ViewBag.Title = "Index";
+}
+
+<h4>Job Running History</h4>
+
+<div ng-controller="JobHistoryRunDetails" class="container">
+    <table id="idASPApartmentTypes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="jobHistoryRunDetails" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Job Name </th>
+                <th data-class="expand">Last Run DateTime</th>
+                <th data-class="expand">Last Run Status</th>
+                <th data-class="expand">Last Run Duration</th>
+                <th data-class="expand">Next Run DateTime</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="job in jobHistoryRunDetails">
+                <td>{{job.JobName}}</td>
+                <td>{{job.LastRunDateTime}}</td>
+                <td>{{job.LastRunStatus}}</td>
+                <td>{{job.LastRunDuration}}</td>
+                <td>{{job.NextRunDateTime}}</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

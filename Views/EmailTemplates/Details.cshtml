@@ -1,0 +1,85 @@
+﻿@model eTrak.Dal.Models.EmailTemplate
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EmailTemplate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.etDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etTemplate)
+ 
+        </dt>
+        <dd>
+            @Html.Raw(Model.etTemplate)
+
+            @*@Html.TextAreaFor(model => model.etTemplate, new {htmlAttributes = new {@class = "form-control"}, @cols = 150, @rows = 15})*@
+
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LanguageCode.lcCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LanguageCode.lcCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.soDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.soDescription)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etTemplateType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etTemplateType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

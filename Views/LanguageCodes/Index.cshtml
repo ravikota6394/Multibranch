@@ -1,0 +1,42 @@
+﻿@model IEnumerable<eTrak.Dal.Models.LanguageCode>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>LanguageCodes</h2>
+
+<p>
+    <a href="/LanguageCodes/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+
+<div ng-controller="R_LanguageCodes" class="container">
+    <table id="idASPLanguageCodes" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="LanguageCodes" class="responsive   table table-striped table-bordered">
+
+        <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Language Code</th>
+                <th data-class="expand">Name</th>
+                <th data-class="expand">Culture Code</th>
+                <th data-class="expand">ISO 639 Code</th>
+
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr ng-repeat="edRec in LanguageCodes ">
+                <td>{{edRec.lcCode}}</td>
+                <td>{{edRec.lcName}}</td>
+                <td>{{edRec.lcCultureCode}}</td>
+                <td>{{edRec.lcISO639}}</td>
+
+                <td>
+                    <a href="/LanguageCodes/Edit/{{edRec.lcID}}">Edit</a> |
+                    <a href="/LanguageCodes/Details/{{edRec.lcID}}">Details</a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

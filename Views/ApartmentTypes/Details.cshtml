@@ -1,0 +1,34 @@
+﻿@model eTrak.Dal.Models.ApartmentType
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ApartmentType</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.atDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.atDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.atStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.atStatus)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.atCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

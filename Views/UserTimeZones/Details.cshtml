@@ -1,0 +1,40 @@
+﻿@model eTrak.Dal.Models.UserTimeZone
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>UserTimeZone</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.tzDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tzDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.tzAdjustmentTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tzAdjustmentTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.tzStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tzStatus)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.tzCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

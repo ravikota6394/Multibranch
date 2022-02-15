@@ -1,0 +1,69 @@
+﻿<style>
+    .highlight {
+        background-color: #f2dede !important;
+    }
+</style>
+
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+@if (Request.IsAuthenticated && (User.IsInRole("Home User")))
+{
+    <input type="hidden" id="IsHomeUserCheck" value="true" />
+}
+@if (Request.IsAuthenticated && (User.IsInRole("Client Manager")))
+{
+    <input type="hidden" id="IsClientManagerCheck" value="true" />
+}
+<div id="mydiv">    
+    <div class="widget-box transparent collapsed">
+        @*<div class="widget-header">
+            <h5 class="widget-title">
+                <i class="ace-icon fa fa-envelope"></i>
+                My Emails               
+            </h5>
+            <div class="widget-toolbar">
+                <a data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-down"></i>
+                </a>
+            </div>
+        </div>*@
+        <div class="widget-body collapse in" id="myEmails">
+            <div class="widget-main no-padding">
+                <div id="my-emails" class="scrollable display" width="100%" data-height="325">
+                    <div class="content ">
+                        <table datatable="" dt-options="dtEmailOptions" class="responsive table table-bordered table-striped">
+                            <thead class="thin-border-bottom">
+                                <tr>
+                                    <th data-hide="screen_xs">ref #</th>
+                                    <th data-hide="screen_xs">from</th>
+                                    <th data-hide="screen_xs">Body</th>
+                                    <th data-hide="screen_xs">time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="meRec in MyEmails" ng-hide="(meRec.HighlightCss == 'highlight' && homeUserRole == 'true') ? true : false">
+                                    <td class="{{meRec.HighlightCss}}"><a ui-sref="detailsTab({enqRef: '{{  meRec.eTrakEnquiryID }}' })">{{ meRec.eTrakEnquiryID }}</a></td>
+                                    <td class="{{meRec.HighlightCss}}">{{ meRec.DisplayFrom }}</td>
+                                    <td class="{{meRec.HighlightCss}}">{{ meRec.Subject }} </td>
+                                    <td class="{{meRec.HighlightCss}}">{{ meRec.DateTimeReceived  | date:'HH:mm:ss'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

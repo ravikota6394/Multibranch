@@ -1,0 +1,381 @@
+﻿@model eTrak.Dal.Models.ClientGroup
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ClientGroup</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgFileImportCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @Html.EditorFor(model => model.cgFileImportCode, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgFileImportFile')" } })
+                @Html.ValidationMessageFor(model => model.cgFileImportCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgOrganisationName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessage("DuplicateError", "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.cgOrganisationName, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgOrganisationName')" } })
+                @Html.ValidationMessageFor(model => model.cgOrganisationName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("cgTitle", new List<SelectListItem>
+                    {
+                      new SelectListItem { Text="Please Select", Value = ""},
+                      new SelectListItem { Text="Mr", Value = "Mr"},
+                      new SelectListItem { Text="Mrs", Value = "Mrs"},
+                      new SelectListItem { Text="Miss", Value = "Miss"},
+                      new SelectListItem { Text="Ms", Value = "Ms"},
+                    }, Model.cgTitle, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.cgTitle, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgFirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.cgFirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgMiddleName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgMiddleName, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgMiddleName')" } })
+                @Html.ValidationMessageFor(model => model.cgMiddleName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgLastName, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgLastName')" } })
+                @Html.ValidationMessageFor(model => model.cgLastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgAddress1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgAddress1, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgAddress1')" } })
+                @Html.ValidationMessageFor(model => model.cgAddress1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgAddress2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgAddress2, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgAddress2')" } })
+                @Html.ValidationMessageFor(model => model.cgAddress2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgAddress3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgAddress3, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgAddress3')" } })
+                @Html.ValidationMessageFor(model => model.cgAddress3, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgAddress4, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgAddress4, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgAddress4')" } })
+                @Html.ValidationMessageFor(model => model.cgAddress4, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgAddress5, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgAddress5, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgAddress5')" } })
+                @Html.ValidationMessageFor(model => model.cgAddress5, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgPoCode, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgPoCode, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrConvertToUpper(this,'#cgPoCode')" } })
+                @Html.ValidationMessageFor(model => model.cgPoCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgTelephone1, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgTelephone1, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgTelephone1')" } })
+                @Html.ValidationMessageFor(model => model.cgTelephone1, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgTelephone2, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgTelephone2, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgTelephone2')" } })
+                @Html.ValidationMessageFor(model => model.cgTelephone2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgTelephone3, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgTelephone3, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgTelephone3')" } })
+                @Html.ValidationMessageFor(model => model.cgTelephone3, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgFaxNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgFaxNo, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgFaxNo')" } })
+                @Html.ValidationMessageFor(model => model.cgFaxNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgEmailAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgEmailAddress, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgEmailAddress')" } })
+                @Html.ValidationMessageFor(model => model.cgEmailAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.ExclusiveClientGroup)
+                @Html.LabelFor(model => model.cgIsExclusiveClientGroup, "Is Exclusive Client Group", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.SendGsPreArr)
+                @Html.LabelFor(model => model.cgSendGSPreArr, "Send Guest service Pre-Arr", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.SendGsPostArr)
+                @Html.LabelFor(model => model.cgSendGSPostArr, "Send Guest service Post-Arr", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.SendGsPreDep)
+                @Html.LabelFor(model => model.cgSendGSPreDep, "Send Guest service Pre-Dept 1", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.SendGsPreDep1)
+                @Html.LabelFor(model => model.cgSendGSPreDep1, "Send Guest service Pre-Dept 2", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-12 col-sm-12 col-lg-12">
+            <div class="col-md-2 col-sm-2 col-lg-2"></div>
+            <div class="col-md-8 col-sm-8 col-lg-8">
+                @Html.CheckBoxFor(model => model.SendGsPostDep)
+                @Html.LabelFor(model => model.cgSendGSPostDep, "Send Guest service Post-Dept", htmlAttributes: new { @class = "control-label" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cgStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cgStatus, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgStatus')" } })
+                @Html.ValidationMessageFor(model => model.cgStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgCheckedBy, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgCheckedBy')" } })
+		        @Html.ValidationMessageFor(model => model.cgCheckedBy, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgClientType, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgClientType, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgClientType')" } })
+		        @Html.ValidationMessageFor(model => model.cgClientType, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgProductOffering, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgProductOffering, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgProductOffering')" } })
+		        @Html.ValidationMessageFor(model => model.cgProductOffering, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgTasOfficeOwnership, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgTasOfficeOwnership, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgTasOfficeOwnership')" } })
+		        @Html.ValidationMessageFor(model => model.cgTasOfficeOwnership, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgReservationTeamOwnerShip, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgReservationTeamOwnerShip, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgReservationTeamOwnerShip')" } })
+		        @Html.ValidationMessageFor(model => model.cgReservationTeamOwnerShip, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgPaymentManagedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgPaymentManagedBy, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgPaymentManagedBy')" } })
+		        @Html.ValidationMessageFor(model => model.cgPaymentManagedBy, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgPaymentTerms, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgPaymentTerms, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgPaymentTerms')" } })
+		        @Html.ValidationMessageFor(model => model.cgPaymentTerms, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgIsIdRequired, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgIsIdRequired, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgIsIdRequired')" } })
+		        @Html.ValidationMessageFor(model => model.cgIsIdRequired, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgBilledFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgBilledFrom, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgBilledFrom')" } })
+		        @Html.ValidationMessageFor(model => model.cgBilledFrom, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgCommissionStructure, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgCommissionStructure, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgCommissionStructure')" } })
+		        @Html.ValidationMessageFor(model => model.cgCommissionStructure, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgContractRates, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgContractRates, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgContractRates')" } })
+		        @Html.ValidationMessageFor(model => model.cgContractRates, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgReservationProcess, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgReservationProcess, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgReservationProcess')" } })
+		        @Html.ValidationMessageFor(model => model.cgReservationProcess, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgBookingFormTemplate, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgBookingFormTemplate, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgBookingFormTemplate')" } })
+		        @Html.ValidationMessageFor(model => model.cgBookingFormTemplate, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgEtrakDetails, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgEtrakDetails, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgEtrakDetails')" } })
+		        @Html.ValidationMessageFor(model => model.cgEtrakDetails, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgSalesManager, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgSalesManager, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgSalesManager')" } })
+		        @Html.ValidationMessageFor(model => model.cgSalesManager, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgSla, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgSla, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgSla')" } })
+		        @Html.ValidationMessageFor(model => model.cgSla, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgKeyContact, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgKeyContact, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgKeyContact')" } })
+		        @Html.ValidationMessageFor(model => model.cgKeyContact, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgOtherKeyInfo, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgOtherKeyInfo, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgOtherKeyInfo')" } })
+		        @Html.ValidationMessageFor(model => model.cgOtherKeyInfo, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+	        @Html.LabelFor(model => model.cgFinancialAgreement, htmlAttributes: new { @class = "control-label col-md-2" })
+	        <div class="col-md-10">
+		        @Html.EditorFor(model => model.cgFinancialAgreement, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cgFinancialAgreement')" } })
+		        @Html.ValidationMessageFor(model => model.cgFinancialAgreement, "", new { @class = "text-danger" })
+	        </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,131 @@
+﻿﻿@model eTrak.Controllers.EnquiriesController.BookingConfirmationModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<span style="display:none">@ViewBag.UserCode = @Model.UserCode</span>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <div class="modal fade" id="id_IsAvailabile" data-backdrop="static" data-keyboard="false" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" style="text-align:center"><b>Booking Confirmation</b></h4>
+                    </div>
+                    <div class="modal-body" style="text-align:justify">
+                        <div>
+                            <br />
+                            <div>
+                                <p>Below are your Accommodation details. To confirm this booking, Please click <span style="color:blue"><b>Proceed with booking</b></span></p><br/>
+                                <table class="responsive table table-striped table-bordered" style="text-align: left">
+                                    <tr>
+                                        <td class="col-lg-6"><b>Enquiry Reference</b></td>
+                                        <td class="col-lg-6">@Model.EnqRef</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-lg-6"><b>Guest Name</b></td>
+                                        <td class="col-lg-6">@Model.GuestName</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-lg-6"><b>Property Name</b></td>
+                                        <td class="col-lg-6">@Model.PropertyName</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-lg-6"><b>Apartment type</b></td>
+                                        <td class="col-lg-6">@Model.ApartmentType</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-lg-6"><b>Arrival Date</b></td>
+                                        <td class="col-lg-6">@Model.ArrivalDate</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-lg-6"><b>Departure Date</b></td>
+                                        <td class="col-lg-6">@Model.DepartureDate</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div>
+                            <button type="button" class="btn btn-success" id="ConfirmBooking">Proceed with booking</button>
+                            <button type="button" class="btn btn-danger" id="id_CancelBooking">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ConfirmationPage"></div>
+
+    <script>
+        $(document).ready(function () {
+            $("#id_IsAvailabile").modal();
+        });
+
+        $("#ConfirmBooking").click(function (e) {
+            document.getElementById("ConfirmBooking").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/Enquiries/ConfirmBooking/",
+                data: { propertyId: @Model.PropertyId, templateId: @Model.TemplateId, enqRef: @Model.EnqRef},
+                success: function (response) {
+                    console.log("RESPONSE: ");
+                    console.log(response);
+                    $('#id_IsAvailabile').modal('hide');
+                    $('#ConfirmationPage').html(response);
+                },
+                error: function (response) {
+                    console.log("ERROR");
+                }
+            });
+        });
+
+        $("#id_CancelBooking").click(function (e) {
+            document.getElementById("id_CancelBooking").disabled = true;
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "/Enquiries/CancelBooking/",
+                data: {enqRef: @Model.EnqRef, propertyId: @Model.PropertyId},
+                success: function (response) {
+                    console.log("RESPONSE: ");
+                    console.log(response);
+                    $('#id_IsAvailabile').modal('hide');
+                    $('#ConfirmationPage').html(response);
+                },
+                error: function (response) {
+                    console.log("ERROR");
+                }
+            });
+        });
+
+    </script>
+
+    <style>
+        .modal-body {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
+        }
+    </style>
+
+</body>
+</html>

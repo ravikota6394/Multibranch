@@ -1,0 +1,57 @@
+﻿
+<!--Google Analytics Script-->
+<script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<!--All the controllers are stacked in the index.cshtml to allow the different angular calls to interact with ng-model labels-->
+<div class="section-container light-bg">
+    <div class="well table-responsive">
+        <table id="idDTClientChoiceDataTable" show-filter="true" datatable="ng" dt-options="dtCSOptions" class="table table-fixed table-bordered">
+            <!--added extra datatable in class to see what happens-->
+            <thead class="thin-border-bottom">
+            <tr>
+                <th data-class="expand">Select</th>
+                <th data-class="expand">Name</th>
+                <th data-hide="screen_xs,screen_sm">Company</th>
+                <th data-hide="screen_xs,screen_sm">PostCode</th>
+                <th data-hide="screen_xs,screen_sm">Address</th>
+                <th data-hide="screen_xs,screen_sm">Email</th>
+                <th data-hide="screen_xs,screen_sm">Code</th>
+                <th data-hide="screen_xs,screen_sm">5-Star Code</th>
+                <th data-hide="screen_xs,screen_sm">Group</th>
+                <th data-hide="screen_xs,screen_sm">Previous Enquiries</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="edRec in Clients">
+                    <!--enquiriesDashboardFilter:this-->
+                    <td class="{{edRec.HighlightCss}}"><button class="btn btn-sm no-border form-control" type="button"  ng-click="dtCsSelect($index,edRec.HighlightCss);">Select</button></td>
+                    <td class="{{edRec.HighlightCss}}" id="idCsName-{{$index}}"><a ng-click="dtCsSelect($index,edRec.HighlightCss);">{{edRec.clTitle}} {{edRec.clFirstName}}, {{edRec.clLastName}}</a></td>
+                    <td class="{{edRec.HighlightCss}}" id="idCsCompany-{{$index}}">{{edRec.clCompanyName}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clPostCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clAddress1}}, {{edRec.clAddress2}}, {{edRec.clAddress3}}, {{edRec.clAddress4}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clEmailAddress}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clFileImportCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clFileImportCode}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.cgOrganisationName}}</td>
+                    <td class="{{edRec.HighlightCss}}">{{edRec.clPreviousEnqs}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+</div>

@@ -1,0 +1,494 @@
+﻿<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->
+
+<div>
+    <!--Modal for creating new schedule-->
+    <div class="modal fade" id="idCreateSchedule" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" style="text-align:center">Create new schedule</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Schedule Name:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" ng-readonly="MakeScheduleNameReadOnly" class="form-control" id="id_qs_ScheduleName" ng-model="qs_ScheduleName">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Query Name:</label>
+                                <div class="col-sm-8">
+                                    <select id="id_qs_QueryName" class="form-control" ng-model="qs_QueryName" placeholder="Enter query name">
+                                        <option value="">Please Select</option>
+                                        <option ng-repeat="name in QueryNames" value="{{name.QueryName}}">{{name.QueryName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Emails:</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="id_qs_Email" ng-model="qs_Email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Template:</label>
+                                <div class="col-sm-8">
+                                    <select id="id_qs_Template" class="form-control" ng-model="qs_Template" placeholder="Enter query name">
+                                        <option value="">Please Select</option>
+                                        <option ng-repeat="name in TemplateNames" value="{{name.etCode}}">{{name.etCode}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">File Type:</label>
+                                <div class="col-sm-8">
+                                    <select id="id_qs_FileType" class="form-control" ng-model="qs_FileType">
+                                        <option value="">Please Select</option>
+                                        <option value="CSV">CSV</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">Recurrence:</label>
+                                <label class="col-sm-8 control-label lbl_recurrence"><a class="schedule" id="qs_Recurence" ng-click="OpenModalForRecurrence()">Recurrence</a></label>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    <button type="submit" class="btn btn-success" ng-click="CreateNewSchedule()">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for creating new schedule-->
+    <!--Modal for recurrence-->
+    <div class="modal fade" id="idRecurrence" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Schedule Recurrence</h4>
+                </div>
+                <div class="modal-body">
+                    <h6 class="font_style">Schedule Time</h6>
+                    <div class="row">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" id="lbl_DateTime">Start Date:</label>
+                                <div class="col-sm-8">                                    
+                                    <p class="input-group">
+                                        <select class="selectHeight" ng-model="qs_StartDay" id="id_qs_StartDay">
+                                            <option value="">Select Day</option>
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                        </select>&nbsp;
+                                        <select class="selectHeight" ng-model="qs_StartMonth" id="id_qs_StartMonth">
+                                            <option value="">Select Month</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>&nbsp;
+                                        <input type="text" style="width: 48px;height: 23px;" id="id_qs_StartYear" ng-model="qs_StartYear" placeholder="YYYY" />
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2" id="lbl_DateTime">Start Time:</label>
+                                <div class="col-sm-8">
+                                    <select id="id_qs_StartTime" class="dateTime" name="menu" ng-model="qs_StartTime">
+                                        <option value="">Please Select</option>
+                                        <option value="00:00">00:00</option>
+                                        <option value="00:30">00:30</option>
+                                        <option value="01:00">01:00</option>
+                                        <option value="01:30">01:30</option>
+                                        <option value="02:00">02:00</option>
+                                        <option value="02:30">02:30</option>
+                                        <option value="03:00">03:00</option>
+                                        <option value="03:30">03:30</option>
+                                        <option value="04:00">04:00</option>
+                                        <option value="04:30">04:30</option>
+                                        <option value="05:00">05:00</option>
+                                        <option value="05:30">05:30</option>
+                                        <option value="06:00">06:00</option>
+                                        <option value="06:30">06:30</option>
+                                        <option value="07:00">07:00</option>
+                                        <option value="07:30">07:30</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="08:30">08:30</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="09:30">09:30</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="10:30">10:30</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="11:30">11:30</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="12:30">12:30</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="13:30">13:30</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="14:30">14:30</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="15:30">15:30</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="16:30">16:30</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="17:30">17:30</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="18:30">18:30</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="19:30">19:30</option>
+                                        <option value="20:00">20:00</option>
+                                        <option value="20:30">20:30</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="21:30">21:30</option>
+                                        <option value="22:00">22:00</option>
+                                        <option value="22:30">20:30</option>
+                                        <option value="23:00">23:00</option>
+                                        <option value="23:30">23:30</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <h6 class="font_style">Recurrence Pattern</h6>
+                    <div class="row">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!-- tabs left -->
+                                    <div class="tabbable tabs-left">
+                                        <ul class="nav nav-tabs" id="recurrence_tabs">
+                                            <li id="li_daily"><a href="#daily" data-toggle="tab">Daily</a></li>
+                                            <li id="li_weekly"><a href="#weekly" data-toggle="tab">Weekly</a></li>
+                                            <li id="li_monthly"><a href="#monthly" data-toggle="tab">Monthly</a></li>
+                                            <li id="li_yearly"><a href="#yearly" data-toggle="tab">Yearly</a></li>
+                                        </ul>
+                                        <div class="tab-content" id="recurrence_tabs_content">
+
+                                            <div class="tab-pane" id="daily">
+                                                <input value="true" class="recurrenceSelect" ng-checked="ch_da_forDays ? true : false" name="daily" id="id_qs_da_RecurNoOfDays" type="radio"> <label>Every</label>&nbsp;
+                                                <input type="text" id="qs_days" ng-model="qs_da_RecurNoOfDays" />&nbsp;&nbsp;<label>day(s)</label><div></div>
+                                                <input name="daily" class="recurrenceSelect" ng-checked="ch_da_forWeek ? true : false" id="id_qs_da_EveryWeekDay" value="true" ng-model="qs_da_EveryWeekDay" type="radio"> Every weekday
+                                            </div>
+
+                                            <div class="tab-pane" id="weekly">
+                                                <label class="lbl_wk_recur">Recur every</label><input type="text" ng-model="qs_wk_RecurNoOfWeeks" id="qs_days" />&nbsp;<label>week(s) on:</label><br />
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Monday" ng-checked="ch_wk_mon ? true : false" ng-model="qs_Monday" value="true"><label class="lbl_Align">Monday</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Tuesday" ng-checked="ch_wk_tue ? true : false" ng-model="qs_Tuesday" value="true"><label class="lbl_Align">Tuesday</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Wednesday" ng-checked="ch_wk_wed ? true : false" ng-model="qs_Wednesday" value="true"><label class="lbl_Align">Wednesday</label>
+                                                    </label>
+                                                </div><br />
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Thursday" ng-checked="ch_wk_thu ? true : false" ng-model="qs_Thursday" value="true"><label class="lbl_Align">Thursday</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Friday" ng-checked="ch_wk_fri ? true : false" ng-model="qs_Friday" value="true"><label class="lbl_Align">Friday</label>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Saturday" ng-checked="ch_wk_sat ? true : false" ng-model="qs_Saturday" value="true"><label class="lbl_Align">Saturday</label>
+                                                    </label>
+                                                </div><br />
+                                                <div class="col-sm-4">
+                                                    <label class="inline">
+                                                        <input type="checkbox" class="check_Align" id="id_qs_Sunday" ng-checked="ch_wk_sun ? true : false" ng-model="qs_Sunday" value="true"><label class="lbl_Align">Sunday</label>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane" id="monthly">
+                                                <input class="recurrenceSelect" id="id_qs_mt_DateMonth" ng-checked="ch_mn_dateMonth ? true : false" name="Month" value="true" type="radio"> <label class="lbl_mn_date">Day</label>&nbsp;&nbsp;<input type="text" ng-model="qs_mt_Date" id="qs_days" />&nbsp;&nbsp;<label>of every</label>&nbsp;&nbsp;<input type="text" ng-model="qs_mt_RecurNoOfMonths" id="qs_days" />&nbsp;&nbsp;<label>month(s)</label><div></div>
+                                                <input class="recurrenceSelect" id="id_qs_mt_DateDayMonth" ng-checked="ch_da_dayMonth ? true : false" name="Month" value="true" type="radio"> <label>The</label>
+                                                <select class="selectHeight" ng-model="qs_mt_RecurWeeks">
+                                                    <option value="">Please Select</option>
+                                                    <option value="First">First</option>
+                                                    <option value="Second">Second</option>
+                                                    <option value="Third">Third</option>
+                                                    <option value="Fourth">Fourth</option>
+                                                    <option value="Last">Last</option>
+                                                </select>&nbsp;
+                                                <select class="selectHeight" ng-model="qs_mt_RecurWeekdays">
+                                                    <option value="">Please Select</option>
+                                                    <option value="Monday">Monday</option>
+                                                    <option value="Tuesday">Tuesday</option>
+                                                    <option value="Wednesday">Wednesday</option>
+                                                    <option value="Thursday">Thursday</option>
+                                                    <option value="Friday">Friday</option>
+                                                    <option value="Saturday">Saturday</option>
+                                                    <option value="Sunday">Sunday</option>
+                                                </select>&nbsp;<label id="id_mn_day">of every</label>&nbsp;<input type="text" ng-model="qs_mt_RecurMonths" id="qs_days" />&nbsp;<label>month(s)</label>
+                                            </div>
+
+                                            <div class="tab-pane" id="yearly">
+                                                <label class="lbl_yr_Month">Recur every</label>&nbsp;<input type="text" ng-model="qs_yr_RecurNoOfYears" id="qs_days" />&nbsp;<label>year(s)</label><br />
+                                                <input class="recurrenceSelect" id="id_qs_yr_DateMonth" name="Yearly" ng-checked="ch_yr_dateMonth ? true : false" value="true" type="radio"><label class="lbl_mn_date">On:</label>&nbsp;
+                                                <select class="selectHeight" ng-model="qs_yr_RecurMonth">
+                                                    <option value="">Please select</option>
+                                                    <option value="January">January</option>
+                                                    <option value="February">February</option>
+                                                    <option value="March">March</option>
+                                                    <option value="April">April</option>
+                                                    <option value="May">May</option>
+                                                    <option value="June">June</option>
+                                                    <option value="July">July</option>
+                                                    <option value="August">August</option>
+                                                    <option value="September">September</option>
+                                                    <option value="October">October</option>
+                                                    <option value="November">November</option>
+                                                    <option value="December">December</option>
+                                                </select>&nbsp;&nbsp;<input class="selectHeight" type="text" ng-model="qs_yr_RecurDate" id="qs_days" /><div></div>
+                                                <input class="recurrenceSelect" id="id_qs_yrDayMonth" value="true" ng-checked="ch_yr_dayMonth ? true : false" name="Yearly" type="radio"><label class="lbl_mn_date">On the:</label>&nbsp;
+                                                <select class="selectHeight" ng-model="qs_yr_RecurWeeks">
+                                                    <option value="">Please Select</option>
+                                                    <option value="First">First</option>
+                                                    <option value="Second">Second</option>
+                                                    <option value="Third">Third</option>
+                                                    <option value="Fourth">Fourth</option>
+                                                    <option value="Last">Last</option>
+                                                </select>&nbsp;&nbsp;
+                                                <select id="id_yr_wkDays" class="selectHeight" ng-model="qs_yr_RecurWeekDays">
+                                                    <option value="">Please Select</option>
+                                                    <option value="Monday">Monday</option>
+                                                    <option value="Tuesday">Tuesday</option>
+                                                    <option value="Wednesday">Wednesday</option>
+                                                    <option value="Thursday">Thursday</option>
+                                                    <option value="Friday">Friday</option>
+                                                    <option value="Saturday">Saturday</option>
+                                                    <option value="Sunday">Sunday</option>
+                                                </select>&nbsp;&nbsp;
+                                                <select class="selectHeight" ng-model="qs_yr_RecurNoOfMonths">
+                                                    <option value="">Please select</option>
+                                                    <option value="January">January</option>
+                                                    <option value="February">February</option>
+                                                    <option value="March">March</option>
+                                                    <option value="April">April</option>
+                                                    <option value="May">May</option>
+                                                    <option value="June">June</option>
+                                                    <option value="July">July</option>
+                                                    <option value="August">August</option>
+                                                    <option value="September">September</option>
+                                                    <option value="October">October</option>
+                                                    <option value="November">November</option>
+                                                    <option value="December">December</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h6 class="recuranceRangeHead font_style">Range of Recurrence</h6>
+                    <div class="row">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <div class="form-group row">
+                                    <div class="col-sm-12 recurrenceSelect">
+                                        <input type="radio" id="id_qs_NoEndDate" ng-checked="ch_NoEndDate ? true : false" value="true" name="range" ng-model="qs_NoEndDate" class="recurrenceSelect"><label class="lbl_mn_date">No end date</label><div></div>
+                                        <input class="recurrenceSelect" ng-checked="ch_EndAfterOccurences ? true : false" id="id_qs_EndAfterOccurences" name="range" value="true" type="radio"><label class="lbl_mn_date">End after:</label>&nbsp;<input type="text" value="10" ng-model="qs_EndAfterOccurences" id="qs_days" />&nbsp;<label>occurrence(s)</label><div></div>
+                                        <input class="recurrenceSelect" ng-checked="ch_EndDate ? true : false" id="id_qs_EndDate" value="true" name="range" type="radio"><label>End by:</label>&nbsp;                                      
+                                        <select class="selectHeight" ng-model="qs_EndDay" id="id_qs_EndDay">
+                                            <option value="">Select Day</option>
+                                            <option value="01">01</option>
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
+                                            <option value="24">24</option>
+                                            <option value="25">25</option>
+                                            <option value="26">26</option>
+                                            <option value="27">27</option>
+                                            <option value="28">28</option>
+                                            <option value="29">29</option>
+                                            <option value="30">30</option>
+                                            <option value="31">31</option>
+                                        </select>&nbsp;
+                                        <select class="selectHeight" ng-model="qs_EndMonth" id="id_qs_EndMonth">
+                                            <option value="">Select Month</option>
+                                            <option value="01">January</option>
+                                            <option value="02">February</option>
+                                            <option value="03">March</option>
+                                            <option value="04">April</option>
+                                            <option value="05">May</option>
+                                            <option value="06">June</option>
+                                            <option value="07">July</option>
+                                            <option value="08">August</option>
+                                            <option value="09">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>&nbsp;
+                                        <input type="text" style="width: 48px;height: 23px;" id="id_qs_EndYear" ng-model="qs_EndYear" placeholder="YYYY" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <div class="col-xs-12" style="text-align:center">
+                            <button class="btn btn-success btn-sm mb-10" data-dismiss="modal">
+                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                Ok
+                            </button>
+                            <button class="btn btn-danger btn-sm mb-10" type="reset" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times bigger-110"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for recurrence-->
+    <!--Modal for displaying details-->
+    <div class="modal fade" id="id_AuditDetails" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Audit Details</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="QueryAudit">
+                        <div class="content">
+                            <table datatable="" dt-options="dtqueryAudit" class="responsive table table-bordered table-striped">
+                                <thead class="thin-border-bottom">
+                                    <tr>
+                                        <th data-hide="screen_xs">Run Date</th>
+                                        <th data-hide="screen_xs">Email Log</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="audit in AuditDetails">
+                                        <td>{{audit.au_RunDateTime}}</td>
+                                        <td>{{audit.au_Log}}</td>
+                                    </tr>
+                                    @*<tr class="bg-light-red transparent-children">
+                                            <td>02-06-2016</td>
+                                            <td>Query running failed</td>
+                                        </tr>*@
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!--Ended modal for displaying details-->
+    <!---Modal for displaying sucess message-->
+    <div class="modal fade" id="idSuccessModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    @*<h4 class="modal-title">Modal Header</h4>*@
+                </div>
+                <div class="modal-body">
+                    <h5>Your query run was {{Status}}</h5>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+
+        </div>
+    </div>
+    <!--Ended Modal for displaying sucess message-->
+
+</div>

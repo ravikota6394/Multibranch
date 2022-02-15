@@ -1,0 +1,55 @@
+﻿@model IEnumerable<eTrak.Dal.Models.User>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>eTrak Users Admin</h2>
+<p>
+    <a href="/eTrakUsers/Create/" class="btn btn-success btn-sm">Create New</a>
+</p>
+<div ng-app="eTrakApp">    
+        <div ng-controller="R_UsersDotNet" class="container table-responsive">
+            <table id="idASPUsersDotNet" show-filter="true" dt-options="dtOptions" datatable="ng" ng-model="Users" class="table table-fixed table-bordered">
+                <!--added extra datatable in class to see what happens-->
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th data-class="expand">User Name</th>
+                        <th data-class="expand">Description</th>
+                        @*<th data-class="expand">WhiteLabel</th>*@
+                        <th data-class="expand">ClientGroup</th>
+                        <th data-hide="screen_xs,screen_sm">Status (L=Live, D=Deleted, I=Ignore) </th>
+                        <th data-class="expand">First Name</th>
+                        <th data-class="expand">Last Name</th>
+                        <th data-class="expand">Buddy</th>
+                        <th data-class="expand">Assigned User</th>
+                        <th data-class="expand">User Role</th>
+                        <th data-class="expand">Is Report Team (For Resteam)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr ng-repeat="edRec in AllUsers ">
+                        <td>{{edRec.usCode}}</td>
+                        <td>{{edRec.usDescription}}</td>
+                        @*<td>{{edRec.wlName}}</td>*@
+                        <td>{{edRec.cgOrganisationName}}</td>
+                        <td>{{edRec.usStatus}}</td>
+                        <td>{{edRec.usFirstName}}</td>
+                        <td>{{edRec.usLastName}}</td>
+                        <td>{{edRec.usBuddy}}</td>
+                        <td>{{edRec.usAssignedUser}}</td>
+                        <td>{{edRec.name}}</td>
+                        <td>{{edRec.usIsReportTeam}}</td>
+                        <td>
+                            <a href="eTrakUsers/Edit/{{edRec.usID}}">Edit</a> |
+                            <a href="eTrakUsers/Details/{{edRec.usID}}">Details</a>  |
+                            <a href="eTrakUsers/Delete/{{edRec.usID}}">Delete</a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>  
+</div>

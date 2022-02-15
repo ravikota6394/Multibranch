@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Queries Schedule";
+}
+@if (Request.IsAuthenticated && (User.IsInRole("Client Manager")))
+{
+    <input type="hidden" id="IsClientManagerCheck" value="true" />
+}
+else
+{
+    <input type="hidden" id="IsClientManagerCheck" value="false" />
+}
+
+<h2>Queries Schedule</h2>
+
+<div ng-controller="QueriesScheduleController">
+    <p>
+        <a ng-click="OpenDialogueForCreatingSchedule()" class="btn btn-success btn-sm">Create New</a>
+        @*<a ng-click="OpenDialogueForCreatingSchedule()" class="btn btn-success btn-sm">Audit</a>*@
+    </p>
+    <div id="id-Processing"></div><br/>
+    <div class="container table-responsive" id="table-scroll">
+        <table id="idQueriesSchedule" show-filter="true" dt-options="dtQuerySchedule" datatable="ng" class="table table-bordered table-fixed">
+            <thead>
+                <tr>
+                    <th data-class="expand">Schedule Name</th>
+                    <th data-class="expand">Query Name</th>
+                    <th data-class="expand">Email Id</th>
+                    <th data-class="expand">Template</th>
+                    <th data-class="expand">File Type</th>
+                    <th data-class="expand">Schedule Time</th>                           
+                    <th data-class="expand">Recurrence Pattern</th>
+                    <th data-class="expand">Recurrence Range</th>  
+                    <th data-class="expand">Action</th>
+                    <th data-class="expand">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="schedule in QueriesScheduleDetails ">
+                    <td>{{schedule.qs_ScheduleName}}</td>
+                    <td>{{schedule.qs_QueryName}}</td>
+                    <td>{{schedule.qs_Email}}</td>
+                    <td>{{schedule.qs_Template}}</td>
+                    <td>{{schedule.qs_FileType}}</td>
+                    <td data-class="expand">{{schedule.qs_StartTime}} {{schedule.qs_StartDate | date:'dd-MM-yyyy'}}</td> 
+                    <td>{{schedule.qs_dailyText}} {{schedule.qs_weeklyText}} {{schedule.qs_monthlyText}} {{schedule.qs_YearlyText}}</td>
+                    <td>{{schedule.qs_rangeOfRecurrenceText}}</td>                    
+                    <td>
+                        <a ng-click="OpenDialogueForEditingSchedule(schedule.qs_ID)">Edit</a> |
+                        <a ng-click="DeleteSchedule(schedule.qs_ID)">Delete</a>
+                    </td>
+                    <td>
+                        <a ng-click="ShowAuditDetails(schedule.qs_ID)">Audit</a> |
+                        <a ng-click="RunSchedule(schedule.qs_ScheduleName, schedule.qs_QueryName,schedule.qs_Email,schedule.qs_ID,schedule.qs_Template,schedule.qs_FileType)">Run</a>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    @{ Html.RenderAction("QueriesScheduleModal", "Partials");}
+</div>
+
+
+

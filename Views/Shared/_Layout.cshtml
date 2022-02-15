@@ -1,0 +1,986 @@
+﻿@using System.Web.ApplicationServices
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using System.Web.Mvc.Html;
+@using eTrak.Dal.Models;
+
+<!DOCTYPE html>
+<html ng-app="eTrakApp">
+<head>
+    <!-- ================= Basic Page Needs ================= -->
+    <meta charset="utf-8" />
+    <title idle-disabled="true">User Dashboard - eTrak</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ================= SEO Cannonical Tag ================= -->
+    @Html.MvcSiteMap().CanonicalTag()
+    <!-- ===================== Stylesheets ==================== -->
+    <!--Styles.Render("~/bundles/css")-->
+    <link rel="stylesheet" href="~/Content/styles.min.css" /> <!-- Etrak Styles -->
+    <link rel="stylesheet" href="~/Content/plugins.min.css" /> <!-- Plugins -->
+    <!-- Latest compiled and minified CSS -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/Content/frameworks.min.css" /> <!-- Frameworks -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.min.css" /><!--ui-select-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/isteven-multi-select.css" rel="stylesheet" />
+
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link href="~/Content/summernote.css" rel="stylesheet" />
+    <link href="~/css/Custom.css" rel="stylesheet" />
+    <link href="~/css/DashboardColumnWidths.css" rel="stylesheet" />
+    <!-- ===================== Meta Tags ====================== -->
+    <meta name="description" content="The description of my page" />
+    <base href="/">
+    <style>
+        .failure {
+            background-color: red !important;
+        }
+
+        .Success {
+            background-color: green !important;
+        }
+
+        .notify-badge {
+            position: absolute;
+            background: #ee2424;
+            height: 2rem;
+            top: 0rem;
+            right: 0.1rem;
+            width: 2rem;
+            text-align: center;
+            line-height: 2rem;
+            font-size: 1rem;
+            border-radius: 50%;
+            color: white;
+        }
+    </style>
+
+    <!--Google Analytics Script-->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-47702928-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <!--Ended Google Analytics Script-->
+
+</head>
+<body class="tas-skin">
+
+    <div ng-controller="SessionIdle">
+        <div ng-controller="breadcrumbs">
+            <div ng-controller="globalValues">
+
+                <!--Modal for checking whether the Assignee set or not-->
+                <div class="modal fade" id="myModal" @*data-backdrop="static" data-keyboard="false"*@ role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title"></h4>
+                            </div>
+                            <div class="modal-body">
+                                <h5 style="text-align:center">Please fill the mandatory(<span style="color:red">*</span>) fields of this tab and save the enquiry, before moving to the other tab</h5>
+                            </div>
+                            <div class="modal-footer"></div>
+                        </div>
+                    </div>
+                </div>
+                <!--Ended Modal for checking whether the Assignee set or not-->
+                <!-- ========== Top Navigation Bar ========== -->
+                <div class="navbar navbar-default" id="navbar">
+                    <div id="navbar-container" class="navbar-container">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <marquee style="position:absolute; margin-top:13px;color:#fff;width: 73%;"
+                                     scrollamount="06">{{tickerText}}</marquee>
+                        }
+                        <!-- Navigation Buttons -->
+                        <div role="navigation" class="navbar-buttons navbar-header pull-right">
+                            <!-- Here is the Authenticated or not section-->
+                            @if (Request.IsAuthenticated)
+                            {
+                                <ul class="nav ace-nav">
+                                    @*@Html.ActionLink("Admin", "Index", "Home", new { area = "Admin" }, null)*@
+                                    <li>
+                                        <a href="/#/" ng-click="getQueryId('$Book Now$')" style="background-color: white !important">
+                                            <span class="notify-badge icon-animated-vertical">{{bookedEnquiriesCount}}</span>
+                                            <img src="~/Content/Images/BookNow.png" />
+                                        </a>
+                                    </li>
+                                    <li class="green">
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            var roles = eTrak.Dal.Services.UserService.GetAllRolesOfUser(User.Identity.GetUserName());
+                                            var displayRoles = "";
+                                            var storeRoles = "";
+                                            storeRoles = "@" + string.Join("@,@", roles) + "@";
+                                            displayRoles = string.Join(",<br/>&nbsp; ", roles);
+                                            displayRoles = "&nbsp;" + displayRoles + " ";
+                                            @*<span class="user-info" style="color: white">
+                                                    &nbsp;{{ glbWhiteLabelName}}<br />
+                                                    &nbsp;(
+                                                    @Html.Raw(@displayRoles)
+                                                    )<br />
+                                                </span>
+                                                <div pass-Logon-Roles="@storeRoles"></div>*@
+
+                                            <a title="These are total emails visible for @Html.Raw(@displayRoles)" href="/#/" ng-click="getQueryId('$Action Required$')">
+                                                <span class="notify-badge icon-animated-vertical">{{EmailsInCount}}</span>
+                                                <i class="ace-icon emailsCount fa fa-envelope"></i>
+                                            </a>
+                                        }
+                                    </li>
+
+                                    <li><a href="EmailStatus/Index" class="{{EmailStatus}}">Emailstatus</a></li>
+                                    @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                    {
+                                        <li>@Html.ActionLink("UsersAdmin", "Index", "eTrakUsers")</li>
+                                    }
+
+                                    <!-- User Menu -->
+                                    <li class="light-blue">
+                                        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+                                            @Html.Gravatar(User.Identity.GetUserName(), 45, "mm", htmlAttributes: new { style = "nav-user-photo", Alt = "User" })
+                                            <span class="user-info">
+                                                @eTrak.Dal.Services.UserService.GetUserRecord(User.Identity.GetUserName()).usFirstName
+                                                <br />(
+                                                @User.Identity.GetUserName()
+                                                )        &nbsp;&nbsp;&nbsp;&nbsp; <i class="ace-icon fa fa-caret-down"></i>
+                                            </span>
+                                            <div pass-Logon="@User.Identity.GetUserName()"></div>
+                                            <input id="divUserCode" type="hidden" value="@User.Identity.GetUserName()" />
+                                        </a>
+                                        <!-- Generated on the fly form logout -->
+                                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-light dropdown-caret dropdown-close">
+                                            <li class="divider"></li>
+                                            <li><a onclick="javascript:document.getElementById('logoutForm').submit()"> <i class="ace-icon fa fa-power-off"></i> Logout</a></li>
+                                        </ul>
+                                        <!-----------------logout form ---------------------------------- -->
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+
+                                                <ul class="nav navbar-nav navbar-right">
+                                                    <li>
+                                                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "tas-skin" })
+                                                    </li>
+                                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                                                </ul>
+                                            }
+                                        }
+                                    </li>
+                                    <li>
+                                        @if (Request.IsAuthenticated)
+                                        {
+                                            var roles = eTrak.Dal.Services.UserService.GetAllRolesOfUser(User.Identity.GetUserName());
+                                            var displayRoles = "";
+                                            var storeRoles = "";
+                                            storeRoles = "@" + string.Join("@,@", roles) + "@";
+                                            displayRoles = string.Join(",<br/>&nbsp; ", roles);
+                                            displayRoles = "&nbsp;" + displayRoles + " ";
+                                            <span class="user-info" style="color: white">
+                                                &nbsp;{{ glbWhiteLabelName}}<br />
+                                                &nbsp;(
+                                                @Html.Raw(@displayRoles)
+                                                )<br />
+                                            </span>
+                                            <input id="divUserRole" type="hidden" value="@Html.Raw(@displayRoles)" />
+                                            <div pass-Logon-Roles="@storeRoles"></div>
+                                        }
+                                    </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                @*<ul class="nav navbar-nav navbar-right">
+                                        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                                        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                                    </ul>*@
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- End Top Navigation Bar div.navbar -->
+                <!-- ========== Main Container ========== -->
+                <div id="main-container" class="main-container">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <!-- ===== Page Sidebar ===== -->
+                        <div class="sidebar responsive-min" id="sidebar">
+                            <ul class="nav nav-list">
+                                <li>
+                                    <img src="~/css/images/Logo_eTrak.png" />
+                                </li>
+                                <!-- Dashboard -->
+                                @if (Request.IsAuthenticated && !User.IsInRole("Client User"))
+                                {
+                                    <li class="active">
+                                        <a href="/#/" ng-click="AutopopulateQueryInTable(0,-1)">
+                                            <i class="menu-icon fa fa-tachometer">
+                                            </i><span class="menu-text">Dashboard</span>
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                }
+                                <!-- New Enquiry -->
+                                @if (Request.IsAuthenticated && !User.IsInRole("Client User"))
+                                {
+                                    <li>
+                                        <a href="/#/" ng-click="createNewEnquiry();" confirm="Create a  NEW enquiry?" lo>
+                                            <i class="menu-icon fa fa-file-o bigger-120"></i>
+                                            <span class="menu-text"> New Enquiry</span>
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+
+                                    <!-- Amend Enquiry -->
+                                    <li>
+                                        <a data-toggle="modal" data-target="#idDashboardAmendEnquiryChoice">
+
+                                            <i class="menu-icon fa fa-pencil-square-o"></i>
+                                            <span class="menu-text"> Amend Enquiry</span>
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                }
+                                <!--Query Schedule-->
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Client Manager")))
+                                {
+                                    <li>
+                                        <a href="QueriesSchedule/" target="_self">
+                                            <i class="menu-icon glyphicon glyphicon-calendar"></i>
+                                            <span class="menu-text"> Queries Schedule</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                {
+                                    <li>
+                                        <a href="/#/" data-toggle="modal" data-target="#idDashboardTickerTaps">
+                                            <i class="menu-icon fa fa-microphone"></i>
+                                            <span class="menu-text">Announcement</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                {
+                                    <li>
+                                        <a href="/#/" data-toggle="modal" data-target="#idDuplicateStatus">
+                                            <i class="menu-icon fa fa-files-o"></i>
+                                            <span class="menu-text">Duplicates Status</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("Client Manager") || User.IsInRole("Resteam")))
+                                {
+                                    <li>
+                                        <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                            <i class="menu-icon glyphicon glyphicon-question-sign"></i>
+                                            <span class="menu-text"> Queries</span>
+                                            <b class="arrow fa fa-angle-down"></b>
+                                        </a>
+                                        <b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li>
+                                                <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                    <i class="menu-icon glyphicon glyphicon-user"></i>
+                                                    <span class="menu-text"> Personal Queries</span>
+                                                    <b class="arrow fa fa-angle-down"></b>
+                                                </a>
+                                                <ul class="submenu">
+                                                    <li ng-repeat="queryName in IndividualQueryNames">
+                                                        <a href="/#/" ng-click="AutopopulateQueryInTable(queryName.UserQueryId,queryName.QueryType)">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            {{queryName.QueryName}}
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                            <li>
+                                                <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                    <i class="menu-icon fa fa-users"></i>
+                                                    <span class="menu-text"> Global Queries</span>
+                                                    <b class="arrow fa fa-angle-down"></b>
+                                                </a>
+                                                <ul class="submenu">
+                                                    <li ng-repeat="globalQueryName in GlobalQueryNames">
+                                                        <a href="/#/" ng-click="AutopopulateQueryInTable(globalQueryName.UserQueryId,globalQueryName.QueryType)">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            {{globalQueryName.QueryName}}
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Resteam")))
+                                            {
+                                                <li id="li-ReportQueries">
+                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                        <i class="menu-icon fa fa-users"></i>
+                                                        <span class="menu-text"> Report Queries</span>
+                                                        <b class="arrow fa fa-angle-down"></b>
+                                                    </a>
+                                                    <ul class="submenu">
+                                                        <li>
+                                                            <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                <i class="menu-icon fa fa-link"></i>
+                                                                <span class="menu-text"> Internal Reports</span>
+                                                                <b class="arrow fa fa-angle-down"></b>
+                                                            </a>
+                                                            <ul class="submenu">
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-book"></i>
+                                                                        <span class="menu-text"> Reservations</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="reservationsReportQueryName in ReservationsReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(reservationsReportQueryName.UserQueryId,reservationsReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{reservationsReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-exchange"></i>
+                                                                        <span class="menu-text"> Sales</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="salesReportQueryName in SalesReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(salesReportQueryName.UserQueryId,salesReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{salesReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-life-ring"></i>
+                                                                        <span class="menu-text"> Supply</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="supplyReportQueryName in SupplyReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(supplyReportQueryName.UserQueryId,supplyReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{supplyReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-bar-chart-o"></i>
+                                                                        <span class="menu-text"> Reporting</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="reportingQueryName in reportingQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(reportingQueryName.UserQueryId,reportingQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{reportingQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                <i class="menu-icon fa fa-external-link"></i>
+                                                                <span class="menu-text"> External Reports</span>
+                                                                <b class="arrow fa fa-angle-down"></b>
+                                                            </a>
+                                                            <ul class="submenu">
+                                                                <li ng-repeat="externalReportQueryName in ExternalReportQueryNames">
+                                                                    <a href="/#/" ng-click="AutopopulateQueryInTable(externalReportQueryName.UserQueryId,externalReportQueryName.QueryType)">
+                                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                                        {{externalReportQueryName.QueryName}}
+                                                                    </a>
+                                                                    <b class="arrow"></b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Supervisor") || User.IsInRole("Client Manager") || User.IsInRole("Resteam")))
+                                {
+                                    <li ng-hide="showBuddyQueries">
+                                        <a href="#" class="dropdown-toggle" ng-click="RefreshBuddyQueries()">
+                                            <i class="menu-icon glyphicon glyphicon-question-sign"></i>
+                                            <span class="menu-text"> Buddy Queries</span>
+                                            <b class="arrow fa fa-angle-down"></b>
+                                        </a>
+                                        <b class="arrow"></b>
+                                        <ul class="submenu">
+                                            <li>
+                                                <a href="#" class="dropdown-toggle" ng-click="RefreshBuddyQueries()">
+                                                    <i class="menu-icon glyphicon glyphicon-user"></i>
+                                                    <span class="menu-text"> Personal Queries</span>
+                                                    <b class="arrow fa fa-angle-down"></b>
+                                                </a>
+                                                <ul class="submenu">
+                                                    <li ng-repeat="queryName in BuddyIndividualQueryNames">
+                                                        <a href="/#/" ng-click="AutopopulateQueryInTable(queryName.UserQueryId,queryName.QueryType)">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            {{queryName.QueryName}}
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="dropdown-toggle" ng-click="RefreshBuddyQueries()">
+                                                    <i class="menu-icon fa fa-users"></i>
+                                                    <span class="menu-text"> Global Queries</span>
+                                                    <b class="arrow fa fa-angle-down"></b>
+                                                </a>
+                                                <ul class="submenu">
+                                                    <li ng-repeat="globalQueryName in GlobalQueryNames">
+                                                        <a href="/#/" ng-click="AutopopulateQueryInTable(globalQueryName.UserQueryId,globalQueryName.QueryType)">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            {{globalQueryName.QueryName}}
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("Resteam")))
+                                            {
+                                                <li id="li-ReportQueries">
+                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshBuddyQueries()">
+                                                        <i class="menu-icon fa fa-users"></i>
+                                                        <span class="menu-text"> Report Queries</span>
+                                                        <b class="arrow fa fa-angle-down"></b>
+                                                    </a>
+                                                    <ul class="submenu">
+                                                        <li>
+                                                            <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                <i class="menu-icon fa fa-link"></i>
+                                                                <span class="menu-text"> Internal Reports</span>
+                                                                <b class="arrow fa fa-angle-down"></b>
+                                                            </a>
+                                                            <ul class="submenu">
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-book"></i>
+                                                                        <span class="menu-text"> Reservations</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="reservationsReportQueryName in ReservationsReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(reservationsReportQueryName.UserQueryId,reservationsReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{reservationsReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-exchange"></i>
+                                                                        <span class="menu-text"> Sales</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="salesReportQueryName in SalesReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(salesReportQueryName.UserQueryId,salesReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{salesReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-life-ring"></i>
+                                                                        <span class="menu-text"> Supply</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="supplyReportQueryName in SupplyReportQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(supplyReportQueryName.UserQueryId,supplyReportQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{supplyReportQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                        <i class="menu-icon fa fa-bar-chart"></i>
+                                                                        <span class="menu-text"> Reporting</span>
+                                                                        <b class="arrow fa fa-angle-down"></b>
+                                                                    </a>
+                                                                    <ul class="submenu">
+                                                                        <li ng-repeat="reportingQueryName in reportingQueryNames">
+                                                                            <a href="/#/" ng-click="AutopopulateQueryInTable(reportingQueryName.UserQueryId,reportingQueryName.QueryType)">
+                                                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                                                {{reportingQueryName.QueryName}}
+                                                                            </a>
+                                                                            <b class="arrow"></b>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="dropdown-toggle" ng-click="RefreshQueries()">
+                                                                <i class="menu-icon fa fa-external-link"></i>
+                                                                <span class="menu-text"> External Reports</span>
+                                                                <b class="arrow fa fa-angle-down"></b>
+                                                            </a>
+                                                            <ul class="submenu">
+                                                                <li ng-repeat="externalReportQueryName in ExternalReportQueryNames">
+                                                                    <a href="/#/" ng-click="AutopopulateQueryInTable(externalReportQueryName.UserQueryId,externalReportQueryName.QueryType)">
+                                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                                        {{externalReportQueryName.QueryName}}
+                                                                    </a>
+                                                                    <b class="arrow"></b>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+
+                                @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("Manager") || User.IsInRole("SuperAdmin") || User.IsInRole("Client Manager") || User.IsInRole("Client User") || User.IsInRole("Home User") || User.IsInRole("Resteam") || User.IsInRole("Supervisor")))
+                                {
+                                    <!-- Standing Data -->
+                                    <li>
+                                        <a href="#" class="dropdown-toggle">
+                                            <i class="menu-icon fa fa-briefcase"></i>
+                                            <span class="menu-text"> Standing Data</span>
+                                            <b class="arrow fa fa-angle-down"></b>
+                                        </a>
+                                        <b class="arrow"></b>
+                                        <ul class="submenu">
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="ApartmentTypes" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Apartment types
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="BudgetCategories/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Budget category
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Cities/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Cities/Towns
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="ClientGroups/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Client groups
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @*@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                                {
+                                                    <li>
+                                                        <a href="#" target="_self">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            Clients to be
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                }*@
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Countries/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Countries
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="DeadReasons/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Dead reasons
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="EmailTemplates/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Templates
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="eTrakUsers/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        eTrak Users
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Sources/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Enquiry sources
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="LanguageCodes/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Languages and Cultures
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="CodedNotes/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Pre-coded notes
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("Senior Manager") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Suppliers/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Suppliers
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="UserTimeZones/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Time Zones
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+
+                                            @*@if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                                {
+                                                    <li>
+                                                        <a href="WhiteLabels/" target="_self">
+                                                            <i class="menu-icon fa fa-caret-right"></i>
+                                                            Whitelabel / Portal Sites
+                                                        </a>
+                                                        <b class="arrow"></b>
+                                                    </li>
+                                                }*@
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="EmailStatus/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Email Status
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="TrackingStatus/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Tracking Status
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Currency/" target="_self">
+                                                        <i class="menu-icon glyphicon glyphicon-currency"></i>
+                                                        Currencies
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="AvailabilityReasons/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Availability Reasons
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="RoomspaceCities/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Roomspace Cities
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="Programs/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Script
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="GenericTemplateTags/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Users tags
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                                            {
+                                                <li>
+                                                    <a href="GdprData/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        GDPR Process
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="BlackList/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        BlackList
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="GuestServiceReason/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Guest Service Reason
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin") || User.IsInRole("Supervisor")))
+                                            {
+                                                <li>
+                                                    <a href="JobRunningHistory/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        JobRunningHistory
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="TripTypes/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Trip Types
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                            @if (Request.IsAuthenticated && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+                                            {
+                                                <li>
+                                                    <a href="ClientVariables/" target="_self">
+                                                        <i class="menu-icon fa fa-caret-right"></i>
+                                                        Client Variables
+                                                    </a>
+                                                    <b class="arrow"></b>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            </ul>
+                            @if (Request.IsAuthenticated && !User.IsInRole("Client User"))
+                            {
+                                <div id="sidebar-collapse" class="sidebar-toggle sidebar-collapse">
+                                    <i data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right" class="ace-icon fa fa-angle-double-left"></i>
+                                </div>
+                            }
+                        </div>
+                        <!-- End Page Sidebar -->
+
+                        <!-- ===== Page Main Content ===== -->
+                        <div class="main-content" id="main-content">
+                            <!-- Breadcrumbs and Quick Search Box -->
+                            <div class="breadcrumbs" id="headerhide">
+                                <!-- Breadcrumbs -->
+                                <ul class="breadcrumb">
+                                    <li ng-click="AutopopulateQueryInTable(0,-1)">
+                                        <a>
+                                            <i class="ace-icon fa fa-home home-icon"></i>
+                                        </a>
+                                        <a href="/#/">@Html.MvcSiteMap().SiteMapPath()</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Page Content -->
+                            <div class="page-content">
+                                <div class="page-content-area">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <!-- Load on Index.cshtml -->
+                                            @RenderBody()
+                                            <!-- ===== Page Footer ===== -->
+                                            @Html.Partial("_eTrakFooter")
+                                            <!-- End Page Footer -->
+                                        </div> <!-- end of end of col-12-xs-->
+                                    </div> <!--end of row -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of Page Content Area-->
+                        @Html.Partial("../Partials/DashboardDefaultModals")
+                    }
+                    else
+                    {
+
+                        <!-- Load on Index.cshtml This will not display anything. It is here to keep ASP.NET happy-->
+                        @RenderBody()
+                        <div id="notAuthenticated">
+
+                            <!-- ===== Page Footer ===== -->
+                            @Html.Partial("_eTrakFooter", false)
+
+                        </div>
+                    }
+                    <!--</div>--><!-- End Main Content -->
+
+                </div> <!-- end of breadcrumbs controller -->
+            </div><!-- End Main Container -->
+        </div>
+    </div> <!--end of allSPAController-->
+
+    @Scripts.Render("~/bundles/jquery")
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    @Scripts.Render("~/bundles/datatable")
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-sanitize.min.js"></script>
+    @Scripts.Render("~/bundles/uiselect")
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.11.2/select.min.js"></script>
+    @*<script src="~/Scripts/summernote.js"></script>*@
+    @Scripts.Render("~/bundles/toast")
+    <script src="https://v2.apartmentservice.com/JS/tas_.searchwidget.js" type="text/javascript"></script>
+
+    <script src="~/SPA/eTrakApp/00-Modules/eTrakAppModule.js"></script>
+    <script src="~/SPA/eTrakApp/01-Main-Initialisation/eTrakAppInitialisation.js"></script>
+    <script src="~/SPA/eTrakApp/01-Main-Initialisation/config.uiSelect.js"></script>
+    <script src="~/SPA/eTrakApp/03-Routers/eTrakAppRouterConfig.js"></script>
+
+    @Scripts.Render("~/bundles/app")
+        
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.4.1/dist/textAngular.min.js"></script>
+
+    <!--HighCharts Scripts-->
+    <script src="//code.highcharts.com/stock/highstock.js"></script>
+    <script src="//code.highcharts.com/modules/data.js"></script>
+    <script src="//code.highcharts.com/stock/modules/exporting.js"></script>
+    <!--Idle Script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-idle/1.3.2/angular-idle.min.js"></script>
+
+
+    <script>
+        $(function () {
+            setUpFormUtilities();
+        });
+    </script>
+</body>
+</html>

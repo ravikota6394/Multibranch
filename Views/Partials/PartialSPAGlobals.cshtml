@@ -1,0 +1,65 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <input type="hidden" id="idglbMainUserID" ng-model="glbMainUserID" />
+    <input ng-show="true" type="hidden" id="idglbUserBuddy" ng-model="glbUserBuddy" />
+        <input ng-show="true" type="hidden" id="idglbWhiteLabel" ng-model="glbWhiteLabel" />
+        <input ng-show="true" type="hidden" id="idglbWhiteLabelName" ng-model="glbWhiteLabelName" />
+        <input ng-show="true" type="hidden" id="idfltWhiteLabelCode" ng-model="fltWhiteLabelCode" />
+        <input ng-show="true" type="hidden" id="idglbRoles" ng-model="glbRoles" />
+
+        <input ng-show="true" type="hidden" id="idglbRefreshSeconds" ng-model="glbRefreshSeconds" />
+
+
+        <input ng-show="true" type="hidden" id="idglbCDClientCode" ng-model="glbCDClientCode" />
+        <input ng-show="true" type="hidden" id="idglbCDClientEmail" ng-model="globalCDClientEmail" />
+        <input ng-show="true" type="hidden" id="idglbTRClientCode" ng-model="glbTRClientCode" />
+
+        <input ng-show="true" type="hidden" id="idglbCurrentEnquiryRef" ng-model="glbCurrentEnquiryRef" />
+        <input ng-show="true" type="hidden" id="idglbWasEnquiryRef" />
+        <input ng-show="true" type="hidden" id="idglbBreadcrumbsAreHere" ng-model="breadcrumbsValueAreHere" />
+        <input ng-show="true" type="hidden" id="idglbBreadcrumbsGoTo" ng-model="breadcrumbsValueGoTo" />
+        <input ng-show="true" type="hidden" id="idglbBreadcrumbsUiSref" ng-model="breadcrumbsValueUiSref" />
+
+        <input type="hidden" id="idglbDataHasChanged" />
+        <input ng-show="true" type="hidden" id="idglobalEnCode" ng-model="globalEnCode" />
+        <input ng-show="true" type="hidden" id="idglobalEnProgress" ng-model="globalEnProgress" />
+        <input ng-show="true" type="hidden" id="idglobalDeadReasonCode" ng-model="globalDeadReasonCode" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDProgressCSS" ng-model="globalEnEDProgressCSS" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDProgressWord" ng-model="globalEnEDProgressWord" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDAssignedUser" ng-model="globalEnEDAssignedUser" />
+        <input ng-show="true" type="hidden" id="idglobalEnPrimaryContactName" ng-model="globalEnPrimaryContactName" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDCity" ng-model="globalEnEDCity" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDDateAdded" ng-model="globalEnEDDateAdded" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDDateOfArrival" ng-model="globalEnEDDateOfArrival" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDDepartureDate" ng-model="globalEnEDDepartureDate" />
+        <input ng-show="true" type="hidden" id="idglobalEnEDFlightDate" ng-model="globalEnEDFlightDate" />
+        <input ng-show="true" type="hidden" id="idglobalEmailLocale" ng-model="globalEmailLocale" />
+        <input ng-show="true" type="hidden" id="idglobalLandlordLandingPage" ng-model="globalLandlordLandingPage" />
+        <input ng-show="true" type="hidden" id="idglobalLandlordsName" ng-model="globalLandlordsName" />
+        <input ng-show="true" type="hidden" id="idglobalPropertyID" ng-model="globalPropertyID" />
+        <input ng-show="true" type="hidden" id="idglobalPropertyName" ng-model="globalPropertyName" />
+        <input ng-show="true" type="hidden" id="idglobalLandlordsEmailAddress" ng-model="globalLandlordsEmailAddress" />
+
+
+        <input ng-show="true" type="hidden" id="idglobalEfCurrentCity" ng-model="globalEfCurrentCity" />
+        <input ng-show="true" type="hidden" id="idglobalEfCurrentCountry" ng-model="globalEfCurrentCountry" />
+        <input ng-show="true" type="hidden" id="idglobalEfCurrentHTML" ng-model="globalEfCurrentHTML" />
+        <input ng-show="true" type="hidden" id="idglobalEfCurrentID" ng-model="globalEfCurrentID" />
+        <input ng-show="true" type="hidden" id="idglobalEmailBody" ng-model="globalEmailBody" />
+
+
+}
+
+<!--Google Analytics Script-->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-47702928-1', 'auto');
+    ga('send', 'pageview');
+</script>
+<!--Ended Google Analytics Script-->

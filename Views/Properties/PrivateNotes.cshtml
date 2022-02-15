@@ -1,0 +1,55 @@
+﻿@model eTrak.Dal.Models.Property
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PrivateNotes</title>
+</head>
+<body>
+
+    @using (Html.BeginForm("SavePrivateNotes", "Properties", FormMethod.Post))
+    {
+        <div class="container">
+            <div class="divStyle col-sm-10 col-md-10 col-lg-10 col-sm-offset-1 col-md-offset-1 col-lg-offset-1">
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.prEnCode)
+                    @Html.HiddenFor(model => model.prPropertyCode)
+                    @Html.TextAreaFor(m => m.prPrivateNotes, 5, 100, new { @class = "textArea" })
+                </div>
+                <div class="form-group butn">
+                    <input class="btn btn-success btn-lg mb-10" type="submit" value="Save" />
+                </div>
+                <div class="form-group butn">
+                    @if (Model != null)
+                    {
+                        @Model.prSaveSuccess
+                    }                    
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<style>
+    .textArea {
+        /*border-radius: 9px;*/
+        border: 2px solid gray;
+    }
+
+    .divStyle {
+        font-family: 'Times New Roman';
+        font-size: 17px;
+        padding: 47px;
+        margin-top: 3em;
+    }
+
+    .butn {
+        text-align: center;
+    }
+</style>

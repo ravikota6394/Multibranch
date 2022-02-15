@@ -1,0 +1,52 @@
+﻿@model eTrak.Dal.Models.CodedNote
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>CodedNote</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.cnDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessage("DuplicateError", "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.cnDescription, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cnDescription')" } })
+                @Html.ValidationMessageFor(model => model.cnDescription, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cnStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cnStatus, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrConvertToUpper(this,'#cnStatus')" } })
+                @Html.ValidationMessageFor(model => model.cnStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.cnNoteFlag, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.cnNoteFlag, new { htmlAttributes = new { @class = "form-control", @onkeyup = "attrMaxLength(this,'#cnNoteFlag')" } })
+                @Html.ValidationMessageFor(model => model.cnNoteFlag, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

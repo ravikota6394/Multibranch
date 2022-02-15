@@ -1,0 +1,64 @@
+﻿@model eTrak.Dal.Models.EmailTemplate
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Template</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.etDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etLanguage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etLanguage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etTemplate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etTemplate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.etStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.etStatus)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

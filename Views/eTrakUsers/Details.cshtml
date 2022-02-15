@@ -1,0 +1,176 @@
+﻿@model eTrak.Dal.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.usCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usLastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usLastName)
+        </dd>
+
+        <dt class="display-none">
+            @Html.DisplayNameFor(model => model.usPassword)
+        </dt>
+
+        <dd class="display-none">
+            @Html.DisplayFor(model => model.usPassword)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usTelephone1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usTelephone1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usTelephone2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usTelephone2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usHomeTelephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usHomeTelephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usMobileTelephone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usMobileTelephone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usEmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usEmailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usPrivilegeLevel)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usPrivilegeLevel)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usControllerRefresh)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usControllerRefresh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.usBuddy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usBuddy)
+        </dd>
+
+        @*<dt>
+           @Html.Raw("WhiteLabel")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WhiteLabel.wlName)
+        </dd>*@
+
+        <dt>
+            @Html.Raw("Backup User")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usAssignedUser)
+        </dd>
+        <dt>
+            @Html.Raw("Client Group")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClientGroup.cgOrganisationName)
+        </dd>
+        <dt>
+            @Html.Raw("User Role")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.usRole)
+        </dd>
+        
+        <dt>
+            @Html.Raw("Is Report Team")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsReportTeam)
+        </dd>
+
+        <dt>
+            @Html.Raw("User Email Footer")
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.userEmailFooter)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.usID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
